@@ -1,6 +1,7 @@
 export const common = {
   blockstackIcon: require('./blockstackIcon.png'),
   logo: require('./eye-logo.png'),
+  searchIcon: require('./search.png'),
   gif: require('./gif.png'),
   mic: require('./mic.png'),
   photo: require('./photo.png'),
