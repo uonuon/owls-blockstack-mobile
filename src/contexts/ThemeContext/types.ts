@@ -36,7 +36,10 @@ export interface Theme {
     success: string,
     onSuccess: string,
 
-
+    common: {
+      black: string
+      white: string
+    }
 
     outline: string,
 

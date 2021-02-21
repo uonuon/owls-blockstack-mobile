@@ -222,7 +222,7 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
             Most Trending Hashtags
           </Text>
           <View style={{ borderTopWidth: 1, borderTopColor: "#1f1f1f" }}>
-            <Hoot />
+            {/* <Hoot /> */}
           </View>
         </>
       )}

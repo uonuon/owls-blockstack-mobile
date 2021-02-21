@@ -38,11 +38,11 @@ const HScrollView = HPageViewHoc(ScrollView);
 const Tweets = () => (
   <HScrollView index={0}>
     <View style={[styles.scene, { backgroundColor: "#121212" }]}>
-      <Hoot />
+      {/* <Hoot />
       <Hoot image={true} />
       <Hoot />
       <Hoot />
-      <Hoot />
+      <Hoot /> */}
     </View>
   </HScrollView>
 );
@@ -50,11 +50,11 @@ const Tweets = () => (
 const TweetsAndReplies = () => (
   <HScrollView index={1}>
     <View style={[styles.scene, { backgroundColor: "#121212" }]}>
-      <Hoot />
+      {/* <Hoot />
       <Hoot image={true} />
       <Hoot />
       <Hoot />
-      <Hoot />
+      <Hoot /> */}
     </View>
   </HScrollView>
 );
@@ -62,11 +62,11 @@ const TweetsAndReplies = () => (
 const Media = () => (
   <HScrollView index={2}>
     <View style={[styles.scene, { backgroundColor: "#121212" }]}>
-      <Hoot />
+      {/* <Hoot />
       <Hoot />
       <Hoot image={true} />
       <Hoot />
-      <Hoot />
+      <Hoot /> */}
     </View>
   </HScrollView>
 );
@@ -74,11 +74,11 @@ const Media = () => (
 const Likes = () => (
   <HScrollView index={3}>
     <View style={[styles.scene, { backgroundColor: "#121212" }]}>
+      {/* <Hoot />
       <Hoot />
       <Hoot />
       <Hoot />
-      <Hoot />
-      <Hoot />
+      <Hoot /> */}
     </View>
   </HScrollView>
 );

@@ -100,10 +100,7 @@ export const NewsFeed: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
           <Image source={mic} style={[styles.icon, {marginRight: 0}]}/>
         </View>
       </Pressable>
-      <Hoot />
-      <Hoot image={true}/>
-      <Hoot />
-
+      {/* <Hoot /> */}
     </View>
   );
 };

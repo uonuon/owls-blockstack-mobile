@@ -51,7 +51,10 @@ export const DefaultTheme: Theme = {
     success: "rgba(102, 207, 125, 1)",
     onSuccess: "rgba(255, 255, 255, 1)",
 
-
+    common: {
+      black: '#000000',
+      white: '#ffffff',
+    },
 
     outline: "rgba(255, 255, 255, 0.1216)",
 
