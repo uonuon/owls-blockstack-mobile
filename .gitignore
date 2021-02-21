@@ -31,10 +31,6 @@ local.properties
 
 # node.js
 #
-**/node_modules
-node_modules/
-npm-debug.log
-yarn-error.log
 
 # BUCK
 #
@@ -48,7 +44,7 @@ buck-out/
 */fastlane/report.xml
 */fastlane/Preview.html
 */fastlane/screenshots
-
+ 
 # Bundle artifact
 #
 *.jsbundle
@@ -60,3 +56,4 @@ buck-out/
 # Environment Variables
 .env.dev
 .env.prod
+*node_modules/*
