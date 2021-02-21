@@ -53,6 +53,8 @@ target 'Owls' do
 
   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
+  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
+
   post_install do |installer|
     installer.pods_project.targets.each do |target|
 

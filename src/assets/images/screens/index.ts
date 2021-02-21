@@ -16,5 +16,11 @@ export const screens = {
   search: {
     search: require('./Search/search.png'),
     searchDisabled: require('./Search/search-disabled.png'),
+  },
+  profile: {
+    profile: require('./profile/profile-active.png'),
+    profileDisabled: require('./profile/profile.png'),
+    background: require('./profile/background.png'),
+    calendar: require('./profile/calendar.png'),
   }
 };

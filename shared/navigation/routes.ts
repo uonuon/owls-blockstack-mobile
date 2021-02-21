@@ -17,15 +17,19 @@ export class NavigationFactory {
     const NewsFeed = new Screen('NewsFeed');
 
     const Search = new Screen('Search');
+    const Profile = new Screen('Profile');
+
     const homeTabsNavigator = new TabNavigator()
       .addScreen(NewsFeed)
       .addScreen(Search)
+      .addScreen(Profile)
     const homeScreen = new NavigatorContainer('home', homeTabsNavigator);
     const splashScreen = new Screen('splash');
     const loginScreen = new Screen('login');
     const tutorial1Screen = new Screen('tutorial1');
     const tutorial2Screen = new Screen('tutorial2');
-    const WriteHoot = new Screen('WriteHoot')
+    const WriteHoot = new Screen('WriteHoot');
+    const Replies = new Screen('Replies');
     const rootStackNavigator = new StackNavigator()
       .addScreen(NewsFeed)
       .addScreen(Search)
@@ -34,6 +38,7 @@ export class NavigationFactory {
       .addScreen(loginScreen)
       .addScreen(tutorial1Screen)
       .addScreen(tutorial2Screen)
+      .addScreen(Replies)
       .addScreen(splashScreen, true);
     const navigationContainer = new RootNavigator(rootStackNavigator);
     return navigationContainer;

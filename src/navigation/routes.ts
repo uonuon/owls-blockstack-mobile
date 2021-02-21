@@ -9,7 +9,9 @@ import {
   LoginScreen,
   NewsFeed,
   Search,
-  WriteHoot
+  WriteHoot,
+  Profile,
+  Replies,
 } from 'screens';
 import {
   NavigationFactory,
@@ -23,6 +25,7 @@ import {
 import {
   Tutorial2,
 } from 'src/screens/Tutorial/Tutorial2';
+
 
 export type ScreenTypesAndParams = ScreenNames<NavigationFactory['navigator']>;
 
@@ -51,6 +54,8 @@ export const ROUTES: ScreenComponents<ScreenTypesAndParams> = {
   splash: SplashScreen,
   WriteHoot: WriteHoot,
   login: LoginScreen,
+  Profile: Profile,
+  Replies: Replies,
   tutorial1: Tutorial1,
   tutorial2: Tutorial2,
 };
