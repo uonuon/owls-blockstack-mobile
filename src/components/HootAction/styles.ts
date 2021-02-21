@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   icon: { width: 18, marginRight: 12 },
-  text: { fontSize: 10, color: theme.colors.common.white, marginRight: 27 },
+  text: { fontSize: 14, color: theme.colors.common.white, marginRight: 27, fontFamily: theme.fonts.regular, },
 });
 
 export default styles;

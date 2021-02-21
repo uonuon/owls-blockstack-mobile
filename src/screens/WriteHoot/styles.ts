@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#000',
+    backgroundColor: theme.colors.elevation01dp,
   },
   header: {
     height: 64,
@@ -19,11 +19,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     width: '100%',
     borderBottomWidth: 1,
-    borderBottomColor: '#1f1f1f',
+    borderBottomColor: theme.colors.elevation01dp,
   },
   title: {
     fontSize: 16,
-    color: '#fff',
+    color: theme.colors.common.white,
+    fontFamily: theme.fonts.regular,
     opacity: 0.6
   },
   backgroundLogo: {
@@ -31,14 +32,14 @@ const styles = StyleSheet.create({
     height: 21,
   },
   postHoot: {
-    backgroundColor: '#004F93',
     paddingVertical: 8,
     paddingHorizontal: 24,
     borderRadius: 16
   },
   hootText: {
-    color: '#000000',
+    color: theme.colors.onSecondaryDisabled,
     fontSize: 14,
+    fontFamily: theme.fonts.regular,
     fontWeight: 'bold',
     opacity: 0.38
   },
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
     alignContent: 'flex-start',
     margin: 24,
     width: '92%',
-    shadowColor: "#000",
+    shadowColor: theme.colors.common.black,
     flex: 1,
     shadowOffset: {
       width: 0,
@@ -99,14 +100,14 @@ elevation: 5,
     resizeMode: 'contain',
   },
   whatHappen: {
-    fontSize: 16,
-    color: '#fff',
-    opacity: 0.38
+    fontSize: 20,
+    fontFamily: theme.fonts.regular,
+    color: theme.colors.onSurfaceDisabled,
   },
   footer: {
     width: '100%',
     height: 72,
-    borderTopColor: '#121212',
+    borderTopColor: theme.colors.elevation02dp,
     paddingHorizontal: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',

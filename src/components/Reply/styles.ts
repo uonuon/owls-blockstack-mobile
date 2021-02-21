@@ -38,11 +38,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: theme.colors.common.white,
     marginRight: 5,
+    fontFamily: theme.fonts.regular,
   },
   username: {
     fontSize: 16,
     color: theme.colors.common.white,
     opacity: 0.38,
+    fontFamily: theme.fonts.regular,
   },
   replyImage: {
     width: "100%",
@@ -56,6 +58,7 @@ const styles = StyleSheet.create({
   },
   replyText: {
     fontSize: 14,
+    fontFamily: theme.fonts.regular,
     color: theme.colors.common.white,
   },
   replyFooter: {

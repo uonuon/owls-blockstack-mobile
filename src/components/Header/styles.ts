@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 14,
+    fontFamily: theme.fonts.headers
   },
 });
 

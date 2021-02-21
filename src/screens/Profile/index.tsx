@@ -142,6 +142,7 @@ const Likes = () => (
 
 export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
   const navigation = useNavigationUtils();
+  const { theme } = useTheme();
   const {
     theme: { colors, fonts },
   } = useTheme();
@@ -210,6 +211,7 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
       tabStyle={{ height: 60, width: "auto" }}
       labelStyle={{
         fontSize: 16,
+        fontFamily: theme.fonts.regular,
         fontWeight: "300",
         textTransform: "capitalize",
       }}
@@ -232,17 +234,17 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
       }}
     >
       <Image source={avatar} style={styles.image} />
-      <View style={{flexDirection: 'column'}}>
+      <View style={{flexDirection: 'column', width: '85%'}}>
       <Text style={styles.name}>Annie <Text style={styles.username}>@annie</Text></Text>
-      <View style={{flexDirection: 'row', marginVertical: 8}}><Image style={{ width: 16, height: 16, resizeMode: 'contain'}} source={calendar}/>
+      <View style={{flexDirection: 'row', marginVertical: 8, width: '95%'}}><Image style={{ width: 16, height: 16, resizeMode: 'contain'}} source={calendar}/>
        <Text style={styles.date}> Joined September 2018</Text></View>
        <Text style={styles.date}>Digital Goodies Team - Web & Mobile UI/UX development; Graphics; Illustrations</Text>
-       <View style={{flexDirection: 'row', marginTop: 16}}>
-         <Pressable style={{borderRadius: 8, marginRight: 8, justifyContent: 'center', alignItems: 'center', backgroundColor: '#121212', paddingVertical: 8, paddingHorizontal: 16}}>
-           <Text style={{color: '#009FE7', fontSize: 12}}>118 Followers</Text>
+       <View style={{flexDirection: 'row', marginTop: 16, }}>
+         <Pressable style={{borderRadius: 8, marginRight: 8, justifyContent: 'center', alignItems: 'center', backgroundColor:  colors.elevation01dp, paddingVertical: 8, paddingHorizontal: 16}}>
+           <Text style={{color: colors.secondaryLowContrasted, fontSize: 12,fontFamily: theme.fonts.regular,}}>118 Followers</Text>
          </Pressable>
-         <Pressable style={{borderRadius: 8, marginRight: 8, justifyContent: 'center', alignItems: 'center', backgroundColor: '#121212', paddingVertical: 8, paddingHorizontal: 16}}>
-           <Text style={{color: '#fff', fontSize: 12}}>118 Followers</Text>
+         <Pressable style={{borderRadius: 8, marginRight: 8, justifyContent: 'center', alignItems: 'center', backgroundColor:  colors.elevation01dp, paddingVertical: 8, paddingHorizontal: 16}}>
+           <Text style={{color: colors.common.white, fontSize: 12,fontFamily: theme.fonts.regular,}}>118 Followers</Text>
          </Pressable>
        </View>
       </View>
@@ -253,7 +255,7 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
 
       <CollapsibleHeaderTabView
         makeHeaderHeight={() => 192}
-        headerRespond={false}
+        headerRespond={true}
         tabbarHeight={45}
         renderTabBar={renderTabBar}
         renderScrollHeader={() => <ProfileHeader />}

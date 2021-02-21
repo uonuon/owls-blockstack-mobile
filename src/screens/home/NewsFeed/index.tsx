@@ -80,7 +80,7 @@ export const DATA: HootProps[] = [
 ];
 
 const {
-  common: { gif, mic, photo, stats, },
+  common: { gif, mic, photo, stats },
   components: {
     hoot: { avatar },
   },
@@ -158,8 +158,11 @@ export const NewsFeed: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
       <TouchableOpacity
         style={styles.fab}
         onPress={() => navigateTo({ name: "WriteHoot" })}
-        >
-        <Image source={plus} style={{width: 24, height: 24, resizeMode: 'contain'}}/>
+      >
+        <Image
+          source={plus}
+          style={{ width: 24, height: 24, resizeMode: "contain" }}
+        />
       </TouchableOpacity>
     </View>
   );

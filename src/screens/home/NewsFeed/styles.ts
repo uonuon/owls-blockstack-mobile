@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.elevation01dp,
   },
   header: {
-    height: 80,
+    height: 60,
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
@@ -59,7 +59,8 @@ elevation: 5,
     resizeMode: 'contain',
   },
   whatHappen: {
-    fontSize: 16,
+    fontSize: 18,
+    fontFamily: theme.fonts.regular,
     color: theme.colors.onSurfaceDisabled
   },
   fab: {

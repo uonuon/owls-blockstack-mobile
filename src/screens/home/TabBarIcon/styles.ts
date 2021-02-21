@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
   },
   barIconText: {
     fontSize: 10,
+    fontFamily: theme.fonts.regular,
   },
 });
 

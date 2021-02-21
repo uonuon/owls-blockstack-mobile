@@ -31,15 +31,16 @@ export const Replies: React.FC = () => {
             fontSize: 16,
             marginLeft: '38%',
             color: '#fff',
+            fontFamily: theme.fonts.regular,
             opacity: 0.6,
           }}
         >
           Replies
         </Text>
       </View>
-      <Hoot />
+      {/* <Hoot />
       <Reply />
-      <Reply image={true} />
+      <Reply image={true} /> */}
 
     </ScrollView>
   );

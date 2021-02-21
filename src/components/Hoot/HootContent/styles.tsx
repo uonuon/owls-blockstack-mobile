@@ -7,7 +7,9 @@ import {
   
   const styles = StyleSheet.create({
     hootText: {
-      fontSize: 14,
+      fontSize: 17,
+      fontFamily: theme.fonts.regular,
+      lineHeight: 24,
       color: theme.colors.common.white,
     },
     hootImage: {

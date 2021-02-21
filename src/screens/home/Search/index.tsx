@@ -53,7 +53,7 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
           <TextInput
             multiline={true}
             placeholderTextColor="#6c6c6c"
-            style={{ fontSize: 16, color: "white" }}
+            style={{ fontSize: 16, color: "white", fontFamily: theme.fonts.regular, }}
             numberOfLines={5}
             value={currentText}
             onTouchStart={() => setSearchState(true)}
@@ -117,6 +117,7 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
             style={{
               fontSize: 20,
               color: "#fff",
+              fontFamily: theme.fonts.headers,
               opacity: 0.6,
               marginTop: 16,
               marginLeft: 24,
@@ -129,18 +130,19 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
             style={{
               paddingHorizontal: 24,
               paddingVertical: 16,
-              backgroundColor: "#121212",
+              backgroundColor: theme.colors.elevation02dp,
               flexDirection: "row",
               marginBottom: 0.5,
             }}
           >
-            <Text style={{ fontSize: 24, color: "#006FB4", marginRight: 16 }}>
+            <Text style={{ fontSize: 24, color: "#006FB4", marginRight: 16, fontFamily: theme.fonts.regular, }}>
               1
             </Text>
             <View>
               <Text
                 style={{
                   fontSize: 20,
+                  fontFamily: theme.fonts.regular,
                   color: "#FFF",
                   opacity: 0.87,
                   marginBottom: 10,
@@ -148,7 +150,7 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
               >
                 Most Trending Hashtags
               </Text>
-              <Text style={{ fontSize: 14, color: "#FFF", opacity: 0.38 }}>
+              <Text style={{ fontSize: 14, color: "#FFF", opacity: 0.38, fontFamily: theme.fonts.regular, }}>
                 23K Hoots
               </Text>
             </View>
@@ -157,12 +159,12 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
             style={{
               paddingHorizontal: 24,
               paddingVertical: 16,
-              backgroundColor: "#121212",
+              backgroundColor: theme.colors.elevation02dp,
               flexDirection: "row",
               marginBottom: 0.5,
             }}
           >
-            <Text style={{ fontSize: 24, color: "#006FB4", marginRight: 16 }}>
+            <Text style={{ fontSize: 24, color: "#006FB4", marginRight: 16, fontFamily: theme.fonts.regular, }}>
               2
             </Text>
             <View>
@@ -171,12 +173,13 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
                   fontSize: 20,
                   color: "#FFF",
                   opacity: 0.87,
+                  fontFamily: theme.fonts.regular,
                   marginBottom: 10,
                 }}
               >
                 Most Trending Hashtags
               </Text>
-              <Text style={{ fontSize: 14, color: "#FFF", opacity: 0.38 }}>
+              <Text style={{ fontSize: 14, color: "#FFF", opacity: 0.38, fontFamily: theme.fonts.regular, }}>
                 23K Hoots
               </Text>
             </View>
@@ -185,12 +188,12 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
             style={{
               paddingHorizontal: 24,
               paddingVertical: 16,
-              backgroundColor: "#121212",
+              backgroundColor: theme.colors.elevation02dp,
               flexDirection: "row",
               marginBottom: 0.5,
             }}
           >
-            <Text style={{ fontSize: 24, color: "#006FB4", marginRight: 16 }}>
+            <Text style={{ fontSize: 24, color: "#006FB4", marginRight: 16, fontFamily: theme.fonts.regular }}>
               3
             </Text>
             <View>
@@ -199,12 +202,13 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
                   fontSize: 20,
                   color: "#FFF",
                   opacity: 0.87,
+                  fontFamily: theme.fonts.regular,
                   marginBottom: 10,
                 }}
               >
                 Most Trending Hashtags
               </Text>
-              <Text style={{ fontSize: 14, color: "#FFF", opacity: 0.38 }}>
+              <Text style={{ fontSize: 14, color: "#FFF", opacity: 0.38, fontFamily: theme.fonts.regular, }}>
                 23K Hoots
               </Text>
             </View>
@@ -216,6 +220,7 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
               opacity: 0.6,
               marginTop: 16,
               marginLeft: 24,
+              fontFamily: theme.fonts.regular,
               marginBottom: 16,
             }}
           >

@@ -23,7 +23,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     color: '#fff',
-    opacity: 0.6
+    opacity: 0.6,
+    fontFamily: theme.fonts.regular,
   },
   backgroundLogo: {
     width: 12,

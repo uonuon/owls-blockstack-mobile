@@ -72,6 +72,9 @@ export const generateNavigationElement = (
         backgroundColor: '#121212', //need change this color code as per prop
         borderTopColor: '#000000',
       },
+      labelStyle: {
+        fontSize: 14
+      }
     }} lazy={false}>
       {Object.values(element.elements).map((value) => generateNavigationElement(value, Navigator, (value as any).name))}
     </Navigator.Navigator>

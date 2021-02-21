@@ -1,7 +1,6 @@
 export const screens = {
   splash: {
-    logoSplash: require('./Splash/logoTextSplash.png'),
-    backgroundLogo: require('./Splash/backgroundLogo.png'),
+    backgroundLogo: require('./Splash/background-splash.png'),
   },
   login: {
     logo: require('./Login/hoot-logo.png'),

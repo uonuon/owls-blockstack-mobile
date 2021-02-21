@@ -1,7 +1,8 @@
 export const fonts = {
-  medium: 'Poppins-Medium',
+  medium: 'Roboto-Regular',
 
-  semiBold: 'Poppins-SemiBold',
+  semiBold: 'Roboto-Bold',
 
-  regular: 'Poppins-Regular',
+  regular: 'Roboto-Regular',
+  headers: 'Whyte-Inktrap-Regular'
 };

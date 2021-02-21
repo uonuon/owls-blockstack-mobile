@@ -9,7 +9,7 @@ const theme = DefaultTheme
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: theme.colors.elevation01dp,
   },
   header: {
     height: 60,
@@ -18,28 +18,32 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 20,
     width: '100%',
+    backgroundColor: theme.colors.elevation02dp,
     borderBottomWidth: 1,
-    borderBottomColor: '#1f1f1f',
+    borderBottomColor: theme.colors.elevation02dp,
   },
   title: {
     fontSize: 16,
-    color: '#fff',
-    opacity: 0.6
+    color: theme.colors.common.white,
+    opacity: 0.6,
+    fontFamily: theme.fonts.regular,
   },
   backgroundLogo: {
     width: 40,
     height: 40,
     marginRight: 16
   },
-  image: {marginRight: 16, width: 56, height: 56, borderRadius: 28, resizeMode: 'cover', borderWidth: 1, borderColor: 'white'},
+  image: {marginRight: 16, width: 56, height: 56, borderRadius: 28, resizeMode: 'cover', borderWidth: 1, borderColor: theme.colors.common.white},
   name: {
     fontSize: 16,
-    color: 'white',
+    fontFamily: theme.fonts.regular,
+    color: theme.colors.common.white,
     marginRight: 5
   },
   username: {
     fontSize: 16,
-    color: 'white',
+    fontFamily: theme.fonts.regular,
+    color: theme.colors.common.white,
     opacity: 0.38
   },
 });

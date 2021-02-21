@@ -15,17 +15,20 @@ import {
     name: {
       fontSize: 16,
       color: theme.colors.common.white,
-      marginRight: 5
+      marginRight: 5,
+      fontFamily: theme.fonts.regular,
     },
     username: {
       fontSize: 16,
       color: theme.colors.common.white,
-      opacity: 0.38
+      opacity: 0.38,
+      fontFamily: theme.fonts.regular,
     },
     date: {
         fontSize: 16,
         color: theme.colors.common.white,
-        opacity: 0.38
+        opacity: 0.38,
+        fontFamily: theme.fonts.regular,
     },
     more: { width: 15, height: 3},
   });

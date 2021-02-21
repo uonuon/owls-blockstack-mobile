@@ -59,7 +59,7 @@ export const LoginScreen: React.FC = () => {
         name: 'home',
       },
       {
-        name: 'chats',
+        name: 'home',
       });
     }
   }, [success, failure]);

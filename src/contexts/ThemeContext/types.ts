@@ -3,6 +3,7 @@ export interface Theme {
     regular: string,
     medium: string,
     semiBold: string,
+    headers: string,
   };
   colors: {
     primary: string,

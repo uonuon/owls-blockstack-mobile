@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#000',
+    backgroundColor: theme.colors.elevation01dp,
     padding: 16,
   },
   backgroundLogo: {
@@ -33,14 +33,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'left',
     marginTop: '-5%',
-    color: '#6FFFA8',
+    color: theme.colors.primary,
   },
   desc: {
     fontFamily: Assets.fonts.regular,
     fontSize: 12,
     opacity: 0.6,
     marginTop: 8,
-    color: '#FFFFFF',
+    color: theme.colors.common.white,
   },
   continueButton: {
     marginTop: 15,
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
-    backgroundColor: '#0FBBEB',
+    backgroundColor: theme.colors.primaryMediumContrasted,
     borderRadius: 16,
     height: 48,
     width: '100%'
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain'
   },
   containerFooter: {
-    backgroundColor: '#121212',
+    backgroundColor: theme.colors.elevation02dp,
     flexDirection: 'row',
     justifyContent: 'center',
     borderRadius: 8,
@@ -74,8 +74,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   text: {
-    color: '#FFFFFF',
-    opacity: 0.38,
+    color: theme.colors.onSurfaceDisabled,
     fontSize: 12,
   },
   getIdButton: {

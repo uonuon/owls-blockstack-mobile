@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-<string>Photo Library Access Warning</string>
+	<string>Photo Library Access Warning</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -53,12 +53,13 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Poppins-Medium.otf</string>
-		<string>Poppins-Regular.otf</string>
-		<string>Poppins-SemiBold.otf</string>
+		<string>Roboto-Black.otf</string>
+		<string>Roboto-Regular.otf</string>
+		<string>RobotoMono-Bold.otf</string>
+		<string>Whyte-Inktrap-Regular.otf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

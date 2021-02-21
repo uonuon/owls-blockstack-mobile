@@ -44,7 +44,7 @@ export const WriteHoot: React.FC = () => {
           disabled={currentText.length === 0}
           style={[
             styles.postHoot,
-            { backgroundColor: currentText.length > 0 ? "#0FBBEB" : "#004F93" },
+            { backgroundColor: currentText.length > 0 ? theme.colors.secondaryHighContrasted : theme.colors.secondary },
           ]}
         >
           <Text
@@ -64,9 +64,10 @@ export const WriteHoot: React.FC = () => {
             <TextInput
               multiline={true}
               placeholderTextColor="#6c6c6c"
-              style={{ fontSize: 16, color: "white" }}
+              style={{ fontSize: 20, color: "white", fontFamily: theme.fonts.regular, }}
               numberOfLines={5}
               value={currentText}
+              focusable={true}
               onChangeText={(text) => {
                 if (text.length <= 180) {
                   setText(text);
