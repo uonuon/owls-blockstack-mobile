@@ -62,10 +62,12 @@ export const SplashScreen: React.FC = () => {
       translations,
     );
   };
+  
   const init = async () => {
     setTheme(DefaultTheme);
     initLocalization();
   };
+  
   useEffect(() => {
     init();
   }, []);

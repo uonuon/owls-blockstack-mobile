@@ -8,8 +8,12 @@ import styles from "./styles";
 import { Hoot } from "components";
 import { ScreenParams } from "navigation";
 import TabBarIcon from "../TabBarIcon";
+import { TouchableOpacity } from "react-native-gesture-handler";
 const {
-  common: { logo, searchIcon },
+  common: { logo, searchIcon, chevron },
+  components: {
+    hoot: { avatar },
+  },
   screens: {
     search: { search, searchDisabled },
   },
@@ -18,7 +22,7 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
   const { theme } = useTheme();
   const navigation = useNavigationUtils();
   const [currentText, setText] = useState("");
-
+  const [searchState, setSearchState] = useState(false);
   const { success, failure, signIn } = useContext(UserData);
 
   useEffect(() => {
@@ -36,7 +40,13 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image source={logo} style={styles.backgroundLogo} />
+        {!searchState ? (
+          <Image source={logo} style={styles.backgroundLogo} />
+        ) : (
+          <TouchableOpacity onPress={() => setSearchState(false)}>
+            <Image source={chevron} style={styles.backgroundLogo} />
+          </TouchableOpacity>
+        )}
         <View
           style={{ width: "78%", flexDirection: "row", alignItems: "center" }}
         >
@@ -46,11 +56,8 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
             style={{ fontSize: 16, color: "white" }}
             numberOfLines={5}
             value={currentText}
-            onChangeText={(text) => {
-              if (text.length <= 180) {
-                setText(text);
-              }
-            }}
+            onTouchStart={() => setSearchState(true)}
+            onChangeText={(text) => {}}
             placeholder="Search users and hashtags"
           />
         </View>
@@ -59,117 +66,166 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
           style={{ width: 20, resizeMode: "contain" }}
         />
       </View>
-      <Text
-        style={{
-          fontSize: 20,
-          color: "#fff",
-          opacity: 0.6,
-          marginTop: 16,
-          marginLeft: 24,
-          marginBottom: 16,
-        }}
-      >
-        Most Trending Hashtags
-      </Text>
-      <View
-        style={{
-          paddingHorizontal: 24,
-          paddingVertical: 16,
-          backgroundColor: "#121212",
-          flexDirection: "row",
-          marginBottom: 0.5,
-        }}
-      >
-        <Text style={{ fontSize: 24, color: "#006FB4", marginRight: 16 }}>
-          1
-        </Text>
+      {searchState ? (
         <View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              paddingVertical: 12,
+              paddingHorizontal: 16,
+            }}
+          >
+            <Image source={avatar} style={styles.image} />
+            <View>
+              <Text style={styles.name}>Annie</Text>
+              <Text style={styles.username}>@annie</Text>
+            </View>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              paddingVertical: 12,
+              paddingHorizontal: 16,
+            }}
+          >
+            <Image source={avatar} style={styles.image} />
+            <View>
+              <Text style={styles.name}>Annie</Text>
+              <Text style={styles.username}>@annie</Text>
+            </View>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              paddingVertical: 12,
+              paddingHorizontal: 16,
+            }}
+          >
+            <Image source={avatar} style={styles.image} />
+            <View>
+              <Text style={styles.name}>Annie</Text>
+              <Text style={styles.username}>@annie</Text>
+            </View>
+          </View>
+        </View>
+      ) : (
+        <>
           <Text
             style={{
               fontSize: 20,
-              color: "#FFF",
-              opacity: 0.87,
-              marginBottom: 10,
+              color: "#fff",
+              opacity: 0.6,
+              marginTop: 16,
+              marginLeft: 24,
+              marginBottom: 16,
             }}
           >
             Most Trending Hashtags
           </Text>
-          <Text style={{ fontSize: 14, color: "#FFF", opacity: 0.38 }}>
-            23K Hoots
-          </Text>
-        </View>
-      </View>
-      <View
-        style={{
-          paddingHorizontal: 24,
-          paddingVertical: 16,
-          backgroundColor: "#121212",
-          flexDirection: "row",
-          marginBottom: 0.5,
-        }}
-      >
-        <Text style={{ fontSize: 24, color: "#006FB4", marginRight: 16 }}>
-          2
-        </Text>
-        <View>
+          <View
+            style={{
+              paddingHorizontal: 24,
+              paddingVertical: 16,
+              backgroundColor: "#121212",
+              flexDirection: "row",
+              marginBottom: 0.5,
+            }}
+          >
+            <Text style={{ fontSize: 24, color: "#006FB4", marginRight: 16 }}>
+              1
+            </Text>
+            <View>
+              <Text
+                style={{
+                  fontSize: 20,
+                  color: "#FFF",
+                  opacity: 0.87,
+                  marginBottom: 10,
+                }}
+              >
+                Most Trending Hashtags
+              </Text>
+              <Text style={{ fontSize: 14, color: "#FFF", opacity: 0.38 }}>
+                23K Hoots
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              paddingHorizontal: 24,
+              paddingVertical: 16,
+              backgroundColor: "#121212",
+              flexDirection: "row",
+              marginBottom: 0.5,
+            }}
+          >
+            <Text style={{ fontSize: 24, color: "#006FB4", marginRight: 16 }}>
+              2
+            </Text>
+            <View>
+              <Text
+                style={{
+                  fontSize: 20,
+                  color: "#FFF",
+                  opacity: 0.87,
+                  marginBottom: 10,
+                }}
+              >
+                Most Trending Hashtags
+              </Text>
+              <Text style={{ fontSize: 14, color: "#FFF", opacity: 0.38 }}>
+                23K Hoots
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              paddingHorizontal: 24,
+              paddingVertical: 16,
+              backgroundColor: "#121212",
+              flexDirection: "row",
+              marginBottom: 0.5,
+            }}
+          >
+            <Text style={{ fontSize: 24, color: "#006FB4", marginRight: 16 }}>
+              3
+            </Text>
+            <View>
+              <Text
+                style={{
+                  fontSize: 20,
+                  color: "#FFF",
+                  opacity: 0.87,
+                  marginBottom: 10,
+                }}
+              >
+                Most Trending Hashtags
+              </Text>
+              <Text style={{ fontSize: 14, color: "#FFF", opacity: 0.38 }}>
+                23K Hoots
+              </Text>
+            </View>
+          </View>
           <Text
             style={{
               fontSize: 20,
-              color: "#FFF",
-              opacity: 0.87,
-              marginBottom: 10,
+              color: "#fff",
+              opacity: 0.6,
+              marginTop: 16,
+              marginLeft: 24,
+              marginBottom: 16,
             }}
           >
             Most Trending Hashtags
           </Text>
-          <Text style={{ fontSize: 14, color: "#FFF", opacity: 0.38 }}>
-            23K Hoots
-          </Text>
-        </View>
-      </View>
-      <View
-        style={{
-          paddingHorizontal: 24,
-          paddingVertical: 16,
-          backgroundColor: "#121212",
-          flexDirection: "row",
-          marginBottom: 0.5,
-        }}
-      >
-        <Text style={{ fontSize: 24, color: "#006FB4", marginRight: 16 }}>
-          3
-        </Text>
-        <View>
-          <Text
-            style={{
-              fontSize: 20,
-              color: "#FFF",
-              opacity: 0.87,
-              marginBottom: 10,
-            }}
-          >
-            Most Trending Hashtags
-          </Text>
-          <Text style={{ fontSize: 14, color: "#FFF", opacity: 0.38 }}>
-            23K Hoots
-          </Text>
-        </View>
-      </View>
-      <Text
-        style={{
-          fontSize: 20,
-          color: "#fff",
-          opacity: 0.6,
-          marginTop: 16,
-          marginLeft: 24,
-          marginBottom: 16,
-        }}
-      >
-        Most Trending Hashtags
-      </Text>
-      <View style={{ borderTopWidth: 1, borderTopColor: "#1f1f1f" }}>
-        <Hoot />
-      </View>
+          <View style={{ borderTopWidth: 1, borderTopColor: "#1f1f1f" }}>
+            <Hoot />
+          </View>
+        </>
+      )}
     </View>
   );
 };

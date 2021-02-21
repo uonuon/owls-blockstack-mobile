@@ -2,6 +2,9 @@ import { Assets } from 'assets';
 import {
   StyleSheet,
 } from 'react-native';
+import { DefaultTheme } from 'themes';
+  
+const theme = DefaultTheme
 
 const styles = StyleSheet.create({
   container: {
@@ -27,7 +30,18 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     marginRight: 16
-  }
+  },
+  image: {marginRight: 16, width: 56, height: 56, borderRadius: 28, resizeMode: 'cover', borderWidth: 1, borderColor: 'white'},
+  name: {
+    fontSize: 16,
+    color: 'white',
+    marginRight: 5
+  },
+  username: {
+    fontSize: 16,
+    color: 'white',
+    opacity: 0.38
+  },
 });
 
 export default styles;

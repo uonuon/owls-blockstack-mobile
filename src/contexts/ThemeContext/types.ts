@@ -5,20 +5,50 @@ export interface Theme {
     semiBold: string,
   };
   colors: {
-    primary: string;
-    primaryText: string;
-    primaryBackground: string;
-    secondary: string;
-    secondaryBackground: string;
-    secondaryText: string;
-    link: string;
-    primaryDisabled: string;
-    borderShadow: string;
-    borderColor: string;
-    common: {
-      white: string;
-      black: string;
-    }
+    primary: string,
+    primaryLowContrasted: string,
+    primaryLowerContrasted: string,
+    primaryMediumContrasted: string,
+    primaryHighContrasted: string,
+    onPrimaryHighEmphasis: string,
+    onPrimaryMediumEmphasis: string,
+    onPrimaryDisabled: string,
+
+    secondary: string,
+    secondaryLowContrasted: string,
+    secondaryLowerContrasted: string,
+    secondaryMediumContrasted:string,
+    secondaryHighContrasted:string,
+    onSecondaryHighEmphasis:string,
+    onSecondaryMediumEmphasis: string,
+    onSecondaryDisabled: string,
+
+    background: string,
+    onBackground: string,
+
+    surface:string,
+    onSurfaceHighEmphasis: string,
+    onSurfaceMediumEmphasis: string,
+    onSurfaceDisabled: string,
+
+    error: string,
+    onError: string,
+    success: string,
+    onSuccess: string,
+
+
+
+    outline: string,
+
+    elevation01dp: string,
+    elevation02dp: string,
+    elevation03dp: string,
+    elevation04dp: string,
+    elevation06dp: string,
+    elevation08dp: string,
+    elevation12dp: string,
+    elevation16dp: string,
+    elevation24dp: string,
   };
 }
 

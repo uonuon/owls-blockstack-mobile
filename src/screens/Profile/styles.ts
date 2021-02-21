@@ -1,12 +1,14 @@
 import {
     StyleSheet,
   } from 'react-native';
+import { DefaultTheme } from 'themes';
   
+  const theme = DefaultTheme
   const styles = StyleSheet.create({
     screenContainer: {
       flex: 1,
       paddingTop: 40,
-      backgroundColor: 'black'
+      backgroundColor: theme.colors.primary
     },
     tabViewContainer: {
       flex: 1,
