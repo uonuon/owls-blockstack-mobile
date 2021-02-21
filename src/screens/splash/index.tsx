@@ -72,11 +72,7 @@ export const SplashScreen: React.FC = () => {
 
   useEffect(() => {
     AsyncStorage.getItem('firstTime').then((isFirstTime) => {
-      if (isFirstTime === undefined || isFirstTime === null) {
-        replace({
-          name: 'tutorial1',
-        });
-      } else if (success) {
+    if (success) {
         replace({
           name: 'home',
         },

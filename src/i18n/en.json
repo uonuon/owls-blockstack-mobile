@@ -1,9 +1,5 @@
 {
   "TEST_KEY": "Testing English",
-  "APP_TUTORIAL_FIRST_HEADER": "",
-  "APP_TUTORIAL_FIRST_SUB_HEADER": "",
-  "APP_TUTORIAL_SECOND_HEADER": "",
-  "APP_TUTORIAL_SECOND_SUB_HEADER": "",
   "LOGIN_HEADER": "To use Pravica, log in with your Stacks ID or sign up for a free one.",
   "LOGIN_SUB_HEADER": "All accounts registered through Pravica are owned by you, the user.",
   "LOGIN_CONTINUE_BUTTON": "Continue With Blockstack",

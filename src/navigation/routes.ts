@@ -19,13 +19,6 @@ import {
   ScreenNames,
 } from 'shared';
 
-import {
-  Tutorial1,
-} from 'src/screens/Tutorial/Tutorial1';
-import {
-  Tutorial2,
-} from 'src/screens/Tutorial/Tutorial2';
-
 
 export type ScreenTypesAndParams = ScreenNames<NavigationFactory['navigator']>;
 
@@ -56,6 +49,4 @@ export const ROUTES: ScreenComponents<ScreenTypesAndParams> = {
   login: LoginScreen,
   Profile: Profile,
   Replies: Replies,
-  tutorial1: Tutorial1,
-  tutorial2: Tutorial2,
 };
