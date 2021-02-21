@@ -11,14 +11,14 @@ const {
 } = Assets.images;
 
 export const HootHeader: React.FC<HootHeaderProps> = ({ date, name, username }) => {
-
+  const rightDate = formatDistanceToNow(date, { addSuffix: true }).toLowerCase().replace(' minutes', 'm').replace('ago', '').replace('seconds', 's').replace('less than a minute', '1m').replace('1 minute', '1m')
   return (
     <View style={styles.hootHeader}>
       <View style={styles.hootHeader}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.username}>
           @{username} •{" "}
-          <Text style={styles.date}>{formatDistanceToNow(date, { includeSeconds: true, addSuffix: true })}</Text>
+          <Text style={styles.date}>{rightDate}</Text>
         </Text>
       </View>
       <Image resizeMode="cover" source={more} style={styles.more} />

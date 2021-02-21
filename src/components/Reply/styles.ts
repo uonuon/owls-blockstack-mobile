@@ -1,64 +1,68 @@
-import {
-  StyleSheet,
-} from 'react-native';
-import { DefaultTheme } from 'themes';
-  
-const theme = DefaultTheme
+import { StyleSheet } from "react-native";
+import { DefaultTheme } from "themes";
+
+const theme = DefaultTheme;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
+    flexDirection: "row",
+    justifyContent: "flex-start",
     padding: 16,
-    width: '100%',
+    width: "100%",
   },
   replyContainer: {
-    backgroundColor: '#121212',
+    backgroundColor: theme.colors.elevation02dp,
     borderRadius: 8,
     padding: 8,
   },
-  image: {marginRight: 16, width: 40, height: 40, borderRadius: 20, resizeMode: 'cover'},
-  more: { width: 15, height: 3},
-  hootContent: {
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    flex: 1
+  image: {
+    marginRight: 16,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    resizeMode: "cover",
   },
-  hootHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  more: { width: 15, height: 3 },
+  replyContent: {
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    flex: 1,
+  },
+  replyHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 4,
   },
   name: {
     fontSize: 16,
-    color: 'white',
-    marginRight: 5
+    color: theme.colors.common.white,
+    marginRight: 5,
   },
   username: {
     fontSize: 16,
-    color: 'white',
-    opacity: 0.38
+    color: theme.colors.common.white,
+    opacity: 0.38,
   },
-  hootImage: {
-    width: '100%',
-    resizeMode: 'cover',
+  replyImage: {
+    width: "100%",
+    resizeMode: "cover",
     borderRadius: 16,
-    marginTop: 8
+    marginTop: 8,
   },
-  hootTextContainer: {
-    justifyContent: 'flex-start',
-    width: '92%'
+  replyTextContainer: {
+    justifyContent: "flex-start",
+    width: "92%",
   },
-  hootText: {
+  replyText: {
     fontSize: 14,
-    color: 'white',
+    color: theme.colors.common.white,
   },
-  hootFooter: {
+  replyFooter: {
     marginTop: 14,
-    flexDirection: 'row',
-    alignItems: 'center',
-  }
+    flexDirection: "row",
+    alignItems: "center",
+  },
 });
 
 export default styles;

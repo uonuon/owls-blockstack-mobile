@@ -7,13 +7,11 @@ import { formatDistanceToNow } from "date-fns";
 
 export const HootContent: React.FC<HootContentProps> = ({ text, hootImage }) => {
   return (
-    <View>
       <View style={styles.hootTextContainer}>
         <Text style={styles.hootText}>
           {text}
         </Text>
+        {/* {hootImage && hootImage.length > 0 && <Image source={{ uri: hootImage}} style={styles.hootImage} />} */}
       </View>
-      {hootImage && <Image source={{ uri: hootImage }} style={styles.hootImage} />}
-    </View>
   );
 };

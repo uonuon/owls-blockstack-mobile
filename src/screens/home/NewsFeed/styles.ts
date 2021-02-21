@@ -11,15 +11,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#000',
+    backgroundColor: theme.colors.elevation01dp,
   },
   header: {
     height: 80,
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
+    backgroundColor: theme.colors.elevation01dp,
     borderBottomWidth: 1,
-    borderBottomColor: '#1f1f1f',
+    borderBottomColor: theme.colors.elevation24dp,
   },
   backgroundLogo: {
     width: 80,
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   writeHoot: {
-    backgroundColor: '#121212',
+    backgroundColor: theme.colors.elevation04dp,
     borderRadius: 8,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     padding: 16,
     margin: 16,
     width: '92%',
-    shadowColor: "#000",
+    shadowColor: theme.colors.elevation02dp,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -59,10 +60,19 @@ elevation: 5,
   },
   whatHappen: {
     fontSize: 16,
-    opacity: 0.38,
-    color: '#fff'
+    color: theme.colors.onSurfaceDisabled
   },
-  
+  fab: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: 56,
+    position: "absolute",
+    bottom: 20,
+    right: 32,
+    height: 56,
+    backgroundColor: theme.colors.secondaryLowerContrasted,
+    borderRadius: 100,
+  }
 });
 
 export default styles;

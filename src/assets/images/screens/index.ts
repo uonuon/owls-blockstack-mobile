@@ -12,6 +12,7 @@ export const screens = {
   home: {
     home: require('./home/home.png'),
     homeDisabled: require('./home/home-disabled.png'),
+    plus: require('./home/plus.png')
   },
   search: {
     search: require('./Search/search.png'),

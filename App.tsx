@@ -5,7 +5,9 @@ import { useAuthentication } from "hooks";
 import { UserData } from "contexts";
 import { ReusableProvider } from "reusable";
 import SplashScreen from "react-native-splash-screen";
-
+import { DefaultTheme } from 'themes';
+  
+const theme = DefaultTheme
 const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
@@ -20,8 +22,9 @@ const App = () => {
   }, [])
   return (
     <>
+    <StatusBar barStyle={'light-content'}/>
     <Fragment>
-    <SafeAreaView style={{ flex:0, backgroundColor: 'black' }} />
+    <SafeAreaView style={{ flex:0, backgroundColor: theme.colors.elevation01dp }} />
     <SafeAreaView  style={styles.appContainer}>
         <UserData.Provider value={data}>
           <ReusableProvider>
@@ -29,7 +32,7 @@ const App = () => {
           </ReusableProvider>
         </UserData.Provider>
       </SafeAreaView>
-      <SafeAreaView style={{ flex:0, backgroundColor: '#121212' }} />
+      <SafeAreaView style={{ flex:0, backgroundColor: theme.colors.elevation01dp }} />
     </Fragment>
     </>
   );

@@ -1,4 +1,5 @@
 export interface HootProps {
+  id: string
   username: string
   name: string
   image?: string

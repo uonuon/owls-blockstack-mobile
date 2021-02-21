@@ -23,7 +23,7 @@ import {
       opacity: 0.38
     },
     date: {
-        fontSize: 12,
+        fontSize: 16,
         color: theme.colors.common.white,
         opacity: 0.38
     },

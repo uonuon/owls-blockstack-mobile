@@ -13,11 +13,12 @@ import {
   ScrollView,
   ImageBackground,
   Animated,
+  FlatList,
 } from "react-native";
 import { HPageViewHoc } from "react-native-head-tab-view";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import { CollapsibleHeaderTabView } from "react-native-tab-view-collapsible-header";
-import { NewsFeed } from "../home";
+import { DATA, NewsFeed } from "../home";
 import { Replies } from "../Replies";
 import styles from "./styles";
 
@@ -37,49 +38,105 @@ const HScrollView = HPageViewHoc(ScrollView);
 
 const Tweets = () => (
   <HScrollView index={0}>
-    <View style={[styles.scene, { backgroundColor: "#121212" }]}>
-      {/* <Hoot />
-      <Hoot image={true} />
-      <Hoot />
-      <Hoot />
-      <Hoot /> */}
-    </View>
+     <FlatList
+        data={DATA}
+        style={styles.flatList}
+        renderItem={({ item }) => {
+          const hoot = item;
+          return (
+            <Hoot
+              content={hoot.content}
+              date={hoot.date}
+              id={hoot.id}
+              likes={hoot.likes}
+              name={hoot.name}
+              replies={hoot.replies}
+              retweets={hoot.retweets}
+              username={hoot.username}
+              image={hoot.image}
+            />
+          );
+        }}
+        keyExtractor={(item) => item.id}
+      />
   </HScrollView>
 );
 
 const TweetsAndReplies = () => (
   <HScrollView index={1}>
-    <View style={[styles.scene, { backgroundColor: "#121212" }]}>
-      {/* <Hoot />
-      <Hoot image={true} />
-      <Hoot />
-      <Hoot />
-      <Hoot /> */}
-    </View>
+       <FlatList
+        data={DATA}
+        style={styles.flatList}
+        renderItem={({ item }) => {
+          const hoot = item;
+          return (
+            <Hoot
+              content={hoot.content}
+              date={hoot.date}
+              id={hoot.id}
+              likes={hoot.likes}
+              name={hoot.name}
+              replies={hoot.replies}
+              retweets={hoot.retweets}
+              username={hoot.username}
+              image={hoot.image}
+            />
+          );
+        }}
+        keyExtractor={(item) => item.id}
+      />
   </HScrollView>
 );
 
 const Media = () => (
   <HScrollView index={2}>
-    <View style={[styles.scene, { backgroundColor: "#121212" }]}>
-      {/* <Hoot />
-      <Hoot />
-      <Hoot image={true} />
-      <Hoot />
-      <Hoot /> */}
-    </View>
+        <FlatList
+        data={DATA}
+        style={styles.flatList}
+        renderItem={({ item }) => {
+          const hoot = item;
+          return (
+            <Hoot
+              content={hoot.content}
+              date={hoot.date}
+              id={hoot.id}
+              likes={hoot.likes}
+              name={hoot.name}
+              replies={hoot.replies}
+              retweets={hoot.retweets}
+              username={hoot.username}
+              image={hoot.image}
+            />
+          );
+        }}
+        keyExtractor={(item) => item.id}
+      />
   </HScrollView>
 );
 
 const Likes = () => (
   <HScrollView index={3}>
-    <View style={[styles.scene, { backgroundColor: "#121212" }]}>
-      {/* <Hoot />
-      <Hoot />
-      <Hoot />
-      <Hoot />
-      <Hoot /> */}
-    </View>
+       <FlatList
+        data={DATA}
+        style={styles.flatList}
+        renderItem={({ item }) => {
+          const hoot = item;
+          return (
+            <Hoot
+              content={hoot.content}
+              date={hoot.date}
+              id={hoot.id}
+              likes={hoot.likes}
+              name={hoot.name}
+              replies={hoot.replies}
+              retweets={hoot.retweets}
+              username={hoot.username}
+              image={hoot.image}
+            />
+          );
+        }}
+        keyExtractor={(item) => item.id}
+      />
   </HScrollView>
 );
 
@@ -148,16 +205,16 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
   const renderTabBar = (props: any) => (
     <TabBar
       {...props}
-      indicatorStyle={{ backgroundColor: "#0FBBEB" }}
-      activeColor={"#0FBBEB"}
+      indicatorStyle={{ backgroundColor: colors.secondary }}
+      activeColor={colors.secondary}
       tabStyle={{ height: 60, width: "auto" }}
       labelStyle={{
         fontSize: 16,
         fontWeight: "300",
         textTransform: "capitalize",
       }}
-      inactiveColor={"#c5c5c5"}
-      style={{ backgroundColor: "#121212" }}
+      inactiveColor={colors.onSurfaceMediumEmphasis}
+      style={{ backgroundColor: colors.elevation01dp }}
     />
   );
 
