@@ -21,25 +21,18 @@ const styles = StyleSheet.create({
   },
   logoAvatar: {
     width: '100%',
-    marginTop: '-10%',
     resizeMode: 'contain',
   },
   textContainer: {
-    width: '100%'
-  
+    width: '100%',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   heading: {
-    fontFamily: Assets.fonts.regular,
+    fontFamily: theme.fonts.headers,
     fontSize: 20,
     textAlign: 'left',
-    marginTop: '-5%',
-    color: theme.colors.primary,
-  },
-  desc: {
-    fontFamily: Assets.fonts.regular,
-    fontSize: 12,
-    opacity: 0.6,
-    marginTop: 8,
     color: theme.colors.common.white,
   },
   continueButton: {
@@ -47,15 +40,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    backgroundColor: theme.colors.primaryMediumContrasted,
-    borderRadius: 16,
-    height: 48,
-    width: '100%'
+    marginHorizontal: 16,
+    borderRadius: 32,
+    height: 56,
+    marginVertical: 20,
+    paddingHorizontal: 80
+    // width: '100%'
   },
   buttonText: {
-    fontFamily: Assets.fonts.semiBold,
+    fontFamily: theme.fonts.headers,
     fontSize: 14,
+    fontWeight: '700',
     color: 'white',
   },
   image: {
@@ -71,7 +66,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 8,
     paddingLeft: 20,
-    marginTop: 16,
+    marginHorizontal: 16
   },
   text: {
     color: theme.colors.onSurfaceDisabled,

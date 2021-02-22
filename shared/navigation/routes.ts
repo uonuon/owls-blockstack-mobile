@@ -28,6 +28,7 @@ export class NavigationFactory {
     const loginScreen = new Screen('login');
     const WriteHoot = new Screen('WriteHoot');
     const Replies = new Screen('Replies');
+    const FillUserData = new Screen('FillUserData')
     const rootStackNavigator = new StackNavigator()
       .addScreen(NewsFeed)
       .addScreen(Search)
@@ -35,6 +36,7 @@ export class NavigationFactory {
       .addScreen(WriteHoot)
       .addScreen(loginScreen)
       .addScreen(Replies)
+      .addScreen(FillUserData)
       .addScreen(splashScreen, true);
     const navigationContainer = new RootNavigator(rootStackNavigator);
     return navigationContainer;

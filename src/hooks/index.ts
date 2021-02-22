@@ -9,3 +9,4 @@ export * from './useCancelablePromise';
 export * from './useAuth';
 export * from './useGetUserImage';
 export * from './useToggleState';
+export * from './useSetUserData'

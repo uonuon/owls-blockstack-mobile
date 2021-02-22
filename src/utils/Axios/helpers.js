@@ -26,7 +26,7 @@ function getRFC1123DateTime() {
   return `${weekday}, ${day} ${month} ${year} ${hours}:${minutes}:${seconds} GMT`;
 }
 export function signQuery(privateKey, param, queryType, host, db, auth) {
-  const dbLower = "test/one1"
+  const dbLower = "test/one"
   const formattedDate = getRFC1123DateTime();
   const digest = window.fluree.crypto.sha2_256_normalize(param, 'base64');
 

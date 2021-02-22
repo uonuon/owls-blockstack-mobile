@@ -1,53 +1,44 @@
-import {
-  useEffect,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useState } from "react";
 // import {
 //   UserSession,
 //   AppConfig,
 // } from 'blockstack/lib';
-import RNBlockstackSdk from 'react-native-blockstack';
-import {
-  query,
-  getPublicKeyFromPrivate,
-  transact,
-} from 'utils';
-import {
-  IUser,
-} from 'shared';
-import AsyncStorage from '@react-native-community/async-storage';
-import {
-  DeviceEventEmitter,
-  Platform,
-} from 'react-native';
-import {
-  defaultConfig,
-} from './types';
-import { useProgressState } from '../useProgressState';
+import RNBlockstackSdk from "react-native-blockstack";
+import { query, getPublicKeyFromPrivate, transact } from "utils";
+import { IUser } from "shared";
+import AsyncStorage from "@react-native-community/async-storage";
+import { DeviceEventEmitter, Platform } from "react-native";
+import { defaultConfig } from "./types";
+import { useProgressState } from "../useProgressState";
 
-const authenticatorPrivateKey = '58573df95d622a41bb55ede42256ef39e95a88b5bfcb96636c0fa8555219f5cd';
-const authenticatorAuthId = 'TfJecBZR7DzqD9hvQLYLrVKuHiUgKDceR8d';
+const authenticatorPrivateKey =
+  "58573df95d622a41bb55ede42256ef39e95a88b5bfcb96636c0fa8555219f5cd";
+const authenticatorAuthId = "TfJecBZR7DzqD9hvQLYLrVKuHiUgKDceR8d";
 
 export const useAuthentication = () => {
   const [userData, setUserData] = useState<IUser | undefined>(undefined);
   const [pendingAuth, setPendingAuth] = useState<boolean>(false);
-  const {setFailure,setLoading,setSuccess,success,failure} = useProgressState();
+  const {
+    setFailure,
+    setLoading,
+    setSuccess,
+    success,
+    failure,
+  } = useProgressState();
 
   useEffect(() => {
     createSession();
-    DeviceEventEmitter.addListener('url', (e: any) => {
+    DeviceEventEmitter.addListener("url", (e: any) => {
       if (e.url && !pendingAuth) {
         setPendingAuth(true);
-        const query = e.url.split(':');
+        const query = e.url.split(":");
         if (query.length > 1) {
-          const parts = query[1].split('=');
+          const parts = query[1].split("=");
           if (parts.length > 1) {
-            RNBlockstackSdk.handlePendingSignIn(parts[1]).then(
-              () => {
-                createSession();
-                setPendingAuth(false);
-              },
-            );
+            RNBlockstackSdk.handlePendingSignIn(parts[1]).then(() => {
+              createSession();
+              setPendingAuth(false);
+            });
           }
         }
       }
@@ -65,18 +56,15 @@ export const useAuthentication = () => {
     if (signedIn.signedIn) {
       try {
         const session = await RNBlockstackSdk.loadUserData();
-        console.log('ss',session)
+        const appPrivateKey =
+          Platform.OS === "android"
+            ? session.appPrivateKey
+            : session.private_key;
 
-        const appPrivateKey = Platform.OS === 'android'
-          ? session.appPrivateKey
-          : session.private_key;
-
-        const {
-          username, profile,
-        } = session;
+        const { username, profile } = session;
         const myQuery = {
-          select: ['*'],
-          from: ['_user/username', username],
+          select: { "*": { _compact: true } },
+          from: ["_user/username", username],
         };
         const user = await query({
           myQuery,
@@ -94,25 +82,26 @@ export const useAuthentication = () => {
             },
           ];
           await transact({
-            privateKey: appPrivateKey,
+            privateKey:
+              "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",
             myTxn: updatedUserTxn,
-            authId,
+            authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
           });
         } else {
           const authTxn = [
             {
-              _id: '_auth',
+              _id: "_auth",
               id: authId,
               // roles: [['_role/id', 'adminRole']],
             },
           ];
           const userTxn = [
             {
-              _id: '_user',
+              _id: "_user",
               username,
-              publicKey,
               profile,
-              auth: [['_auth/id', authId]],
+              createdAt: "#(now)",
+              auth: [["_auth/id", authId]],
             },
           ];
           await transact({
@@ -121,36 +110,39 @@ export const useAuthentication = () => {
             authId: authenticatorAuthId,
           });
           await transact({
-            privateKey: appPrivateKey, myTxn: userTxn, authId,
+            privateKey: appPrivateKey,
+            myTxn: userTxn,
+            authId,
           });
         }
         setUserData({
           ...session,
           appPrivateKey,
           ...(user || {}),
-          profile: JSON.parse(user.profile),
+          profile,
           authId,
           publicKey: publicKey,
         });
         setSuccess();
       } catch (e) {
+        console.log(e);
         setFailure();
       }
-    }else{
+    } else {
       setFailure();
     }
   };
 
-  const signIn = async () => {
+  const signIn = useCallback(async () => {
     await RNBlockstackSdk.signIn();
     createSession();
-  };
+  },[]);
 
-  const signOut = async () => {
+  const signOut = useCallback(async () => {
     setFailure();
     await RNBlockstackSdk.signUserOut();
     return Promise;
-  };
+  },[]);
 
   return {
     signIn,
@@ -162,4 +154,4 @@ export const useAuthentication = () => {
   };
 };
 
-export * from './types';
+export * from "./types";

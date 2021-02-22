@@ -12,6 +12,7 @@ import {
   WriteHoot,
   Profile,
   Replies,
+  FillUserData
 } from 'screens';
 import {
   NavigationFactory,
@@ -49,4 +50,5 @@ export const ROUTES: ScreenComponents<ScreenTypesAndParams> = {
   login: LoginScreen,
   Profile: Profile,
   Replies: Replies,
+  FillUserData: FillUserData,
 };

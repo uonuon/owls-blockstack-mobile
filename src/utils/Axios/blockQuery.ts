@@ -32,7 +32,7 @@ export const blockQuery = ({
     }),
     queryType,
     null,
-    'test/one1',
+    'test/one',
   );
   return axios
     .post(Requests.query, signedQuery.body, {

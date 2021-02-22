@@ -8,4 +8,5 @@ export const common = {
   stats: require('./stats.png'),
   chevron: require('./chevron.png'),
   publicImage: require('./public.png'),
+  avatar: require('./data-avatar.png')
 };

@@ -14,18 +14,18 @@ import { UserData } from "contexts";
 import AsyncStorage from "@react-native-community/async-storage";
 import { Assets } from "assets";
 import RNBlockstackSdk from "react-native-blockstack";
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient from "react-native-linear-gradient";
 
 const {
   screens: {
     splash: { backgroundLogo },
-    login: {logo}
+    login: { logo },
   },
 } = Assets.images;
 
 export const SplashScreen: React.FC = () => {
   const { theme, setTheme } = useTheme();
-  const { success, failure } = useContext(UserData);
+  const { success, failure, userData } = useContext(UserData);
   const { replace } = useNavigationUtils();
   const localization = useLocalization();
 
@@ -44,30 +44,43 @@ export const SplashScreen: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    AsyncStorage.getItem('firstTime').then((isFirstTime) => {
-    if (success) {
+    if (success && userData) {
+      if (userData?.fullName === undefined) {
         replace({
-          name: 'home',
+          name: "FillUserData",
         });
-      } else if (failure) {
+      } else {
         replace({
-          name: 'home',
+          name: "home",
         });
       }
-    });
-  }, [success, failure]);
+    } else if (failure) {
+      replace({
+        name: "login",
+      });
+    }
+  }, [success, failure, userData]);
 
   return (
-      <LinearGradient colors={['#eac7ac', '#efa785', '#fe502b', '#ac5a9f','#9199da','#3b97e6', '#3d88e9', '#02caeb']} style={{
+    <LinearGradient
+      colors={[
+        "#eac7ac",
+        "#efa785",
+        "#fe502b",
+        "#ac5a9f",
+        "#9199da",
+        "#3b97e6",
+        "#3d88e9",
+        "#02caeb",
+      ]}
+      style={{
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: theme.colors.elevation01dp,
-      }}>
-      <View
-        style={{
-        }}
-      >
+      }}
+    >
+      <View style={{}}>
         <Image
           source={logo}
           style={{
@@ -88,6 +101,6 @@ export const SplashScreen: React.FC = () => {
           />
         </View>
       </View>
-      </LinearGradient>
+    </LinearGradient>
   );
 };
