@@ -21,13 +21,14 @@ import { CollapsibleHeaderTabView } from "react-native-tab-view-collapsible-head
 import { DATA, NewsFeed } from "../home";
 import { Replies } from "../Replies";
 import styles from "./styles";
+import LinearGradient from 'react-native-linear-gradient';
 
 const initialLayout = {
   width: Dimensions.get("window").width,
 };
 const {
   screens: {
-    profile: { profile, profileDisabled, background, calendar },
+    profile: { profile, profileDisabled, calendar },
   },
   components: {
     hoot: { avatar },
@@ -221,18 +222,16 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
   );
 
   const ProfileHeader = () => (
-    <ImageBackground
-      source={background}
-      style={{
-        height: 192,
-        flexDirection: "row",
-        backgroundColor:'#6c4197',
-        alignItems: "flex-start",
-        justifyContent: "flex-start",
-        paddingVertical: 24,
-        paddingHorizontal: 16
-      }}
-    >
+            <LinearGradient colors={['#eac7ac', '#efa785', '#fe502b', '#ac5a9f','#9199da','#3b97e6', '#3d88e9', '#02caeb']}    style={{
+              height: 192,
+              flexDirection: "row",
+              backgroundColor:'#6c4197',
+              alignItems: "flex-start",
+              justifyContent: "flex-start",
+              paddingVertical: 24,
+              paddingHorizontal: 16
+            }} >
+
       <Image source={avatar} style={styles.image} />
       <View style={{flexDirection: 'column', width: '85%'}}>
       <Text style={styles.name}>Annie <Text style={styles.username}>@annie</Text></Text>
@@ -248,8 +247,8 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
          </Pressable>
        </View>
       </View>
-    </ImageBackground>
-  );
+      </LinearGradient>
+    );
 
   return (
 

@@ -18,12 +18,13 @@
 		2DCD954D1E0B4F2C00145EB5 /* OwlsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* OwlsTests.m */; };
 		528C7A36032FDDD374203B57 /* libPods-Owls.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6040FC8DEC2201BBF4C70F9 /* libPods-Owls.a */; };
 		56C88CD8689946209832F1C9 /* Roboto-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5751414F4937468C8DA366CF /* Roboto-Black.otf */; };
-		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8CFE70531C4F4F0CBCF501F5 /* Whyte-Inktrap-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = A6B20EE2AC3A418F8D1D9447 /* Whyte-Inktrap-Regular.otf */; };
 		9B6CCCDA9AE8485BB88DDFCA /* RobotoMono-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 31EF7722BBF04877B77070AF /* RobotoMono-Bold.otf */; };
 		A648BCB225AF746900D77826 /* RNBlockstackSdk.swift in Sources */ = {isa = PBXBuildFile; fileRef = A648BCAF25AF746900D77826 /* RNBlockstackSdk.swift */; };
 		A648BCB325AF746900D77826 /* RNBlockstackSdkModuleBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = A648BCB025AF746900D77826 /* RNBlockstackSdkModuleBridge.m */; };
 		A648BCC025AF74F200D77826 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
+		A6BD9A6325E32E7B008228CC /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6BD9A6225E32E7B008228CC /* Launch Screen.storyboard */; };
+		A6BD9A6425E32E7B008228CC /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6BD9A6225E32E7B008228CC /* Launch Screen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,12 +60,12 @@
 		2D02E4901E0B4A5D006451C7 /* Owls-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Owls-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		31EF7722BBF04877B77070AF /* RobotoMono-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RobotoMono-Bold.otf"; path = "../src/assets/fonts/RobotoMono-Bold.otf"; sourceTree = "<group>"; };
 		5751414F4937468C8DA366CF /* Roboto-Black.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Black.otf"; path = "../src/assets/fonts/Roboto-Black.otf"; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Owls/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A648BC6F25AF721A00D77826 /* Blockstack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Blockstack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A648BCAF25AF746900D77826 /* RNBlockstackSdk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNBlockstackSdk.swift; sourceTree = "<group>"; };
 		A648BCB025AF746900D77826 /* RNBlockstackSdkModuleBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNBlockstackSdkModuleBridge.m; sourceTree = "<group>"; };
 		A648BCB125AF746900D77826 /* RNBlockstackSdk-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RNBlockstackSdk-Bridging-Header.h"; sourceTree = "<group>"; };
 		A6B20EE2AC3A418F8D1D9447 /* Whyte-Inktrap-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whyte-Inktrap-Regular.otf"; path = "../src/assets/fonts/Whyte-Inktrap-Regular.otf"; sourceTree = "<group>"; };
+		A6BD9A6225E32E7B008228CC /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		D31CBCEA28BBD2023B71EB53 /* Pods-Owls.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Owls.release.xcconfig"; path = "Target Support Files/Pods-Owls/Pods-Owls.release.xcconfig"; sourceTree = "<group>"; };
 		D8DCBEA1A8250BFEFE55B956 /* Pods-Owls.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Owls.debug.xcconfig"; path = "Target Support Files/Pods-Owls/Pods-Owls.debug.xcconfig"; sourceTree = "<group>"; };
 		E6040FC8DEC2201BBF4C70F9 /* libPods-Owls.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Owls.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,8 +131,8 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				A6BD9A6225E32E7B008228CC /* Launch Screen.storyboard */,
 			);
 			name = Owls;
 			sourceTree = "<group>";
@@ -351,7 +352,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				A6BD9A6325E32E7B008228CC /* Launch Screen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				56C88CD8689946209832F1C9 /* Roboto-Black.otf in Resources */,
 				11FC45B6D3DB4B34AC021329 /* Roboto-Regular.otf in Resources */,
@@ -364,6 +365,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6BD9A6425E32E7B008228CC /* Launch Screen.storyboard in Resources */,
 				2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

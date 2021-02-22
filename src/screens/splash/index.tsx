@@ -14,6 +14,7 @@ import { UserData } from "contexts";
 import AsyncStorage from "@react-native-community/async-storage";
 import { Assets } from "assets";
 import RNBlockstackSdk from "react-native-blockstack";
+import LinearGradient from 'react-native-linear-gradient';
 
 const {
   screens: {
@@ -57,15 +58,12 @@ export const SplashScreen: React.FC = () => {
   }, [success, failure]);
 
   return (
-    <ImageBackground
-      style={{
+      <LinearGradient colors={['#eac7ac', '#efa785', '#fe502b', '#ac5a9f','#9199da','#3b97e6', '#3d88e9', '#02caeb']} style={{
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: theme.colors.elevation01dp,
-      }}
-      source={backgroundLogo}
-    >
+      }}>
       <View
         style={{
         }}
@@ -90,6 +88,6 @@ export const SplashScreen: React.FC = () => {
           />
         </View>
       </View>
-    </ImageBackground>
+      </LinearGradient>
   );
 };
