@@ -3,10 +3,10 @@ import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Image,
-  Pressable,
   Text,
   KeyboardAvoidingView,
   Platform,
+  TouchableOpacity,
 } from "react-native";
 import { Assets } from "assets";
 import { useLocalization, useNavigationUtils, useTheme } from "hooks";
@@ -37,10 +37,10 @@ export const WriteHoot: React.FC = () => {
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding" keyboardVerticalOffset={Platform.OS === 'ios' ? 46 : 0  }>
       <View style={styles.header}>
-        <Pressable onPress={goBack}>
+        <TouchableOpacity style={styles.backContainer} onPress={goBack}>
           <Image source={chevron} style={styles.backgroundLogo} />
-        </Pressable>
-        <Pressable
+        </TouchableOpacity>
+        <TouchableOpacity
           disabled={currentText.length === 0}
           style={[
             styles.postHoot,
@@ -55,7 +55,7 @@ export const WriteHoot: React.FC = () => {
           >
             Hoot
           </Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
       <View style={styles.writeHoot}>
         <View style={{ flexDirection: "row" }}>
@@ -78,7 +78,7 @@ export const WriteHoot: React.FC = () => {
             {currentImage.length > 0 && <Image style={{width: '100%', borderRadius: 16, marginTop: 24, height: 180}} source={{uri: currentImage}} />}
           </View>
         </View>
-        <Pressable
+        <TouchableOpacity
           style={{
             justifyContent: "center",
             alignItems: "center",
@@ -92,15 +92,15 @@ export const WriteHoot: React.FC = () => {
             source={publicImage}
             style={[styles.privacy, { marginRight: 0 }]}
           />
-        </Pressable>
+        </TouchableOpacity>
       </View>
       <View style={styles.footer}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Pressable onPress={() => launchImageLibrary({mediaType: 'photo', includeBase64: true, quality: 0.5, }, (image) => {
+          <TouchableOpacity onPress={() => launchImageLibrary({mediaType: 'photo', includeBase64: true, quality: 0.5, }, (image) => {
            if (!image.didCancel) {
             setImage(image.uri!)
            }
-          })}><Image source=  {photo} style={styles.icon} /></Pressable>
+          })}><Image source=  {photo} style={styles.icon} /></TouchableOpacity>
           <Image source={gif} style={styles.icon2} />
           <Image source={stats} style={styles.icon3} />
           <Image source={mic} style={[styles.icon4, { marginRight: 0 }]} />

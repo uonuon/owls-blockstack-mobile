@@ -7,7 +7,6 @@ import {
   View,
   Image,
   Text,
-  Pressable,
 } from 'react-native';
 import {
   Assets,
@@ -21,6 +20,7 @@ import {
   UserData,
 } from 'contexts';
 import styles from './styles';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const {
   screens: {
@@ -83,7 +83,7 @@ export const LoginScreen: React.FC = () => {
           </Text>
      </View>
 
-        <Pressable
+        <TouchableOpacity
           onPress={onPressGetId}
           style={[styles.continueButton, {
           }]}
@@ -95,7 +95,7 @@ export const LoginScreen: React.FC = () => {
           >
             Sign in with Blockstack
           </Text>
-        </Pressable>
+        </TouchableOpacity>
         <View style={styles.containerFooter}>
         <Image source={lock} style={styles.image} />
           <Text style={styles.text}>

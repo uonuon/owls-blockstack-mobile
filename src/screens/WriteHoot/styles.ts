@@ -1,23 +1,27 @@
-import { Assets } from 'assets';
-import {
-  StyleSheet,
-} from 'react-native';
-import { DefaultTheme } from 'themes';
-  
-  const theme = DefaultTheme
+import { Assets } from "assets";
+import { StyleSheet } from "react-native";
+import { DefaultTheme } from "themes";
+
+const theme = DefaultTheme;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
     backgroundColor: theme.colors.elevation01dp,
+  },
+  backContainer: {
+    width: 80,
+    height: 80,
+    justifyContent: "center",
+    alignItems: "flex-start",
   },
   header: {
     height: 64,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
     paddingHorizontal: 24,
-    width: '100%',
+    width: "100%",
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.elevation01dp,
   },
@@ -25,30 +29,30 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: theme.colors.common.white,
     fontFamily: theme.fonts.regular,
-    opacity: 0.6
+    opacity: 0.6,
   },
   backgroundLogo: {
-    width: 12,
-    height: 21,
+    width: 20,
+    height: 35,
   },
   postHoot: {
     paddingVertical: 8,
     paddingHorizontal: 24,
-    borderRadius: 16
+    borderRadius: 16,
   },
   hootText: {
     color: theme.colors.onSecondaryDisabled,
     fontSize: 14,
     fontFamily: theme.fonts.regular,
-    fontWeight: 'bold',
-    opacity: 0.38
+    fontWeight: "bold",
+    opacity: 0.38,
   },
   writeHoot: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignContent: 'flex-start',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignContent: "flex-start",
     margin: 24,
-    width: '92%',
+    width: "92%",
     shadowColor: theme.colors.common.black,
     flex: 1,
     shadowOffset: {
@@ -58,7 +62,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
 
-elevation: 5,
+    elevation: 5,
   },
   avatar: {
     width: 40,
@@ -70,34 +74,34 @@ elevation: 5,
     width: 32,
     height: 32,
     marginRight: 16,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   icon2: {
     width: 32,
     height: 28,
     opacity: 0.5,
     marginRight: 16,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   icon3: {
     width: 25,
     height: 32,
     opacity: 0.5,
     marginRight: 16,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   icon4: {
     width: 21,
     height: 27,
     opacity: 0.5,
     marginRight: 16,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   privacy: {
     width: 16,
     height: 16,
     marginRight: 16,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   whatHappen: {
     fontSize: 20,
@@ -105,15 +109,15 @@ elevation: 5,
     color: theme.colors.onSurfaceDisabled,
   },
   footer: {
-    width: '100%',
+    width: "100%",
     height: 72,
     borderTopColor: theme.colors.elevation02dp,
     paddingHorizontal: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     borderTopWidth: 1,
-  }
+  },
 });
 
 export default styles;

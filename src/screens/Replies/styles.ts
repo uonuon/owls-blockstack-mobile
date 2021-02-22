@@ -20,6 +20,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#1f1f1f',
   },
+  backContainer: {
+    width: 80,
+    height: 80,
+    justifyContent: "center",
+    alignItems: "flex-start",
+  },
   title: {
     fontSize: 16,
     color: '#fff',
@@ -27,8 +33,8 @@ const styles = StyleSheet.create({
     fontFamily: theme.fonts.regular,
   },
   backgroundLogo: {
-    width: 12,
-    height: 21,
+    width: 20,
+    height: 35,
   },
 });
 

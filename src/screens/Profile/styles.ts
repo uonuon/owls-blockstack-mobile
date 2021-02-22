@@ -41,36 +41,5 @@ const styles = StyleSheet.create({
   scene: {
     flex: 1,
   },
-  image: {
-    marginRight: 16,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    resizeMode: "cover",
-    borderWidth: 1,
-    borderColor: theme.colors.common.white,
-  },
-  name: {
-    fontSize: 16,
-    color: theme.colors.common.white,
-    marginRight: 5,
-    fontFamily: theme.fonts.regular,
-    lineHeight: 20,
-  },
-  username: {
-    fontSize: 16,
-    color: theme.colors.common.white,
-    opacity: 0.38,
-    fontFamily: theme.fonts.regular,
-    lineHeight: 20,
-  },
-  date: {
-    fontSize: 12,
-    color: theme.colors.common.white,
-    lineHeight: 16,
-    opacity: 0.6,
-    flexShrink: 1,
-    fontFamily: theme.fonts.regular,
-  },
 });
 export default styles;

@@ -9,7 +9,7 @@ import {
   View,
   Image,
   Text,
-  Pressable,
+  TouchableOpacity,
 } from 'react-native';
 import {
  HootActionsProps,
@@ -37,9 +37,9 @@ export const HootAction: React.FC<HootActionsProps> = (props: HootActionsProps) 
     action
   } = props;
   return (
-      <Pressable  style={styles.container} onPress={action}>
+      <TouchableOpacity  style={styles.container} onPress={action}>
         <Image source={icon} style={styles.icon} />
         <Text style={styles.text}>{counter}</Text>
-      </Pressable>
+      </TouchableOpacity>
   );
 };

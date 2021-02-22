@@ -1,6 +1,6 @@
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import React, { useContext, useEffect, useState } from "react";
-import { View, Image, Text, Pressable, TextInput } from "react-native";
+import { View, Image, Text, TextInput, TouchableOpacity } from "react-native";
 import { Assets } from "assets";
 import { useLocalization, useNavigationUtils, useTheme } from "hooks";
 import { UserData } from "contexts";
@@ -8,7 +8,7 @@ import styles from "./styles";
 import { Hoot } from "components";
 import { ScreenParams } from "navigation";
 import TabBarIcon from "../TabBarIcon";
-import { TouchableOpacity } from "react-native-gesture-handler";
+
 const {
   common: { logo, searchIcon, chevron },
   components: {
@@ -43,8 +43,8 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
         {!searchState ? (
           <Image source={logo} style={styles.backgroundLogo} />
         ) : (
-          <TouchableOpacity onPress={() => setSearchState(false)}>
-            <Image source={chevron} style={styles.backgroundLogo} />
+          <TouchableOpacity style={styles.backContainer} onPress={() => setSearchState(false)}>
+            <Image source={chevron} style={styles.chev} />
           </TouchableOpacity>
         )}
         <View

@@ -1,11 +1,12 @@
 import React, { useContext, useEffect } from 'react';
-import { Pressable, View, Image, Text, ScrollView } from 'react-native';
+import { View, Image, Text, ScrollView } from 'react-native';
 import { Assets } from 'assets';
 import { useNavigationUtils, useTheme } from 'hooks';
 import { UserData } from 'contexts';
 import styles from './styles';
 import { Hoot } from '../../components/Hoot';
 import { Reply } from 'src/components/Reply';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const {
   screens: {
@@ -22,9 +23,9 @@ export const Replies: React.FC = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.header}>
-        <Pressable onPress={goBack}>
+        <TouchableOpacity style={styles.backContainer} onPress={goBack}>
           <Image source={chevron} style={styles.backgroundLogo} />
-        </Pressable>
+        </TouchableOpacity>
         <Text
           style={{
             textAlign: 'center',

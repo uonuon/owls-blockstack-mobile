@@ -28,11 +28,18 @@ const styles = StyleSheet.create({
     opacity: 0.6,
     fontFamily: theme.fonts.regular,
   },
+    backContainer: {
+    width: 45,
+    height: 45,
+    justifyContent: "center",
+    alignItems: "flex-start",
+  },
   backgroundLogo: {
     width: 40,
     height: 40,
     marginRight: 16
   },
+  chev: {width: 20, height: 35},
   image: {marginRight: 16, width: 56, height: 56, borderRadius: 28, resizeMode: 'cover', borderWidth: 1, borderColor: theme.colors.common.white},
   name: {
     fontSize: 16,
