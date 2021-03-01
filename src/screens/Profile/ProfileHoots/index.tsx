@@ -19,15 +19,7 @@ export const ProfileHoots = () => (
           const hoot = item;
           return (
             <Hoot
-              content={hoot.content}
-              date={hoot.date}
-              id={hoot.id}
-              likes={hoot.likes}
-              name={hoot.name}
-              replies={hoot.replies}
-              retweets={hoot.retweets}
-              username={hoot.username}
-              image={hoot.image}
+              currentHoot={hoot}
             />
           );
         }}

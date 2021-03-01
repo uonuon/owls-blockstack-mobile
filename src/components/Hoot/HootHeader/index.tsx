@@ -17,7 +17,7 @@ export const HootHeader: React.FC<HootHeaderProps> = ({ date, name, username }) 
       <View style={styles.hootHeader}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.username}>
-          @{username} •{" "}
+          @{username.split('.')[0]} •{" "}
           <Text style={styles.date}>{rightDate}</Text>
         </Text>
       </View>

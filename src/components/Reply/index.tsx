@@ -22,7 +22,7 @@ const {
   components: {
     hoot: {
       more,
-      avatar,
+      defaultAvatar,
       love, reply , retweet, share, image
     },
   }
@@ -34,7 +34,7 @@ export const Reply: React.FC<ReplyProps> = ({ content, date, likes, name, replie
     <View
       style={styles.container}
     >
-     <Image source={avatar} style={styles.image}/>
+     <Image source={defaultAvatar} style={styles.image}/>
      <View style={styles.replyContent}>
         <View style={styles.replyContainer}>
           <View style={styles.replyHeader}>

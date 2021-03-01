@@ -12,26 +12,6 @@ const HScrollView = HPageViewHoc(ScrollView);
 
 export const ProfileHootsLikes = () => (
   <HScrollView index={3}>
-     <FlatList
-        data={DATA}
-        style={styles.flatList}
-        renderItem={({ item }) => {
-          const hoot = item;
-          return (
-            <Hoot
-              content={hoot.content}
-              date={hoot.date}
-              id={hoot.id}
-              likes={hoot.likes}
-              name={hoot.name}
-              replies={hoot.replies}
-              retweets={hoot.retweets}
-              username={hoot.username}
-              image={hoot.image}
-            />
-          );
-        }}
-        keyExtractor={(item) => item.id}
-      />
+
   </HScrollView>
 );

@@ -11,6 +11,8 @@ import {
   Search,
   WriteHoot,
   Profile,
+  Followers,
+  Following,
   Replies,
   FillUserData
 } from 'screens';
@@ -47,6 +49,9 @@ export const ROUTES: ScreenComponents<ScreenTypesAndParams> = {
   Search: Search,
   splash: SplashScreen,
   WriteHoot: WriteHoot,
+  UserProfile: Profile,
+  Following: Following,
+  Followers: Followers,
   login: LoginScreen,
   Profile: Profile,
   Replies: Replies,

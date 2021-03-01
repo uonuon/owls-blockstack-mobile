@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Assets } from "assets";
-import { useLocalization, useNavigationUtils, useTheme } from "hooks";
+import { useHoots, useLocalization, useNavigationUtils, useTheme } from "hooks";
 import { UserData } from "contexts";
 import styles from "./styles";
 import { TextInput } from "react-native-gesture-handler";
@@ -18,7 +18,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 const {
   common: { publicImage, chevron, gif, mic, photo, stats },
   components: {
-    hoot: { avatar },
+    hoot: { defaultAvatar },
   },
 } = Assets.images;
 
@@ -31,6 +31,7 @@ export const WriteHoot: React.FC = () => {
   const [currentText, setText] = useState("");
   const [currentImage, setImage] = useState("");
   const { success, failure, signIn } = useContext(UserData);
+  const { postHoot } = useHoots()
 
   useEffect(() => {}, [currentImage])
 
@@ -42,6 +43,7 @@ export const WriteHoot: React.FC = () => {
         </TouchableOpacity>
         <TouchableOpacity
           disabled={currentText.length === 0}
+          onPress={() => postHoot(currentText, currentImage).then(() => goBack())}
           style={[
             styles.postHoot,
             { backgroundColor: currentText.length > 0 ? theme.colors.secondaryHighContrasted : theme.colors.secondary },
@@ -59,7 +61,7 @@ export const WriteHoot: React.FC = () => {
       </View>
       <View style={styles.writeHoot}>
         <View style={{ flexDirection: "row" }}>
-          <Image source={avatar} style={styles.avatar} />
+          <Image source={defaultAvatar} style={styles.avatar} />
           <View style={{ width: "78%" }}>
             <TextInput
               multiline={true}

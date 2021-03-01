@@ -13,3 +13,16 @@ export interface IUser {
   publicKey: string;
   appPrivateKey: string;
 }
+
+export interface IHoot {
+  retweets: any;
+  createdAt: number;
+  _id: number;
+  avatar: string;
+  image?: string;
+  text: string;
+  replies: any[];
+  favorites: number[];
+  auther: IUser;
+}
+

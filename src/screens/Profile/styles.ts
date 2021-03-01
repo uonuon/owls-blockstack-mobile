@@ -17,6 +17,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  flatList: {
+    flex: 1,
+    width: "100%",
+    backgroundColor: theme.colors.elevation01dp,
+  },
   tabsInnerContainer: {
     borderRadius: 9,
     width: 233,

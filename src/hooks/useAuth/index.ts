@@ -119,7 +119,6 @@ export const useAuthentication = () => {
           ...session,
           appPrivateKey,
           ...(user || {}),
-          profile,
           authId,
           publicKey: publicKey,
         });
@@ -133,16 +132,16 @@ export const useAuthentication = () => {
     }
   };
 
-  const signIn = useCallback(async () => {
+  const signIn = async () => {
     await RNBlockstackSdk.signIn();
     createSession();
-  },[]);
+  }
 
-  const signOut = useCallback(async () => {
+  const signOut = async () => {
     setFailure();
     await RNBlockstackSdk.signUserOut();
     return Promise;
-  },[]);
+  }
 
   return {
     signIn,

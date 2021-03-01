@@ -27,6 +27,10 @@ export class NavigationFactory {
     const splashScreen = new Screen('splash');
     const loginScreen = new Screen('login');
     const WriteHoot = new Screen('WriteHoot');
+    const Followers = new Screen('Followers');
+    const Following = new Screen('Following');
+    const UserProfile = new Screen('UserProfile');
+
     const Replies = new Screen('Replies');
     const FillUserData = new Screen('FillUserData')
     const rootStackNavigator = new StackNavigator()
@@ -34,6 +38,9 @@ export class NavigationFactory {
       .addScreen(Search)
       .addScreen(homeScreen)
       .addScreen(WriteHoot)
+      .addScreen(UserProfile)
+      .addScreen(Followers)
+      .addScreen(Following)
       .addScreen(loginScreen)
       .addScreen(Replies)
       .addScreen(FillUserData)

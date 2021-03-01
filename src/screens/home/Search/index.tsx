@@ -2,17 +2,18 @@ import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import React, { useContext, useEffect, useState } from "react";
 import { View, Image, Text, TextInput, TouchableOpacity } from "react-native";
 import { Assets } from "assets";
-import { useLocalization, useNavigationUtils, useTheme } from "hooks";
+import { useGetUserImage, useLocalization, useNavigationUtils, useTheme, useUsers } from "hooks";
 import { UserData } from "contexts";
 import styles from "./styles";
 import { Hoot } from "components";
 import { ScreenParams } from "navigation";
 import TabBarIcon from "../TabBarIcon";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
 
 const {
   common: { logo, searchIcon, chevron },
   components: {
-    hoot: { avatar },
+    hoot: { defaultAvatar },
   },
   screens: {
     search: { search, searchDisabled },
@@ -23,8 +24,7 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
   const navigation = useNavigationUtils();
   const [currentText, setText] = useState("");
   const [searchState, setSearchState] = useState(false);
-  const { success, failure, signIn } = useContext(UserData);
-
+  const { getUsers, users, followUserById } = useUsers();
   useEffect(() => {
     navigation.setOptions({
       title: "Search",
@@ -35,15 +35,19 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
         />
       ),
     });
+    getUsers();
   }, []);
 
   return (
-    <View style={styles.container}>
+    <ScrollView keyboardShouldPersistTaps="handled" style={styles.container}>
       <View style={styles.header}>
         {!searchState ? (
           <Image source={logo} style={styles.backgroundLogo} />
         ) : (
-          <TouchableOpacity style={styles.backContainer} onPress={() => setSearchState(false)}>
+          <TouchableOpacity
+            style={styles.backContainer}
+            onPress={() => setSearchState(false)}
+          >
             <Image source={chevron} style={styles.chev} />
           </TouchableOpacity>
         )}
@@ -53,11 +57,15 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
           <TextInput
             multiline={true}
             placeholderTextColor="#6c6c6c"
-            style={{ fontSize: 16, color: "white", fontFamily: theme.fonts.regular, }}
+            style={{
+              fontSize: 16,
+              color: "white",
+              fontFamily: theme.fonts.regular,
+            }}
             numberOfLines={5}
             value={currentText}
             onTouchStart={() => setSearchState(true)}
-            onChangeText={(text) => {}}
+            onChangeText={(text) => {setText(text.toLowerCase())}}
             placeholder="Search users and hashtags"
           />
         </View>
@@ -68,48 +76,44 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
       </View>
       {searchState ? (
         <View>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              paddingVertical: 12,
-              paddingHorizontal: 16,
+          <FlatList
+            data={users.filter((data: any) => data.username.includes(currentText))}
+            style={{ flex: 1, width: "100%" }}
+            ListEmptyComponent={
+              <View
+                style={{
+                  marginTop: "50%",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text style={{ color: "white" }}>Seems you got no friends</Text>
+              </View>
+            }
+            renderItem={({ item }) => {
+              // const userImage = useGetUserImage(item, styles.image);
+              return (
+                <TouchableOpacity
+                  onPress={() => navigation.navigateTo({name: 'UserProfile', params: {incomingUser: item}})}
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    paddingVertical: 12,
+                    paddingHorizontal: 16,
+                  }}
+                >
+                  {userImage}
+                  <View>
+                    <Text style={styles.name}>{item.fullName}</Text>
+                    <Text style={styles.username}>
+                      @{item.username}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              );
             }}
-          >
-            <Image source={avatar} style={styles.image} />
-            <View>
-              <Text style={styles.name}>Annie</Text>
-              <Text style={styles.username}>@annie</Text>
-            </View>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              paddingVertical: 12,
-              paddingHorizontal: 16,
-            }}
-          >
-            <Image source={avatar} style={styles.image} />
-            <View>
-              <Text style={styles.name}>Annie</Text>
-              <Text style={styles.username}>@annie</Text>
-            </View>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              paddingVertical: 12,
-              paddingHorizontal: 16,
-            }}
-          >
-            <Image source={avatar} style={styles.image} />
-            <View>
-              <Text style={styles.name}>Annie</Text>
-              <Text style={styles.username}>@annie</Text>
-            </View>
-          </View>
+            keyExtractor={(item: any) => item._id}
+          />
         </View>
       ) : (
         <>
@@ -135,7 +139,14 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
               marginBottom: 0.5,
             }}
           >
-            <Text style={{ fontSize: 24, color: "#006FB4", marginRight: 16, fontFamily: theme.fonts.regular, }}>
+            <Text
+              style={{
+                fontSize: 24,
+                color: "#006FB4",
+                marginRight: 16,
+                fontFamily: theme.fonts.regular,
+              }}
+            >
               1
             </Text>
             <View>
@@ -150,7 +161,14 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
               >
                 Most Trending Hashtags
               </Text>
-              <Text style={{ fontSize: 14, color: "#FFF", opacity: 0.38, fontFamily: theme.fonts.regular, }}>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: "#FFF",
+                  opacity: 0.38,
+                  fontFamily: theme.fonts.regular,
+                }}
+              >
                 23K Hoots
               </Text>
             </View>
@@ -164,7 +182,14 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
               marginBottom: 0.5,
             }}
           >
-            <Text style={{ fontSize: 24, color: "#006FB4", marginRight: 16, fontFamily: theme.fonts.regular, }}>
+            <Text
+              style={{
+                fontSize: 24,
+                color: "#006FB4",
+                marginRight: 16,
+                fontFamily: theme.fonts.regular,
+              }}
+            >
               2
             </Text>
             <View>
@@ -179,7 +204,14 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
               >
                 Most Trending Hashtags
               </Text>
-              <Text style={{ fontSize: 14, color: "#FFF", opacity: 0.38, fontFamily: theme.fonts.regular, }}>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: "#FFF",
+                  opacity: 0.38,
+                  fontFamily: theme.fonts.regular,
+                }}
+              >
                 23K Hoots
               </Text>
             </View>
@@ -193,7 +225,14 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
               marginBottom: 0.5,
             }}
           >
-            <Text style={{ fontSize: 24, color: "#006FB4", marginRight: 16, fontFamily: theme.fonts.regular }}>
+            <Text
+              style={{
+                fontSize: 24,
+                color: "#006FB4",
+                marginRight: 16,
+                fontFamily: theme.fonts.regular,
+              }}
+            >
               3
             </Text>
             <View>
@@ -208,7 +247,14 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
               >
                 Most Trending Hashtags
               </Text>
-              <Text style={{ fontSize: 14, color: "#FFF", opacity: 0.38, fontFamily: theme.fonts.regular, }}>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: "#FFF",
+                  opacity: 0.38,
+                  fontFamily: theme.fonts.regular,
+                }}
+              >
                 23K Hoots
               </Text>
             </View>
@@ -231,6 +277,6 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
           </View>
         </>
       )}
-    </View>
+    </ScrollView>
   );
 };

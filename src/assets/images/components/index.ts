@@ -4,7 +4,7 @@ export const components = {
   },
   hoot: {
     more: require('./Hoot/more.png'),
-    avatar: require('./Hoot/avatar.png'),
+    defaultAvatar: require('./Hoot/avatar.png'),
     reply: require('./Hoot/reply.png'),
     love: require('./Hoot/love.png'),
     retweet: require('./Hoot/retweet.png'),

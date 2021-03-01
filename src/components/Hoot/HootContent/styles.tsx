@@ -12,12 +12,6 @@ import {
       lineHeight: 24,
       color: theme.colors.common.white,
     },
-    hootImage: {
-      width: '92%',
-      resizeMode: 'cover',
-      borderRadius: 16,
-      marginTop: 8
-    },
     hootTextContainer: {
       justifyContent: 'flex-start',
       width: '92%'

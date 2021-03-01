@@ -12,6 +12,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.colors.common.white,
   },
+  backButtonIcon: {
+    width: 24,
+    height: 24,
+    resizeMode: 'cover',
+    marginTop: -10,
+    marginBottom: 10,
+  },
   name: {
     fontSize: 16,
     color: theme.colors.common.white,
@@ -36,9 +43,6 @@ const styles = StyleSheet.create({
   },
   header: {
     height: 192,
-    flexDirection: "row",
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
     paddingVertical: 24,
     paddingHorizontal: 16,
   },

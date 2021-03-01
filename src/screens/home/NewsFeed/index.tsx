@@ -9,80 +9,18 @@ import {
   FlatList,
 } from "react-native";
 import { Assets } from "assets";
-import { useLocalization, useNavigationUtils, useTheme } from "hooks";
+import { defaultConfig, useHoots, useLocalization, useNavigationUtils, useTheme } from "hooks";
 import { UserData } from "contexts";
 import styles from "./styles";
 import { Hoot } from "components";
 import { ScreenParams } from "navigation";
 import { HootProps } from "../../../components/Hoot/types";
-
-export const DATA: HootProps[] = [
-  {
-    id: "bd7acbea-c1bs1-46c2-aed5-3ad53abb28ba",
-    content:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys",
-    date: Date.now(),
-    likes: 120,
-    name: "Mina Philemon",
-    replies: 203,
-    retweets: 1,
-    username: "Philemono",
-    image: "",
-  },
-  {
-    id: "bd7acbea-c1bsd1-46c2-aed5-3ad53abb28ba",
-    content:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-    date: Date.now() - 1000000,
-    likes: 110,
-    name: "Mostafa amr",
-    replies: 24,
-    retweets: 1,
-    username: "mostafa",
-    image: "",
-  },
-  {
-    id: "bd7acbea-c331bsd1-46c2-aed5-3ad53abb28ba",
-    content:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-    date: Date.now() - 2000,
-    likes: 110,
-    name: "Mostafa amr",
-    replies: 24,
-    retweets: 1,
-    username: "mostafa",
-    image: "",
-  },
-  {
-    id: "bd7acbdea-c1bsd1-46c2-aed5-3ad53abb28ba",
-    content:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-    date: Date.now() - 1000000,
-    likes: 110,
-    name: "Mostafa amr",
-    replies: 24,
-    retweets: 1,
-    username: "mostafa",
-    image: "",
-  },
-  {
-    id: "bd7aacbea-c331bsd1-46c2-aed5-3ad53abb28ba",
-    content:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-    date: Date.now() - 2000,
-    likes: 110,
-    name: "Mostafa amr",
-    replies: 24,
-    retweets: 1,
-    username: "mostafa",
-    image: "",
-  },
-];
+import { IHoot } from "shared";
 
 const {
   common: { gif, mic, photo, stats },
   components: {
-    hoot: { avatar },
+    hoot: { defaultAvatar },
   },
   screens: {
     home: { home, homeDisabled, plus },
@@ -92,11 +30,10 @@ const {
 
 export const NewsFeed: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
   const { theme } = useTheme();
-  const { translate } = useLocalization();
-  const { replace } = useNavigationUtils();
+  const { getNewsFeed, newsFeedHoots } = useHoots();
   const navigation = useNavigationUtils();
 
-  const { success, failure, signIn } = useContext(UserData);
+  const { userData } = useContext(UserData);
 
   useEffect(() => {
     navigation.setOptions({
@@ -108,6 +45,7 @@ export const NewsFeed: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
         />
       ),
     });
+    getNewsFeed()
   }, []);
   const { navigateTo } = useNavigationUtils();
 
@@ -117,7 +55,7 @@ export const NewsFeed: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
       style={styles.writeHoot}
     >
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Image source={avatar} style={styles.avatar} />
+        <Image source={defaultAvatar} style={styles.avatar} />
         <Text style={styles.whatHappen}>What’s happening?</Text>
       </View>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -134,27 +72,20 @@ export const NewsFeed: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
         <Image source={logo} style={styles.backgroundLogo} />
       </View>
       <FlatList
-        data={DATA}
-        ListHeaderComponent={hootsHeader}
-        style={{ flex: 1, width: "100%" }}
-        renderItem={({ item }) => {
-          const hoot = item;
-          return (
-            <Hoot
-              content={hoot.content}
-              date={hoot.date}
-              id={hoot.id}
-              likes={hoot.likes}
-              name={hoot.name}
-              replies={hoot.replies}
-              retweets={hoot.retweets}
-              username={hoot.username}
-              image={hoot.image}
-            />
-          );
-        }}
-        keyExtractor={(item) => item.id}
-      />
+          data={newsFeedHoots}
+          style={{flex: 1, width: '100%'}}
+          ListHeaderComponent={hootsHeader}
+          ListEmptyComponent={<View style={{marginTop: '50%', justifyContent: 'center', alignItems: 'center'}}><Text style={{color: 'white'}}>Seems you got no friends</Text></View>}
+          renderItem={({ item }) => {
+            const hoot: IHoot = item;
+            return (
+              <Hoot
+              currentHoot={hoot}
+              />
+            );
+          }}
+          keyExtractor={(item: any) => item._id}
+        />
       <TouchableOpacity
         style={styles.fab}
         onPress={() => navigateTo({ name: "WriteHoot" })}
