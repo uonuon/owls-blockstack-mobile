@@ -39,8 +39,6 @@ const styles = StyleSheet.create({
     height: 28,
   },
   flatList: {
-    flex: 1,
-    width: "100%",
     backgroundColor: theme.colors.elevation01dp,
   },
   scene: {

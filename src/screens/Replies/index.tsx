@@ -19,11 +19,6 @@ import { useRoute } from "@react-navigation/native";
 import { IHoot } from "shared";
 import { HootsQueriesTypes } from "shared/Queries";
 
-const {
-  screens: {
-    login: { logo, loginAvatar, logoMark, lock },
-  },
-} = Assets.images;
 export const Replies: React.FC = () => {
   const { theme } = useTheme();
   const {

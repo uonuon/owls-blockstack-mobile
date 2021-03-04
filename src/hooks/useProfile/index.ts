@@ -45,14 +45,14 @@ export const useProfile = (currentProfile: IUser) => {
     }
   }, [currentProfile]);
 
-  const followUserById = async (id: number) => {
-    if (id) {
+  const followUserById = async (id: number, status: string) => {
+    if (id && status) {
       const userTxn = [
         {
           _id: "connections",
-          from: userData._id,
+          from: userData?._id,
           to: id,
-          status: "success",
+          status,
         },
       ];
   

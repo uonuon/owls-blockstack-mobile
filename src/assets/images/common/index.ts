@@ -8,5 +8,8 @@ export const common = {
   stats: require('./stats.png'),
   chevron: require('./chevron.png'),
   publicImage: require('./public.png'),
-  avatar: require('./data-avatar.png')
+  avatar: require('./data-avatar.png'),
+  lock: require('./lock.png'),
+  notification: require('./notifications.png'),
+  notificationActive: require('./notifications-active.png'),
 };

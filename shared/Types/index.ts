@@ -10,6 +10,7 @@ export interface IUser {
   _id: number;
   authId: string;
   identityAddress: string;
+  isPrivate: boolean;
   publicKey: string;
   appPrivateKey: string;
 }
