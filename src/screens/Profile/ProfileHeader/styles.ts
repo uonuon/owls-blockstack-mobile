@@ -4,7 +4,7 @@ import { DefaultTheme } from "themes";
 const theme = DefaultTheme;
 const styles = StyleSheet.create({
   image: {
-    marginRight: 16,
+    marginRight: 8,
     width: 56,
     height: 56,
     borderRadius: 28,
@@ -33,6 +33,15 @@ const styles = StyleSheet.create({
     fontFamily: theme.fonts.regular,
     lineHeight: 20,
   },
+  buttonStyles: {
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderColor: "#0FBBEB",
+    borderWidth: 1,
+  },
   date: {
     fontSize: 12,
     color: theme.colors.common.white,
@@ -42,7 +51,7 @@ const styles = StyleSheet.create({
     fontFamily: theme.fonts.regular,
   },
   header: {
-    height: 192,
+    height: 200,
     paddingVertical: 24,
     paddingHorizontal: 16,
   },

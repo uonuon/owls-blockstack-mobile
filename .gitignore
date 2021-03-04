@@ -57,3 +57,4 @@ buck-out/
 .env.dev
 .env.prod
 *node_modules/*
+/src/fluree-scripts/*

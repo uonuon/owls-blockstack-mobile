@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     backgroundColor: '#000',
+    height: '100%'
   },
   header: {
     height: 64,
@@ -35,6 +36,29 @@ const styles = StyleSheet.create({
   backgroundLogo: {
     width: 20,
     height: 35,
+  },
+  flatList: {
+    width: "100%",
+    backgroundColor: theme.colors.common.black,
+  },
+  replyView: {
+    backgroundColor: theme.colors.elevation01dp,
+    width: '100%',
+    padding: 16,
+  },
+  postHoot: {
+    paddingVertical: 8,
+    paddingHorizontal: 24,
+    borderRadius: 16,
+    marginLeft: 'auto',
+    marginTop: 5,
+  },
+  hootText: {
+    color: theme.colors.onSecondaryDisabled,
+    fontSize: 14,
+    fontFamily: theme.fonts.regular,
+    fontWeight: "bold",
+    opacity: 0.38,
   },
 });
 

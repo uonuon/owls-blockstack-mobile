@@ -61,11 +61,14 @@ export const useGetHootImage = (hoot: IHoot, overrideStyles?: ViewStyle) => {
   ) : null;
 };
 
-export const Hoot: React.FC<HootProps> = ({ currentHoot }) => {
+export const Hoot: React.FC<HootProps> = ({ currentHoot, loveHoot, retweetHoot }) => {
   const { navigateTo } = useNavigationUtils();
   const userImage = useGetUserImage(currentHoot.auther, styles.image);
   const hootImage = useGetHootImage(currentHoot, styles.hootImage);
-
+  const goToReplies = () => {
+    navigateTo({ name: "Replies", params: {hoot: currentHoot} })
+  }
+  
   return (
     <View style={styles.container}>
       {userImage}
@@ -81,17 +84,17 @@ export const Hoot: React.FC<HootProps> = ({ currentHoot }) => {
           <HootAction
             icon={reply}
             counter={currentHoot.replies?.length || 0}
-            action={() => navigateTo({ name: "Replies" })}
+            action={goToReplies}
           />
           <HootAction
             icon={retweet}
             counter={currentHoot.retweets?.length || 0}
-            action={() => console.log("pressed")}
+            action={() => retweetHoot({hootId: currentHoot._id})}
           />
           <HootAction
             icon={love}
             counter={currentHoot.favorites?.length || 0}
-            action={() => console.log("pressed")}
+            action={() => loveHoot(currentHoot._id)}
           />
           <HootAction
             icon={share}

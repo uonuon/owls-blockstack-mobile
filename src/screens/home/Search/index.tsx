@@ -5,7 +5,7 @@ import { Assets } from "assets";
 import { useGetUserImage, useLocalization, useNavigationUtils, useTheme, useUsers } from "hooks";
 import { UserData } from "contexts";
 import styles from "./styles";
-import { Hoot } from "components";
+import { Hoot, User } from "components";
 import { ScreenParams } from "navigation";
 import TabBarIcon from "../TabBarIcon";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
@@ -91,25 +91,8 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
               </View>
             }
             renderItem={({ item }) => {
-              // const userImage = useGetUserImage(item, styles.image);
               return (
-                <TouchableOpacity
-                  onPress={() => navigation.navigateTo({name: 'UserProfile', params: {incomingUser: item}})}
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    paddingVertical: 12,
-                    paddingHorizontal: 16,
-                  }}
-                >
-                  {userImage}
-                  <View>
-                    <Text style={styles.name}>{item.fullName}</Text>
-                    <Text style={styles.username}>
-                      @{item.username}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
+                <User user={item}/>
               );
             }}
             keyExtractor={(item: any) => item._id}

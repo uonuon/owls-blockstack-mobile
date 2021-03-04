@@ -24,5 +24,6 @@ export interface IHoot {
   replies: any[];
   favorites: number[];
   auther: IUser;
+  parentTweet?: IHoot 
 }
 

@@ -10,7 +10,7 @@ const handleError = (error: AxiosError) => {
 };
 
 const instance = axios.create({
-  baseURL: 'http://192.168.1.29:8080',
+  baseURL: 'http://192.168.1.16:8080',
   headers: {
     'Content-Type': 'application/json',
   },

@@ -17,7 +17,7 @@ const authenticatorPrivateKey =
 export const useProfile = (currentProfile: IUser) => {
   const [currentFollowers, setCurrentFollowers] = useState<IUser[]>([]);
   const [currentFollowing, setCurrentFollowing] = useState<IUser[]>([]);
-  const [profileHoots, setProfileHoots] = useState<IHoot[]>([]);
+  const { userData } = useContext(UserData);
   const {
     setFailure,
     setLoading,
@@ -33,23 +33,43 @@ export const useProfile = (currentProfile: IUser) => {
         myQueries: {
           followers: queryFollowers(currentProfile?._id),
           following: queryFollowings(currentProfile?._id),
-          hoots: queryUserHoots(currentProfile?._id)
         },
         privateKey: authenticatorPrivateKey,
-      }).then(({data: {followers,following,hoots}}) => {
+      })
+        .then(({ data: { followers, following } }) => {
           setCurrentFollowers(followers);
           setCurrentFollowing(following);
-          setProfileHoots(hoots);
           setSuccess();
-      }).catch(setFailure);
+        })
+        .catch(setFailure);
     }
   }, [currentProfile]);
+
+  const followUserById = async (id: number) => {
+    if (id) {
+      const userTxn = [
+        {
+          _id: "connections",
+          from: userData._id,
+          to: id,
+          status: "success",
+        },
+      ];
+  
+      return await transact({
+        privateKey:
+          "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",
+        myTxn: userTxn,
+        authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
+      })
+    }
+  };
 
   return {
     currentFollowers,
     currentFollowing,
-    profileHoots,
     success,
     failure,
+    followUserById,
   };
 };

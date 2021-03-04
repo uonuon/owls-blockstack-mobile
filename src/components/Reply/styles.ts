@@ -66,6 +66,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
+  hootImage: {
+    width: '92%',
+    height: 150,
+    resizeMode: 'cover',
+    borderRadius: 10,
+    marginRight: 16,
+    marginTop: 10,
+  },
 });
 
 export default styles;

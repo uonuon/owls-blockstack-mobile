@@ -29,6 +29,8 @@ import { HPageViewHoc } from "react-native-head-tab-view";
 import { Hoot } from "components";
 import styles from "./styles";
 import { useRoute } from "@react-navigation/native";
+import { Hoots } from "src/components/Hoots";
+import { HootsQueriesTypes } from "shared/Queries";
 
 const HScrollView = HPageViewHoc(ScrollView);
 
@@ -45,10 +47,6 @@ const navigationRoutes = [
   {
     key: "hoots",
     title: "Hoots",
-  },
-  {
-    key: "hoots_replies",
-    title: "Hoots & Replies",
   },
   {
     key: "media",
@@ -70,9 +68,11 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
   const [index, setIndex] = useState(0);
   const { userData } = useContext(UserData);
   const selectedUser = params?.incomingUser || (userData as IUser);
-  const { profileHoots, currentFollowers, currentFollowing } = useProfile(
+  const { currentFollowers, currentFollowing, followUserById } = useProfile(
     selectedUser
   );
+  const { data, loading, loveHoot, postData } = useHoots({queryType: HootsQueriesTypes.USER_HOOTS, id: selectedUser?._id || 0});
+
 
   useEffect(() => {
     navigation.setOptions({
@@ -89,28 +89,38 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
   const ProfileHoots = useCallback(
     () => (
       <HScrollView index={0}>
-        <FlatList
-          data={profileHoots}
-          style={styles.flatList}
-          renderItem={({ item }) => {
-            const hoot: IHoot = item;
-            return <Hoot currentHoot={hoot} />;
-          }}
-          keyExtractor={(item: any) => item._id}
-        />
+        <Hoots hoots={data} loveHoot={loveHoot} retweetHoot={postData}/>
       </HScrollView>
     ),
-    [profileHoots]
+    [data]
   );
+  
+  const ProfileMediaHoots = useCallback(
+    () => (
+      <HScrollView index={1}>
+        <Hoots hoots={data} loveHoot={loveHoot} retweetHoot={postData}/>
+      </HScrollView>
+    ),
+    [data]
+  );
+  
+  const ProfileLikesHoots = useCallback(
+    () => (
+      <HScrollView index={2}>
+        <Hoots hoots={data}  loveHoot={loveHoot} retweetHoot={postData}/>
+      </HScrollView>
+    ),
+    [data]
+  );
+  
 
   const renderScene = useCallback(
     SceneMap({
       hoots: ProfileHoots,
-      hoots_replies: ProfileHootsMedia,
       media: ProfileHootsMedia,
       likes: ProfileHootsLikes,
     }),
-    [profileHoots]
+    [data]
   );
 
   const renderTabBar = useCallback(
@@ -140,12 +150,13 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
         followers={currentFollowers}
         following={currentFollowing}
         fromProfile={params?.incomingUser ? true : false}
+        followUserById={followUserById}
       />
     ),
     [selectedUser, currentFollowers, currentFollowing]
   );
 
-  const makeHeaderHeight = useCallback(() => 192, []);
+  const makeHeaderHeight = useCallback(() => 200, []);
 
   return (
     <CollapsibleHeaderTabView

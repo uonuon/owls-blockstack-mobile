@@ -9,11 +9,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Assets } from "assets";
-import { useHoots, useLocalization, useNavigationUtils, useTheme } from "hooks";
+import { useGetUserImage, useHoots, useLocalization, useNavigationUtils, useTheme } from "hooks";
 import { UserData } from "contexts";
 import styles from "./styles";
 import { TextInput } from "react-native-gesture-handler";
 import {launchImageLibrary} from 'react-native-image-picker';
+import { IUser } from "shared";
 
 const {
   common: { publicImage, chevron, gif, mic, photo, stats },
@@ -24,14 +25,12 @@ const {
 
 export const WriteHoot: React.FC = () => {
   const { theme } = useTheme();
-  const { translate } = useLocalization();
   const { replace, goBack } = useNavigationUtils();
-  const navigation = useNavigationUtils();
-
   const [currentText, setText] = useState("");
   const [currentImage, setImage] = useState("");
-  const { success, failure, signIn } = useContext(UserData);
-  const { postHoot } = useHoots()
+  const { userData } = useContext(UserData);
+  const { postData } = useHoots({disableFetch: true})
+  const userImage = useGetUserImage(userData as IUser, styles.avatar);
 
   useEffect(() => {}, [currentImage])
 
@@ -43,7 +42,7 @@ export const WriteHoot: React.FC = () => {
         </TouchableOpacity>
         <TouchableOpacity
           disabled={currentText.length === 0}
-          onPress={() => postHoot(currentText, currentImage).then(() => goBack())}
+          onPress={() => postData({text: currentText, image: currentImage}).then(goBack)}
           style={[
             styles.postHoot,
             { backgroundColor: currentText.length > 0 ? theme.colors.secondaryHighContrasted : theme.colors.secondary },
@@ -61,7 +60,7 @@ export const WriteHoot: React.FC = () => {
       </View>
       <View style={styles.writeHoot}>
         <View style={{ flexDirection: "row" }}>
-          <Image source={defaultAvatar} style={styles.avatar} />
+         {userImage}
           <View style={{ width: "78%" }}>
             <TextInput
               multiline={true}
@@ -80,7 +79,7 @@ export const WriteHoot: React.FC = () => {
             {currentImage.length > 0 && <Image style={{width: '100%', borderRadius: 16, marginTop: 24, height: 180}} source={{uri: currentImage}} />}
           </View>
         </View>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             justifyContent: "center",
             alignItems: "center",
@@ -94,13 +93,18 @@ export const WriteHoot: React.FC = () => {
             source={publicImage}
             style={[styles.privacy, { marginRight: 0 }]}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <View style={styles.footer}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <TouchableOpacity onPress={() => launchImageLibrary({mediaType: 'photo', includeBase64: true, quality: 0.5, }, (image) => {
            if (!image.didCancel) {
-            setImage(image.uri!)
+            const compressedImageWithType = `data:${
+              Platform.OS === "android"
+                ? "image/jpeg"
+                : image.type || "image/jpeg"
+            };base64,${image.base64}`;
+            setImage(compressedImageWithType);
            }
           })}><Image source=  {photo} style={styles.icon} /></TouchableOpacity>
           <Image source={gif} style={styles.icon2} />

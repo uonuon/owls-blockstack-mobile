@@ -73,7 +73,8 @@ elevation: 5,
     height: 56,
     backgroundColor: theme.colors.secondaryLowerContrasted,
     borderRadius: 100,
-  }
+  },
+  plus: { width: 24, height: 24, resizeMode: "contain" }
 });
 
 export default styles;

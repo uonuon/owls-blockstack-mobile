@@ -1,3 +1,4 @@
+import { deleteCollectionDataByName, run } from './../../fluree-scripts/deleteCollection';
 import { useCallback, useEffect, useState } from "react";
 // import {
 //   UserSession,
@@ -44,7 +45,7 @@ export const useAuthentication = () => {
       }
     });
   }, []);
-
+  // deleteCollectionDataByName('connections')
   const createSession = async () => {
     setLoading();
     const hasSession = await RNBlockstackSdk.hasSession();
@@ -70,7 +71,6 @@ export const useAuthentication = () => {
           myQuery,
           privateKey: authenticatorPrivateKey,
         }).then((res) => res.data[0]);
-
         const publicKey = getPublicKeyFromPrivate(appPrivateKey);
         // @ts-ignore
         const authId = window.fluree.crypto.account_id_from_public(publicKey);
@@ -104,22 +104,25 @@ export const useAuthentication = () => {
               auth: [["_auth/id", authId]],
             },
           ];
+          console.log("ssssssssss",authId,userTxn)
           await transact({
-            privateKey: authenticatorPrivateKey,
+            privateKey: "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",
             myTxn: authTxn,
-            authId: authenticatorAuthId,
+            authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
           });
           await transact({
-            privateKey: appPrivateKey,
+            privateKey: "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",
             myTxn: userTxn,
-            authId,
+            authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
           });
         }
+        console.warn("USER", user)
         setUserData({
           ...session,
           appPrivateKey,
           ...(user || {}),
           authId,
+          _id: user._id,
           publicKey: publicKey,
         });
         setSuccess();

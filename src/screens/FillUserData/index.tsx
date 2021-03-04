@@ -34,7 +34,7 @@ export const FillUserData: React.FC = () => {
   } = useProgressState();
   const disabledText =
     currentImage.length === 0 || name.length === 0 || desc.length === 0;
-
+  console.log("userData",userData)
   const setData = useCallback(async () => {
     try {
       setLoading()
@@ -49,7 +49,7 @@ export const FillUserData: React.FC = () => {
       );
       const updatedUserTxn = [
         {
-          _id: userData?._id as number,
+          _id: ["_user/auth",["_auth/id",userData?.authId]],
           fullName: name,
           description: desc,
           avatar: fullImagePath,
@@ -101,7 +101,6 @@ export const FillUserData: React.FC = () => {
                         : image.type || "image/jpeg"
                     };base64,${image.base64}`;
                     setImage(compressedImageWithType);
-                    console.log(compressedImageWithType);
                   }
                 }
               )

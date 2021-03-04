@@ -50,13 +50,9 @@ const getProfile = (userData: IUser) => (typeof userData.profile === 'string'
   : userData.profile);
 
 export const useGetUserName = (userData: IUser) => {
-  // console.log('EEE', userData)
-  // const profile = getProfile(userData);
-  // return useMemo(() => (
-  //   (userData && userData.profile && profile.name)
-  //     || (userData && userData.username.split('.')[0])
-  //     || 'Anonymous'
-  // ), [userData]);
+  return useMemo(() => {
+    return userData.username.split('.')[0];
+  }, [userData]);
 };
 
 export const getUserName = (userData: IUser) => {

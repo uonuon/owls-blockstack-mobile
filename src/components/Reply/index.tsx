@@ -1,63 +1,74 @@
+import { Assets } from "assets";
 import {
-  Assets,
-} from 'assets';
-import {
+  defaultConfig,
+  useGetUserImage,
   useNavigationUtils,
   useTheme,
-} from 'hooks';
-import React from 'react';
-import {
-  View,
-  Image,
-  Text,
-  Pressable,
-} from 'react-native';
-import {
-  ReplyProps,
-} from './types';
-import styles from './styles';
-import { HootAction } from 'components'
-import { HootHeader } from '../Hoot/HootHeader';
+} from "hooks";
+import React, { useMemo, useState } from "react";
+import { View, Image, Text, Pressable, ViewStyle } from "react-native";
+import { ReplyProps } from "./types";
+import styles from "./styles";
+import { HootAction, useGetHootImage } from "components";
+import { HootHeader } from "../Hoot/HootHeader";
+import { IHoot } from "shared";
 const {
   components: {
-    hoot: {
-      more,
-      defaultAvatar,
-      love, reply , retweet, share, image
-    },
-  }
+    hoot: { more, defaultAvatar, love, reply, retweet, share, image },
+  },
 } = Assets.images;
 
-export const Reply: React.FC<ReplyProps> = ({ content, date, likes, name, replies, retweets, username, image}) => {
-  const { navigateTo } = useNavigationUtils()
+export const Reply: React.FC<ReplyProps> = ({ currentHoot }) => {
+  const { navigateTo } = useNavigationUtils();
+  const userImage = useGetUserImage(currentHoot.auther, styles.image);
+  const replyImage = useGetHootImage(currentHoot, styles.replyImage);
+
+  const goToReplies = () => {
+    navigateTo({ name: "Replies", params: {hoot: currentHoot} })
+  }
+
   return (
-    <View
-      style={styles.container}
-    >
-     <Image source={defaultAvatar} style={styles.image}/>
-     <View style={styles.replyContent}>
+    <View style={styles.container}>
+      {userImage}
+      <View style={styles.replyContent}>
         <View style={styles.replyContainer}>
           <View style={styles.replyHeader}>
             <View style={styles.replyHeader}>
-              <HootHeader date={date} name={name} username={username}/>
+              <HootHeader
+                date={currentHoot.createdAt}
+                name={currentHoot.auther.fullName}
+                username={currentHoot.auther.username}
+              />
             </View>
-            <Image resizeMode="cover" source={more} style={styles.more}/>
           </View>
           <View style={styles.replyTextContainer}>
-  <Text style={styles.replyText}>{content}</Text>
+            <Text style={styles.replyText}>{currentHoot.text}</Text>
           </View>
         </View>
-        {image && 
-          <Image source={{uri: image}} style={styles.replyImage}/>
-        }
+        {replyImage}
         <View style={styles.replyFooter}>
-          <HootAction icon={reply} counter={replies} action={() => navigateTo({name: 'Replies'})}/>
-          <HootAction icon={retweet} counter={retweets} action={() => console.log('pressed')}/>
-          <HootAction icon={love} counter={likes} action={() => console.log('pressed')}/>
-          <HootAction icon={share} counter={0} action={() => console.log('pressed')}/>
-
+          <HootAction
+            icon={reply}
+            counter={currentHoot.replies?.length || 0}
+            action={goToReplies}
+          />
+          <HootAction
+            icon={retweet}
+            counter={currentHoot.retweets?.length || 0}
+            action={() => console.log("pressed")}
+          />
+          <HootAction
+            icon={love}
+            counter={currentHoot.favorites?.length || 0}
+            action={() => console.log("pressed")}
+          />
+          <HootAction
+            icon={share}
+            counter={0}
+            action={() => console.log("pressed")}
+          />
         </View>
-     </View>
+      </View>
     </View>
   );
 };

@@ -4,173 +4,126 @@ import { query, getPublicKeyFromPrivate, transact, generateGUID } from "utils";
 import { IHoot, IUser } from "shared";
 import { useProgressState } from "../useProgressState";
 import { UserData } from "contexts";
+import { hootsQueriesMap, HootsQueriesTypes, newsFeed } from "shared/Queries";
 
 const authenticatorPrivateKey =
   "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a";
 const authenticatorAuthId = "TfJecBZR7DzqD9hvQLYLrVKuHiUgKDceR8d";
 
-export const useHoots = () => {
-  const {userData} = useContext(UserData)
-  const [userHoots, setUserHoots] = useState<IHoot[]>([])
-  const [newsFeedHoots, setNewsFeedHoots] = useState<IHoot[]>([])
-  const {
-    setFailure,
-    setLoading,
-    setSuccess,
-    success,
-    failure,
-  } = useProgressState();
+interface HootsService {
+  queryType?: HootsQueriesTypes;
+  id?: number;
+  disableFetch?: boolean;
+}
 
-  const getUserHoots = async (id?: number) => {
-    const myQuery = 
-    {
-      "select": {
-        "?tweet": [
-          {
-            "*": {
-              "_compact": true
-            }
-          },
-          {
-            "auther": [
-              "*",
-              {
-                "_compact": true
-              }
-            ]
-          },
-          {
-            "parentTweet": [
-              "*",
-              {
-                "_compact": true
-              }
-            ]
-          },
-          {
-            "tweet/_parentTweet": [
-              {
-                "_as": "retweets"
-              }
-            ]
-          }
-        ]
-      },
-      "where": [["?tweet", "tweet/auther", userData?._id]]
+export interface PostHoot {
+  text?: string
+  image?: string
+  hootId?: number
+}
+
+export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
+  const [data, setData] = useState<IHoot[]>([]);
+  const { userData } = useContext(UserData);
+  const { setFailure, setLoading, setSuccess, loading } = useProgressState();
+
+  useEffect(() => {
+    if (!disableFetch) {
+      setLoading();
+      query({
+        myQuery: hootsQueriesMap[queryType](id),
+        privateKey: authenticatorPrivateKey,
+      })
+        .then((res) => setData(res.data))
+        .then(setSuccess)
+        .catch(setFailure);
     }
-  
-    await query({
-      myQuery,
-      privateKey: authenticatorPrivateKey,
-    }).then((res) => setUserHoots(res.data));
-  }
-  
-  const postHoot = async (text: string, image: string) => {
-    let fullImagePath = ''
-    if (image.length > 0) {
-      const id = generateGUID();
-      fullImagePath = `user/hootImages/${id}`;
-      await RNBlockstackSdk.putFile(
-        fullImagePath,
-        JSON.stringify(image),
+  }, []);
+
+  const postData = useCallback(
+    async ({hootId, image, text}: PostHoot) => {
+      const fullImagePath = await uploadImage(image);
+      const hootTxn = [
         {
-          encrypt: false,
-        }
-      );
-    }
-    const hootTxn = [
-      {
-        _id: "tweet",
-        createdAt: "#(now)",
-        auther: userData?._id,
-        image: fullImagePath,
-        text,
-        favorites: [],
-        replies: [],
-      },
-    ];
-    
-    await transact({
-      privateKey:
-        "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",
-      myTxn: hootTxn,
-      authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
-    })
-  }
+          _id: "tweet",
+          createdAt: "#(now)",
+          auther: userData?._id,
+          parentTweet: hootId,
+          image: fullImagePath,
+          text,
+        },
+      ];
+      await transact({
+        privateKey:
+          "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",
+        myTxn: hootTxn,
+        authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
+      });
+    },
+    []
+  );
 
-  const getNewsFeed = async () => {
-    const myQuery = {
-      "select": {
-        "?tweets":  [
-              {
-              "*": {
-                "_compact": true
-              }
-            },
-            {
-              "auther": [
-                "*",
-                {
-                  "_compact": true
-                }
-              ]
-            },
-            {
-              "parentTweet": [
-                "*",
-                {
-                  "_compact": true
-                },
-            {
-              "auther": [
-                "*",
-                {
-                  "_compact": true
-                }
-              ]
-            }
-              ]
-            },
-            {
-              "tweet/_parentTweet": [
-                {
-                  "_as": "retweets"
-                }
-              ]
-            }
-            ]
-      },
-      "where": [
-        [
-          "?var",
-          "connections/to",
-          "?to"
-        ],
-        [
-          "?var",
-          "connections/from",
-          userData?._id
-        ],
-        [
-          "?var",
-          "connections/status",
-          "success"
-        ],
-        ["?tweets","tweet/auther","?to"]
-      ]
+  const replyToHoot = useCallback(
+    async (text: string, image: string, hootId?: number) => {
+      const fullImagePath = await uploadImage(image);
+      const hootTxn = [
+        {
+          _id: "tweet$tempReply",
+          createdAt: "#(now)",
+          auther: userData?._id,
+          image: fullImagePath,
+          text,
+        },
+        {
+          _id: hootId,
+          replies: ["tweet$tempReply"],
+        },
+      ];
+      await transact({
+        privateKey:
+          "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",
+        myTxn: hootTxn,
+        authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
+      })
+    },
+    []
+  );
+
+  const uploadImage = useCallback(async (image: string) => {
+    if (image && image.length > 0) {
+      const id = generateGUID();
+      const fullImagePath = `user/hootImages/${id}`;
+      await RNBlockstackSdk.putFile(fullImagePath, JSON.stringify(image), {
+        encrypt: false,
+      });
+      return fullImagePath;
     }
-    await query({
-      myQuery,
-      privateKey: authenticatorPrivateKey,
-    }).then((res) => setNewsFeedHoots(res.data))
-    console.warn(newsFeedHoots)
-  }
+    return undefined;
+  }, []);
+
+  const loveHoot = useCallback(
+    async (hootId?: number) => {
+      const hootTxn = [
+        {
+          _id: hootId,
+          favorites: [userData?._id],
+        },
+      ];
+      await transact({
+        privateKey:
+          "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",
+        myTxn: hootTxn,
+        authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
+      })
+    },
+    []
+  );
+
   return {
-    getUserHoots,
-    userHoots,
-    postHoot,
-    getNewsFeed,
-    newsFeedHoots,
+    loading,
+    data,
+    postData,
+    replyToHoot,
+    loveHoot,
   };
 };
-
