@@ -28,78 +28,114 @@ export const ProfileHeader = ({
   const { navigateTo, goBack } = useNavigationUtils();
   const userImage = useGetUserImage(userProfile, styles.image);
   const username = useGetUserName(userProfile);
-  const {userData} = useContext(UserData)
-  let buttonState = userProfile._id === userData?._id ? 'Edit Profile':  following.filter((user: any) => user._id === userProfile._id).length > 0 ? 'Following': 'Follow';
+  const { userData } = useContext(UserData);
+  let buttonState =
+    userProfile._id === userData?._id
+      ? "Edit Profile"
+      : following.filter((user: any) => user._id === userProfile._id).length > 0
+      ? "Following"
+      : "Follow";
 
   return (
-    <LinearGradient
-      colors={[
-        "#eac7ac",
-        "#efa785",
-        "#fe502b",
-        "#ac5a9f",
-        "#9199da",
-        "#3b97e6",
-        "#3d88e9",
-        "#02caeb",
-      ]}
-      style={styles.header}
-    >
+    <View>
       {fromProfile && (
-        <Pressable onPress={goBack}>
-          <Image source={chevron} style={styles.backButtonIcon} />
-        </Pressable>
-      )}
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "flex-start",
-          justifyContent: "flex-start",
-        }}
-      >
-        {userImage}
-        <View style={{ flexDirection: "column", width: "50%" }}>
-          <Text style={styles.name}>{userProfile?.fullName} </Text>
-          <Text style={styles.username}>@{username}</Text>
-          <View
-            style={{ flexDirection: "row", marginVertical: 8, width: "95%" }}
+        <View style={{width: '100%', backgroundColor: 'black', height: 56, justifyContent: 'center'}}>
+          <Pressable
+            style={styles.backContainer}
+            onPress={goBack}
           >
-            <Image
-              style={{ width: 16, height: 16, resizeMode: "contain" }}
-              source={calendar}
-            />
-            <Text style={styles.date}> Joined September 2018</Text>
-          </View>
-          <Text style={styles.date}>{userProfile?.description}</Text>
-          <View style={{ flexDirection: "row", marginTop: 16 }}>
+            <Image source={chevron} style={styles.chev} />
+          </Pressable>
+        </View>
+      )}
+      <LinearGradient
+        colors={[
+          "#eac7ac",
+          "#efa785",
+          "#fe502b",
+          "#ac5a9f",
+          "#9199da",
+          "#3b97e6",
+          "#3d88e9",
+          "#02caeb",
+        ]}
+        style={styles.header}
+      >
+        <View style={styles.overlay}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "flex-start",
+              justifyContent: "flex-start",
+            }}
+          >
+            {userImage}
+            <View style={{ flexDirection: "column", width: "50%" }}>
+              <Text style={styles.name}>{userProfile?.fullName} </Text>
+              <Text style={styles.username}>@{username}</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginVertical: 8,
+                  width: "95%",
+                }}
+              >
+                <Image
+                  style={{ width: 16, height: 16, resizeMode: "contain" }}
+                  source={calendar}
+                />
+                <Text style={styles.date}> Joined September 2018</Text>
+              </View>
+              <Text style={styles.date}>{userProfile?.description}</Text>
+              <View style={{ flexDirection: "row", marginTop: 16 }}>
+                <Pressable
+                  onPress={() =>
+                    navigateTo({
+                      name: "Followers",
+                      params: { users: followers },
+                    })
+                  }
+                  style={styles.button}
+                >
+                  <Text style={styles.followersText}>
+                    {followers.length} Followers
+                  </Text>
+                </Pressable>
+                <Pressable
+                  onPress={() =>
+                    navigateTo({
+                      name: "Following",
+                      params: { users: following },
+                    })
+                  }
+                  style={styles.button}
+                >
+                  <Text style={styles.followingText}>
+                    {following.length} Following
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
             <Pressable
-              onPress={() => navigateTo({ name: "Followers",params: { users: followers} })}
-              style={styles.button}
+              style={styles.buttonStyles}
+              onPress={() => {
+                if (userProfile._id === userData?._id) {
+                  navigateTo({name: 'FillUserData'})
+                } else {
+                  followUserById(userProfile._id, "success")
+                  .then(() => alert("Success"))
+                  .catch(() => alert("Something went wrong"));
+                }
+                
+              }}
             >
-              <Text style={styles.followersText}>
-                {followers.length} Followers
-              </Text>
-            </Pressable>
-            <Pressable
-              onPress={() => navigateTo({ name: "Following", params: { users: following}})}
-              style={styles.button}
-            >
-              <Text style={styles.followingText}>
-                {following.length} Following
+              <Text style={{ fontSize: 11, color: "#0FBBEB" }}>
+                {buttonState}
               </Text>
             </Pressable>
           </View>
         </View>
-        <Pressable
-          style={styles.buttonStyles}
-          onPress={() => {
-            console.warn('Ehhh');
-            followUserById(userProfile._id).then(() => alert('Success')).catch(() => alert('Something went wrong'))
-          }}
-        >
-          <Text style={{ fontSize: 11, color: "#0FBBEB" }}>{buttonState}</Text>
-        </Pressable>
-      </View>
-    </LinearGradient>
+      </LinearGradient>
+    </View>
   );
 };

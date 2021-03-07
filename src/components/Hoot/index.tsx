@@ -3,9 +3,8 @@ import {
   defaultConfig,
   useGetUserImage,
   useNavigationUtils,
-  useTheme,
 } from "hooks";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { View, Image, Text, Pressable, ViewStyle } from "react-native";
 import { HootProps } from "./types";
 import styles from "./styles";
@@ -66,7 +65,7 @@ export const Hoot: React.FC<HootProps> = ({ currentHoot, loveHoot, retweetHoot }
   const userImage = useGetUserImage(currentHoot.auther, styles.image);
   const hootImage = useGetHootImage(currentHoot, styles.hootImage);
   const goToReplies = () => {
-    navigateTo({ name: "Replies", params: {hoot: currentHoot} })
+    navigateTo({ name: "Replies", params: {hoot: currentHoot, loveHoot, retweetHoot} })
   }
   
   return (

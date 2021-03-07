@@ -18,7 +18,7 @@ const {
   },
 } = Assets.images;
 
-export const Reply: React.FC<ReplyProps> = ({ currentHoot }) => {
+export const Reply: React.FC<ReplyProps> = ({ currentHoot, loveHoot, retweetHoot }) => {
   const { navigateTo } = useNavigationUtils();
   const userImage = useGetUserImage(currentHoot.auther, styles.image);
   const replyImage = useGetHootImage(currentHoot, styles.replyImage);
@@ -55,12 +55,12 @@ export const Reply: React.FC<ReplyProps> = ({ currentHoot }) => {
           <HootAction
             icon={retweet}
             counter={currentHoot.retweets?.length || 0}
-            action={() => console.log("pressed")}
+            action={() => retweetHoot({hootId: currentHoot._id})}
           />
           <HootAction
             icon={love}
             counter={currentHoot.favorites?.length || 0}
-            action={() => console.log("pressed")}
+            action={() => loveHoot(currentHoot._id)}
           />
           <HootAction
             icon={share}

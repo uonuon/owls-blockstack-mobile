@@ -13,7 +13,6 @@ export const RetweetedHoot: React.FC<HootProps> = ({
   const {
     theme: { colors, fonts },
   } = useTheme();
-  console.log("currentHoot.parentTweet", currentHoot);
   return (
     <View style={{ paddingTop: currentHoot.parentTweet ? 10 : 0 }}>
       {currentHoot.parentTweet && (

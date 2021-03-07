@@ -80,7 +80,7 @@ export const NewsFeed: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
       />
       <TouchableOpacity
         style={styles.fab}
-        onPress={() => navigateTo({ name: "WriteHoot" })}
+        onPress={() => navigateTo({ name: "WriteHoot" ,params: {postData}})}
       >
         <Image
           source={plus}

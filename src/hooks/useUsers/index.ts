@@ -72,7 +72,6 @@ export const useUsers = () => {
           myTxn: userTxn,
           authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
         })
-        console.warn(userTxn);
   }
   return {
     getFollowing,

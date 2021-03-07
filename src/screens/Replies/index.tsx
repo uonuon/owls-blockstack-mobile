@@ -3,7 +3,6 @@ import {
   View,
   Image,
   Text,
-  ScrollView,
   FlatList,
   TextInput,
   KeyboardAvoidingView,
@@ -26,16 +25,16 @@ export const Replies: React.FC = () => {
   } = Assets.images;
   const { goBack } = useNavigationUtils();
   const {
-    params: { hoot },
+    params: { hoot, loveHoot, retweetHoot },
   } = useRoute();
   const [currentText, setText] = useState("");
   let currentHoot: IHoot = hoot;
   const { data, loading, replyToHoot } = useHoots({
-   queryType: HootsQueriesTypes.HOOT_BY_ID,
-   id: currentHoot._id
+    queryType: HootsQueriesTypes.HOOT_BY_ID,
+    id: currentHoot._id,
   });
   const [currentImage, setImage] = useState("");
-
+  console.warn("EHH", currentHoot._id)
   return (
     <View style={{ flex: 1 }}>
       <KeyboardAvoidingView
@@ -70,11 +69,11 @@ export const Replies: React.FC = () => {
         </View>
         <FlatList
           data={data}
-          ListHeaderComponent={<Hoot currentHoot={currentHoot} />}
+          ListHeaderComponent={<Hoot loveHoot={loveHoot} retweetHoot={retweetHoot} currentHoot={currentHoot} />}
           style={[styles.flatList]}
           renderItem={({ item }) => {
             const reply: IHoot = item;
-            return <Reply currentHoot={reply} key={item._id.toString()} />;
+            return <Reply loveHoot={loveHoot} retweetHoot={retweetHoot} currentHoot={reply} key={item._id.toString()} />;
           }}
           removeClippedSubviews={false}
           maxToRenderPerBatch={10}
@@ -113,7 +112,9 @@ export const Replies: React.FC = () => {
           <TouchableOpacity
             disabled={currentText.length === 0}
             onPress={() =>
-              replyToHoot(currentText, currentImage, currentHoot._id)
+              replyToHoot(currentText, currentImage, currentHoot._id).then(
+                setText("")
+              )
             }
             style={[
               styles.postHoot,

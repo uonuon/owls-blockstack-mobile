@@ -55,7 +55,6 @@ export const useProfile = (currentProfile: IUser) => {
           status,
         },
       ];
-  
       return await transact({
         privateKey:
           "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",

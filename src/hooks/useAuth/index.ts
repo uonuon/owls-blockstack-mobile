@@ -104,7 +104,6 @@ export const useAuthentication = () => {
               auth: [["_auth/id", authId]],
             },
           ];
-          console.log("ssssssssss",authId,userTxn)
           await transact({
             privateKey: "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",
             myTxn: authTxn,
@@ -116,7 +115,6 @@ export const useAuthentication = () => {
             authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
           });
         }
-        console.warn("USER", user)
         setUserData({
           ...session,
           appPrivateKey,

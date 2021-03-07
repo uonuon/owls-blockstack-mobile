@@ -1,7 +1,12 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { View, Image, Text, ScrollView, ActivityIndicator } from "react-native";
 import { Assets } from "assets";
-import { useNavigationUtils, useProgressState, useTheme } from "hooks";
+import {
+  useGetUserImage,
+  useNavigationUtils,
+  useProgressState,
+  useTheme,
+} from "hooks";
 import styles from "./styles";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { launchImageLibrary } from "react-native-image-picker";
@@ -22,22 +27,18 @@ export const FillUserData: React.FC = () => {
     common: { chevron },
   } = Assets.images;
   const { goBack, replace } = useNavigationUtils();
-  const [name, setName] = useState<string>("");
-  const [desc, setDesc] = useState<string>("");
-  const [currentImage, setImage] = useState<string>("");
-  const { userData, setUserData } = useContext(UserData)
-  const {
-    setLoading,
-    loading,
-    setSuccess,
-    setFailure,
-  } = useProgressState();
+  const { userData, setUserData } = useContext(UserData);
+  const [name, setName] = useState<string>(userData?.fullName);
+  const [desc, setDesc] = useState<string>(userData?.description);
+  console.warn(userData);
+  const userImage = useGetUserImage(userData, styles.avatar);
+  const [currentImage, setImage] = useState<string>(userData?.avatar ?? "");
+  const { setLoading, loading, setSuccess, setFailure } = useProgressState();
   const disabledText =
     currentImage.length === 0 || name.length === 0 || desc.length === 0;
-  console.log("userData",userData)
   const setData = useCallback(async () => {
     try {
-      setLoading()
+      setLoading();
       const id = generateGUID();
       const fullImagePath = `user/avatar/${id}`;
       await RNBlockstackSdk.putFile(
@@ -49,7 +50,7 @@ export const FillUserData: React.FC = () => {
       );
       const updatedUserTxn = [
         {
-          _id: ["_user/auth",["_auth/id",userData?.authId]],
+          _id: ["_user/auth", ["_auth/id", userData?.authId]],
           fullName: name,
           description: desc,
           avatar: fullImagePath,
@@ -61,16 +62,20 @@ export const FillUserData: React.FC = () => {
         myTxn: updatedUserTxn,
         authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
       }).then(() => {
-        setUserData((oldUserData: IUser) => ({...oldUserData, ...updatedUserTxn }))
-        replace({ name: "home" })
-        setSuccess()
-      })
+        setUserData((oldUserData: IUser) => ({
+          ...oldUserData,
+          fullName: name,
+          description: desc,
+          avatar: fullImagePath,
+        }));
+        replace({ name: "home" }, { name: "Profile" });
+        setSuccess();
+      });
     } catch (error) {
       alert("Something went wrong");
-      setFailure()
+      setFailure();
     }
-  },[name, desc, currentImage]);
-
+  }, [name, desc, currentImage]);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -107,7 +112,7 @@ export const FillUserData: React.FC = () => {
             }
           >
             {currentImage.length > 0 ? (
-              <Image style={styles.avatar} source={{ uri: currentImage }} />
+              <>{userImage}</>
             ) : (
               <Image style={styles.avatar} source={avatar} />
             )}
@@ -115,6 +120,7 @@ export const FillUserData: React.FC = () => {
           <View style={styles.input}>
             <Text style={styles.text}>Name</Text>
             <TextInput
+              value={name}
               placeholderTextColor="#6c6c6c"
               style={styles.textInput}
               onChangeText={(text) => setName(text)}
@@ -125,6 +131,7 @@ export const FillUserData: React.FC = () => {
             <Text style={styles.text}>Description</Text>
             <TextInput
               placeholderTextColor="#6c6c6c"
+              value={desc}
               style={styles.textInput}
               onChangeText={(text) => setDesc(text)}
               placeholder="Write something about you"

@@ -48,15 +48,18 @@ export const useGetUserImage = (userData: IUser, overrideStyles?: ViewStyle) => 
   const [data, setData] = useState<{uri: string}>(avatar);
   const { navigateTo } = useNavigationUtils();
 
-  useMemo(async () => {
-    const gaiaURL = userData.profile && JSON.parse(userData.profile).apps[defaultConfig.appDomain]
-    const image = userData.avatar
-      ? {uri: await fetch(gaiaURL + userData.avatar, {
+  useMemo(() => {
+    const gaiaURL = userData.profile && JSON.parse(userData.profile).apps[defaultConfig.appDomain];
+    if(userData.avatar){
+      fetch(gaiaURL + userData.avatar, {
         method: 'GET',
-      }).then((res) => res.json())}
-      : avatar;
-    return image;
-  }, [userData]).then((res) => setData(res));
+      }).then((res) => res.json()).then(res => {
+        setData({uri: res})
+      });
+    }else{
+      setData(avatar);
+    }
+  }, [userData]);
 
   return (
     <TouchableOpacity

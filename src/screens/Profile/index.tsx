@@ -206,10 +206,10 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
         followUserById={followUserById}
       />
     ),
-    [selectedUser, currentFollowers, currentFollowing]
+    [selectedUser, currentFollowers, currentFollowing, userData]
   );
 
-  const makeHeaderHeight = useCallback(() => 200, []);
+  const makeHeaderHeight = useCallback(() => params?.incomingUser ? 256 : 200, []);
 
   return (
     <CollapsibleHeaderTabView

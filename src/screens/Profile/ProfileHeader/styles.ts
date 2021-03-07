@@ -52,8 +52,7 @@ const styles = StyleSheet.create({
   },
   header: {
     height: 200,
-    paddingVertical: 24,
-    paddingHorizontal: 16,
+
   },
   button: {
     borderRadius: 8,
@@ -73,7 +72,27 @@ const styles = StyleSheet.create({
     color: theme.colors.common.white,
     fontSize: 12,
     fontFamily: theme.fonts.regular,
-  }
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    backgroundColor: 'rgba(30,30,30,0.5)',
+    height: 200,
+    width: '100%',
+    paddingVertical: 24,
+    paddingHorizontal: 16,
+  },
+  chev: {width: 20, height: 35},
+  backContainer: {
+    width: 45,
+    height: 45,
+    justifyContent: "center",
+    alignItems: "flex-start",
+    paddingLeft: 30,
+  },
 })
 
 export default styles;

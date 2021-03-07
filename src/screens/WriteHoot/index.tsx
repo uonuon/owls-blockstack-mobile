@@ -15,6 +15,7 @@ import styles from "./styles";
 import { TextInput } from "react-native-gesture-handler";
 import {launchImageLibrary} from 'react-native-image-picker';
 import { IUser } from "shared";
+import { useRoute } from "@react-navigation/native";
 
 const {
   common: { publicImage, chevron, gif, mic, photo, stats },
@@ -29,7 +30,7 @@ export const WriteHoot: React.FC = () => {
   const [currentText, setText] = useState("");
   const [currentImage, setImage] = useState("");
   const { userData } = useContext(UserData);
-  const { postData } = useHoots({disableFetch: true})
+  const { params: {postData} } = useRoute();
   const userImage = useGetUserImage(userData as IUser, styles.avatar);
 
   useEffect(() => {}, [currentImage])

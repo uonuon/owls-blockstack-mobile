@@ -29,6 +29,7 @@ import {
 import {
   ROUTES,
 } from '../routes';
+import { useRealTime } from 'src/hooks/useRealTime';
 
 export const generateNavigationElement = (
   element: any,
@@ -82,7 +83,7 @@ export const generateNavigationElement = (
 };
 
 export const AppNavigationContainer: React.FC = () => {
-
+  useRealTime();
   return (
     <NavigationContainer>
         <ThemeProvider>

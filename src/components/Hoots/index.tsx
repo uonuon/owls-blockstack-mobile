@@ -42,6 +42,6 @@ export const Hoots: React.FC<Props> = ({
     updateCellsBatchingPeriod={50}
     initialNumToRender={10}
     legacyImplementation={false}
-    keyExtractor={(item: any) => item._id}
+    keyExtractor={(item: any) => item._id.toString()}
   />
 );
