@@ -49,8 +49,8 @@ export const useGetUserImage = (userData: IUser, overrideStyles?: ViewStyle) => 
   const { navigateTo } = useNavigationUtils();
 
   useMemo(() => {
-    const gaiaURL = userData.profile && JSON.parse(userData.profile).apps[defaultConfig.appDomain];
-    if(userData.avatar){
+    const gaiaURL = userData?.profile && JSON.parse(userData.profile).apps[defaultConfig.appDomain];
+    if(userData?.avatar){
       fetch(gaiaURL + userData.avatar, {
         method: 'GET',
       }).then((res) => res.json()).then(res => {

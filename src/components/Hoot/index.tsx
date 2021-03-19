@@ -4,7 +4,7 @@ import {
   useGetUserImage,
   useNavigationUtils,
 } from "hooks";
-import React, { useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { View, Image, Text, Pressable, ViewStyle } from "react-native";
 import { HootProps } from "./types";
 import styles from "./styles";
@@ -18,16 +18,15 @@ import { IHoot } from "shared";
 import { TouchableOpacity } from "react-native-gesture-handler";
 const {
   components: {
-    hoot: { more, love, reply, retweet, share, image, defaultAvatar },
+    hoot: { more, love, reply, retweet, share, image, defaultAvatar, loveActive },
   },
 } = Assets.images;
 
 export const useGetHootImage = (hoot: IHoot, overrideStyles?: ViewStyle) => {
   const [data, setData] = useState<string>();
-
   useMemo(async () => {
     const gaiaURL =
-      hoot.auther.profile &&
+      hoot.auther?.profile &&
       JSON.parse(hoot.auther.profile).apps[defaultConfig.appDomain];
     const image = hoot.image
       ? await fetch(gaiaURL + hoot.image, {
@@ -67,7 +66,8 @@ export const Hoot: React.FC<HootProps> = ({ currentHoot, loveHoot, retweetHoot }
   const goToReplies = () => {
     navigateTo({ name: "Replies", params: {hoot: currentHoot, loveHoot, retweetHoot} })
   }
-  
+  const { userData } = useContext(UserData); 
+  let loveIcon = currentHoot.favorites?.filter((user: any) => user._id === userData?._id) ? loveActive : love;
   return (
     <View style={styles.container}>
       {userImage}
@@ -91,9 +91,11 @@ export const Hoot: React.FC<HootProps> = ({ currentHoot, loveHoot, retweetHoot }
             action={() => retweetHoot({hootId: currentHoot._id})}
           />
           <HootAction
-            icon={love}
+            icon={loveIcon}
             counter={currentHoot.favorites?.length || 0}
-            action={() => loveHoot(currentHoot._id)}
+            action={() => {
+              loveHoot(currentHoot._id)
+            }}
           />
           <HootAction
             icon={share}

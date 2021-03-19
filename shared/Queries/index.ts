@@ -83,16 +83,20 @@ export const queryFollowers = (id: number) => {
   };
 };
 
-export const queryUserHoots = (id: number) => {
+export const queryUserHoots = (id: number, offset: number) => {
   return {
     select: {
       "?tweet": hootSelector,
     },
     where: [["?tweet", "tweet/auther", id]],
+    opts: {
+      limit: 20,
+      offset,
+    }
   };
 };
 
-export const newsFeed = (id: number) => ({
+export const newsFeed = (id: number, offset: number) => ({
   select: {
     "?tweets": hootSelector,
   },
@@ -102,19 +106,23 @@ export const newsFeed = (id: number) => ({
     ["?var", "connections/status", "success"],
     ["?tweets", "tweet/auther", "?to"],
   ],
+  opts: {
+    limit: 20,
+    offset,
+  }
 });
 
-export const getCurrentHootReplies = (id: number) => {
+export const getCurrentHootReplies = (id: number, offset: number) => {
   return {
     select: {
-      "?replies": hootSelector,
+      "?replies": hootSelector, 
     },
     where: [[id, "tweet/replies", "?replies"]],
   };
 };
 
 export const hootsQueriesMap: {
-  [x: HootsQueriesTypes]: (id: number) => void;
+  [x: HootsQueriesTypes]: (id: number, offset: number) => void;
 } = {
   [HootsQueriesTypes.NEWS_FEED_HOOTS]: newsFeed,
   [HootsQueriesTypes.USER_HOOTS]: queryUserHoots,

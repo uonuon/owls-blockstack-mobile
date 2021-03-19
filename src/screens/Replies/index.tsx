@@ -34,7 +34,6 @@ export const Replies: React.FC = () => {
     id: currentHoot._id,
   });
   const [currentImage, setImage] = useState("");
-  console.warn("EHH", currentHoot._id)
   return (
     <View style={{ flex: 1 }}>
       <KeyboardAvoidingView
@@ -68,20 +67,20 @@ export const Replies: React.FC = () => {
           </View>
         </View>
         <FlatList
-          data={data}
+          data={data.sort((a,b) => a.createdAt - b.createdAt)}
           ListHeaderComponent={<Hoot loveHoot={loveHoot} retweetHoot={retweetHoot} currentHoot={currentHoot} />}
           style={[styles.flatList]}
           renderItem={({ item }) => {
             const reply: IHoot = item;
-            return <Reply loveHoot={loveHoot} retweetHoot={retweetHoot} currentHoot={reply} key={item._id.toString()} />;
+            return <Reply loveHoot={loveHoot} retweetHoot={retweetHoot} currentHoot={reply} key={item.createdAt.toString()} />;
           }}
           removeClippedSubviews={false}
           maxToRenderPerBatch={10}
           updateCellsBatchingPeriod={50}
           initialNumToRender={10}
           legacyImplementation={false}
-          keyExtractor={(item: any) => item._id.toString()}
-        />
+          keyExtractor={(item: any, index) => `${item.createdAt}${index}`}
+          />
         <View style={styles.replyView}>
           <TextInput
             multiline={true}

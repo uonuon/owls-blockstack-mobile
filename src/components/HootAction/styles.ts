@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  icon: { width: 18, marginRight: 12 },
+  icon: { width: 18, marginRight: 12, resizeMode: 'contain', height: 18,},
   text: { fontSize: 14, color: theme.colors.common.white, marginRight: 27, fontFamily: theme.fonts.regular, },
 });
 

@@ -23,7 +23,7 @@ const {
 export const NewsFeed: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
   const navigation = useNavigationUtils();
   const { userData } = useContext(UserData);
-  const { data, loading, loveHoot, postData } = useHoots({queryType: HootsQueriesTypes.NEWS_FEED_HOOTS, id: userData?._id || 0});
+  const { hasReachedEnd, data, loading, loveHoot, postData, loadMoreHoots } = useHoots({queryType: HootsQueriesTypes.NEWS_FEED_HOOTS, id: userData?._id || 0});
 
   useEffect(() => {
     navigation.setOptions({
@@ -64,6 +64,8 @@ export const NewsFeed: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
       <Hoots
         hoots={data}
         loveHoot={loveHoot}
+        loadMoreHoots={loadMoreHoots}
+        hasReachedEnd={hasReachedEnd}
         retweetHoot={postData}
         // ListHeaderComponent={hootsHeader}
         ListEmptyComponent={

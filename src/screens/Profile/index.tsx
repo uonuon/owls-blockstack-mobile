@@ -74,7 +74,7 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
   const { currentFollowers, currentFollowing, followUserById } = useProfile(
     selectedUser
   );
-  const { data, loading, loveHoot, postData } = useHoots({
+  const { data, loading, loveHoot, postData, hasReachedEnd, loadMoreHoots } = useHoots({
     queryType: HootsQueriesTypes.USER_HOOTS,
     id: selectedUser?._id || 0,
   });
@@ -142,7 +142,7 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
             </Pressable>
           </View>
         ) : (
-          <Hoots hoots={data} loveHoot={loveHoot} retweetHoot={postData} />
+          <Hoots  hoots={data} loveHoot={loveHoot} retweetHoot={postData} />
         )}
       </HScrollView>
     ),
@@ -152,7 +152,7 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
   const ProfileMediaHoots = useCallback(
     () => (
       <HScrollView style={styles.flatList} index={1}>
-        <Hoots hoots={data} loveHoot={loveHoot} retweetHoot={postData} />
+        {/* <Hoots hasReachedEnd={hasReachedEnd} loadMoreHoots={loadMoreHoots} hoots={data} loveHoot={loveHoot} retweetHoot={postData} /> */}
       </HScrollView>
     ),
     [data]
@@ -161,7 +161,7 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
   const ProfileLikesHoots = useCallback(
     () => (
       <HScrollView style={styles.flatList} index={2}>
-        <Hoots hoots={data} loveHoot={loveHoot} retweetHoot={postData} />
+        {/* <Hoots hasReachedEnd={hasReachedEnd} loadMoreHoots={loadMoreHoots} hoots={data} loveHoot={loveHoot} retweetHoot={postData} /> */}
       </HScrollView>
     ),
     [data]

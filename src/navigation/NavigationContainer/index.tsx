@@ -76,7 +76,8 @@ export const generateNavigationElement = (
       labelStyle: {
         fontSize: 14
       }
-    }} lazy={false}>
+    }} lazy={false}
+  >
       {Object.values(element.elements).map((value) => generateNavigationElement(value, Navigator, (value as any).name))}
     </Navigator.Navigator>
   );

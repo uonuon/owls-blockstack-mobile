@@ -43,7 +43,8 @@ export const WriteHoot: React.FC = () => {
         </TouchableOpacity>
         <TouchableOpacity
           disabled={currentText.length === 0}
-          onPress={() => postData({text: currentText, image: currentImage}).then(goBack)}
+          onPress={() => {postData({text: currentText, image: currentImage})
+          goBack()}}
           style={[
             styles.postHoot,
             { backgroundColor: currentText.length > 0 ? theme.colors.secondaryHighContrasted : theme.colors.secondary },

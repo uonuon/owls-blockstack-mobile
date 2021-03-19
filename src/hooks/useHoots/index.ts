@@ -1,6 +1,13 @@
 import { useRealTime } from "src/hooks/useRealTime";
 import { arrayToObj } from "./../../utils/crypto/index";
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import RNBlockstackSdk from "react-native-blockstack";
 import { query, getPublicKeyFromPrivate, transact, generateGUID } from "utils";
 import { IHoot, IUser } from "shared";
@@ -23,13 +30,15 @@ export interface PostHoot {
   image?: string;
   hootId?: number;
 }
-
 export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
   const [dataObj, setDataObj] = useState<{ [x: string]: IHoot }>({});
+  const dataObjRef = useRef(dataObj);
+  dataObjRef.current = dataObj;
   const { userData } = useContext(UserData);
   const { setFailure, setLoading, setSuccess, loading } = useProgressState();
   const { tweetsMapper } = useRealTime();
-
+  const [page, setPage] = useState<number>(0);
+  const [hasReachedEnd, setHasReachedEnd] = useState<boolean>(false);
   const data = useMemo(
     () => Object.values(dataObj).sort((a, b) => b.createdAt - a.createdAt),
     [dataObj]
@@ -54,15 +63,25 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
   useEffect(() => {
     if (!disableFetch) {
       setLoading();
+      console.warn("GEET HNA");
       query({
-        myQuery: hootsQueriesMap[queryType](id),
+        myQuery: hootsQueriesMap[queryType](id, data.length),
         privateKey: authenticatorPrivateKey,
       })
-        .then((res) => setDataObj(arrayToObj(res.data)))
-        .then(setSuccess)
+        .then((res) => {
+          setDataObj({ ...dataObjRef.current, ...arrayToObj(res.data) });
+          setHasReachedEnd(res.data.length < 10);
+          setSuccess();
+        })
         .catch(setFailure);
     }
-  }, [disableFetch, queryType, id]);
+  }, [disableFetch, queryType, id, page]);
+
+  const loadMoreHoots = useCallback(() => {
+    if (!loading && !hasReachedEnd) {
+      setPage((prevState) => prevState + 1);
+    }
+  }, []);
 
   const postData = useCallback(
     async ({ hootId, image, text }: PostHoot) => {
@@ -85,14 +104,14 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
         authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
       }).then(() => {
         setDataObj({
-          ...dataObj,
           [tempId]: {
             ...hootTxn,
             text,
             createdAt: new Date().getTime(),
             auther: userData,
-            parentTweet: hootId ? dataObj[hootId] : undefined,
+            parentTweet: hootId ? dataObjRef.current[hootId] : undefined,
           },
+          ...dataObjRef.current,
         });
       });
     },
@@ -100,11 +119,12 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
   );
 
   const replyToHoot = useCallback(
-    async (text: string, image: string, hootId?: number) => {
+    async (text: string, image: string, hootId?: string) => {
       const fullImagePath = await uploadImage(image);
+      const tempId = generateGUID();
       const hootTxn = [
         {
-          _id: `tweet$reply-${hootId}`,
+          _id: `tweet$reply-${hootId}${tempId}`,
           createdAt: "#(now)",
           auther: userData?._id,
           image: fullImagePath,
@@ -112,9 +132,20 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
         },
         {
           _id: hootId,
-          replies: [`tweet$reply-${hootId}`],
+          replies: [`tweet$reply-${hootId}${tempId}`],
         },
       ];
+      setDataObj({
+        ...dataObjRef.current,
+        [`reply-${hootId}${tempId}`]: {
+          ...hootTxn[0],
+          _id: hootTxn[0]._id?.replace("tweet$", ""),
+          text,
+          createdAt: new Date().getTime(),
+          auther: userData,
+          parentTweet: hootId ? dataObjRef.current[hootId] : undefined,
+        },
+      });
       await transact({
         privateKey:
           "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",
@@ -136,13 +167,23 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
     return undefined;
   }, []);
 
-  const loveHoot = useCallback(async (hootId?: number) => {
+  const loveHoot = useCallback(async (hootId: string) => {
     const hootTxn = [
       {
         _id: hootId,
         favorites: [userData?._id],
       },
     ];
+    setDataObj({
+      ...dataObjRef.current,
+      [hootId]: {
+        ...dataObjRef.current[hootId],
+        favorites: [
+          ...(dataObjRef.current[hootId].favorites || []),
+          userData?._id,
+        ],
+      },
+    });
     await transact({
       privateKey:
         "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",
@@ -158,5 +199,7 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
     postData,
     replyToHoot,
     loveHoot,
+    loadMoreHoots,
+    hasReachedEnd,
   };
 };
