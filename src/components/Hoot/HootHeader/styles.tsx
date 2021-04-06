@@ -23,6 +23,7 @@ import {
       color: theme.colors.common.white,
       opacity: 0.38,
       fontFamily: theme.fonts.regular,
+      marginBottom: 16,
     },
     date: {
         fontSize: 16,

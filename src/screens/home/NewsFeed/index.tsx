@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from "react";
 import { View, Image, Text, TouchableOpacity } from "react-native";
 import { Assets } from "assets";
 import {
+  useGetUserImage,
   useHoots,
   useNavigationUtils,
   useTheme,
@@ -14,6 +15,13 @@ import { Hoots } from "src/components/Hoots";
 import { HootsQueriesTypes } from "shared/Queries";
 
 const {
+  common: {
+    defaultAvatar,
+    photo,
+    gif,
+    stats,
+    mic
+  },
   screens: {
     home: { home, homeDisabled, plus },
     login: { logo },
@@ -23,7 +31,8 @@ const {
 export const NewsFeed: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
   const navigation = useNavigationUtils();
   const { userData } = useContext(UserData);
-  const { hasReachedEnd, data, loading, loveHoot, postData, loadMoreHoots } = useHoots({queryType: HootsQueriesTypes.NEWS_FEED_HOOTS, id: userData?._id || 0});
+  const { hasReachedEnd, data, loading,refresh, loveHoot, postData, loadMoreHoots } = useHoots({queryType: HootsQueriesTypes.NEWS_FEED_HOOTS, id: userData?._id || 0});
+  const userImage = useGetUserImage(userData, styles.avatar);
 
   useEffect(() => {
     navigation.setOptions({
@@ -38,23 +47,23 @@ export const NewsFeed: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
   }, []);
   const { navigateTo } = useNavigationUtils();
 
-  // const hootsHeader = () => (
-  //   <TouchableOpacity
-  //     onPress={() => navigateTo({ name: "WriteHoot" })}
-  //     style={styles.writeHoot}
-  //   >
-  //     <View style={{ flexDirection: "row", alignItems: "center" }}>
-  //       <Image source={defaultAvatar} style={styles.avatar} />
-  //       <Text style={styles.whatHappen}>What’s happening?</Text>
-  //     </View>
-  //     <View style={{ flexDirection: "row", alignItems: "center" }}>
-  //       <Image source={photo} style={styles.icon} />
-  //       <Image source={gif} style={styles.icon} />
-  //       <Image source={stats} style={styles.icon} />
-  //       <Image source={mic} style={[styles.icon, { marginRight: 0 }]} />
-  //     </View>
-  //   </TouchableOpacity>
-  // );
+  const hootsHeader = () => (
+    <TouchableOpacity
+    onPress={() => navigateTo({ name: "WriteHoot" ,params: {postData}})}
+    style={styles.writeHoot}
+    >
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        {userImage}
+        <Text style={styles.whatHappen}>What’s happening?</Text>
+      </View>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Image source={photo} style={styles.icon} />
+        <Image source={gif} style={styles.icon} />
+        <Image source={stats} style={styles.icon} />
+        <Image source={mic} style={[styles.icon, { marginRight: 0 }]} />
+      </View>
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.container}>
@@ -66,8 +75,10 @@ export const NewsFeed: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
         loveHoot={loveHoot}
         loadMoreHoots={loadMoreHoots}
         hasReachedEnd={hasReachedEnd}
+        refresh={refresh}
+        isRefreshing={loading}
         retweetHoot={postData}
-        // ListHeaderComponent={hootsHeader}
+        ListHeaderComponent={hootsHeader}
         ListEmptyComponent={
           <View
             style={{

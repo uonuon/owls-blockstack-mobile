@@ -45,11 +45,29 @@ export const useUsers = () => {
     }).then((res) => console.warn('GetFollowing', res.data, userData?._id))
   }
 
-  const getUsers = async () => {
-      const myQuery = {
-        "select": [{"*": {_compact: true}}],
-        "from": "_user"
-      }
+  const getUsers = async (searchText: string) => {
+      const myQuery = {"select": {
+        "?var": [
+          {"*": {"_compact": true}}
+        ]
+      },
+      "where": [
+        [
+          "?var",
+          "_user/fullName",
+          "?fullName"
+        ],
+        [
+          "?var",
+          "_user/username",
+          "?username"
+        ],
+        {
+          "filter": [
+            `(or (re-find (re-pattern \"${searchText}\") ?username) (re-find (re-pattern \"${searchText}\") ?fullName))`
+          ]
+        }
+      ]}
       await query({
         myQuery,
         privateKey: authenticatorPrivateKey,

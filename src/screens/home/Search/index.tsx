@@ -2,13 +2,20 @@ import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import React, { useContext, useEffect, useState } from "react";
 import { View, Image, Text, TextInput, TouchableOpacity } from "react-native";
 import { Assets } from "assets";
-import { useGetUserImage, useLocalization, useNavigationUtils, useTheme, useUsers } from "hooks";
+import {
+  useGetUserImage,
+  useLocalization,
+  useNavigationUtils,
+  useTheme,
+  useUsers,
+} from "hooks";
 import { UserData } from "contexts";
 import styles from "./styles";
 import { Hoot, User } from "components";
 import { ScreenParams } from "navigation";
 import TabBarIcon from "../TabBarIcon";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
+import _ from "lodash";
 
 const {
   common: { logo, searchIcon, chevron },
@@ -35,11 +42,15 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
         />
       ),
     });
-    getUsers();
   }, []);
 
+  const onChangeText = (text: string) => {
+    // setText(text)
+    getUsers(text.trim());
+  }
+  const onChangeTextDelayed = _.debounce(onChangeText, 2000);
   return (
-    <ScrollView keyboardShouldPersistTaps="handled" style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.header}>
         {!searchState ? (
           <Image source={logo} style={styles.backgroundLogo} />
@@ -63,10 +74,9 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
               fontFamily: theme.fonts.regular,
             }}
             numberOfLines={5}
-            value={currentText}
             onTouchStart={() => setSearchState(true)}
-            onChangeText={(text) => {setText(text.toLowerCase())}}
-            placeholder="Search users and hashtags"
+            onChangeText={onChangeTextDelayed}
+            placeholder="Search users by username"
           />
         </View>
         <Image
@@ -74,192 +84,38 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
           style={{ width: 20, resizeMode: "contain" }}
         />
       </View>
-      {searchState ? (
-        <View>
-          <FlatList
-            data={users.filter((data: any) => data.username.includes(currentText))}
-            style={{ flex: 1, width: "100%" }}
-            ListEmptyComponent={
-              <View
-                style={{
-                  marginTop: "50%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text style={{ color: "white" }}>Seems you got no friends</Text>
-              </View>
-            }
-            renderItem={({ item }) => {
-              return (
-                <User user={item}/>
-              );
-            }}
-            keyExtractor={(item: any) => item._id}
-          />
-        </View>
-      ) : (
-        <>
-          <Text
-            style={{
-              fontSize: 20,
-              color: "#fff",
-              fontFamily: theme.fonts.headers,
-              opacity: 0.6,
-              marginTop: 16,
-              marginLeft: 24,
-              marginBottom: 16,
-            }}
-          >
-            Most Trending Hashtags
-          </Text>
+      <Text
+        style={{
+          fontSize: 20,
+          color: "#fff",
+          fontFamily: theme.fonts.headers,
+          opacity: 0.6,
+          marginTop: 16,
+          marginLeft: 24,
+          marginBottom: 16,
+        }}
+      >
+        Users
+      </Text>
+      <FlatList
+        data={users.filter((data: any) => data.username.includes(currentText))}
+        style={{ flex: 1, width: "100%" }}
+        ListEmptyComponent={
           <View
             style={{
-              paddingHorizontal: 24,
-              paddingVertical: 16,
-              backgroundColor: theme.colors.elevation02dp,
-              flexDirection: "row",
-              marginBottom: 0.5,
+              marginTop: "50%",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            <Text
-              style={{
-                fontSize: 24,
-                color: "#006FB4",
-                marginRight: 16,
-                fontFamily: theme.fonts.regular,
-              }}
-            >
-              1
-            </Text>
-            <View>
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontFamily: theme.fonts.regular,
-                  color: "#FFF",
-                  opacity: 0.87,
-                  marginBottom: 10,
-                }}
-              >
-                Most Trending Hashtags
-              </Text>
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: "#FFF",
-                  opacity: 0.38,
-                  fontFamily: theme.fonts.regular,
-                }}
-              >
-                23K Hoots
-              </Text>
-            </View>
+            <Text style={{ color: "white" }}>User not found</Text>
           </View>
-          <View
-            style={{
-              paddingHorizontal: 24,
-              paddingVertical: 16,
-              backgroundColor: theme.colors.elevation02dp,
-              flexDirection: "row",
-              marginBottom: 0.5,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 24,
-                color: "#006FB4",
-                marginRight: 16,
-                fontFamily: theme.fonts.regular,
-              }}
-            >
-              2
-            </Text>
-            <View>
-              <Text
-                style={{
-                  fontSize: 20,
-                  color: "#FFF",
-                  opacity: 0.87,
-                  fontFamily: theme.fonts.regular,
-                  marginBottom: 10,
-                }}
-              >
-                Most Trending Hashtags
-              </Text>
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: "#FFF",
-                  opacity: 0.38,
-                  fontFamily: theme.fonts.regular,
-                }}
-              >
-                23K Hoots
-              </Text>
-            </View>
-          </View>
-          <View
-            style={{
-              paddingHorizontal: 24,
-              paddingVertical: 16,
-              backgroundColor: theme.colors.elevation02dp,
-              flexDirection: "row",
-              marginBottom: 0.5,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 24,
-                color: "#006FB4",
-                marginRight: 16,
-                fontFamily: theme.fonts.regular,
-              }}
-            >
-              3
-            </Text>
-            <View>
-              <Text
-                style={{
-                  fontSize: 20,
-                  color: "#FFF",
-                  opacity: 0.87,
-                  fontFamily: theme.fonts.regular,
-                  marginBottom: 10,
-                }}
-              >
-                Most Trending Hashtags
-              </Text>
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: "#FFF",
-                  opacity: 0.38,
-                  fontFamily: theme.fonts.regular,
-                }}
-              >
-                23K Hoots
-              </Text>
-            </View>
-          </View>
-          <Text
-            style={{
-              fontSize: 20,
-              color: "#fff",
-              opacity: 0.6,
-              marginTop: 16,
-              marginLeft: 24,
-              fontFamily: theme.fonts.regular,
-              marginBottom: 16,
-            }}
-          >
-            Most Trending Hashtags
-          </Text>
-          <View style={{ borderTopWidth: 1, borderTopColor: "#1f1f1f" }}>
-            {/* <Hoot /> */}
-          </View>
-        </>
-      )}
-    </ScrollView>
+        }
+        renderItem={({ item }) => {
+          return <User user={item} />;
+        }}
+        keyExtractor={(item: any) => item._id}
+      />
+    </View>
   );
 };

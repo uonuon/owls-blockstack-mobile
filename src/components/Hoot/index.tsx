@@ -16,9 +16,10 @@ import { UserData } from "contexts";
 import { hi } from "date-fns/locale";
 import { IHoot } from "shared";
 import { TouchableOpacity } from "react-native-gesture-handler";
+
 const {
   components: {
-    hoot: { more, love, reply, retweet, share, image, defaultAvatar, loveActive },
+    hoot: { more, love, reply, retweet, retweetActive, share, image, defaultAvatar, loveActive },
   },
 } = Assets.images;
 
@@ -68,6 +69,7 @@ export const Hoot: React.FC<HootProps> = ({ currentHoot, loveHoot, retweetHoot }
   }
   const { userData } = useContext(UserData); 
   let loveIcon = currentHoot.favorites?.filter((user: any) => user._id === userData?._id) ? loveActive : love;
+  let retweetIcon = currentHoot.retweets?.filter((user: any) => user.auther._id === userData?._id).length ? retweetActive : retweet;
   return (
     <View style={styles.container}>
       {userImage}
@@ -86,7 +88,7 @@ export const Hoot: React.FC<HootProps> = ({ currentHoot, loveHoot, retweetHoot }
             action={goToReplies}
           />
           <HootAction
-            icon={retweet}
+            icon={retweetIcon}
             counter={currentHoot.retweets?.length || 0}
             action={() => retweetHoot({hootId: currentHoot._id})}
           />
@@ -97,11 +99,11 @@ export const Hoot: React.FC<HootProps> = ({ currentHoot, loveHoot, retweetHoot }
               loveHoot(currentHoot._id)
             }}
           />
-          <HootAction
+          {/* <HootAction
             icon={share}
             counter={0}
             action={() => console.log("pressed")}
-          />
+          /> */}
         </View>
       </View>
     </View>

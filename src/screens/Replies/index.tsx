@@ -34,6 +34,7 @@ export const Replies: React.FC = () => {
     id: currentHoot._id,
   });
   const [currentImage, setImage] = useState("");
+
   return (
     <View style={{ flex: 1 }}>
       <KeyboardAvoidingView

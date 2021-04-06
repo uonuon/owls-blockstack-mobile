@@ -40,6 +40,13 @@ const hootSelector = [
       {
         _as: "retweets",
       },
+      {
+        auther: [
+          {
+            _compact: true,
+          },
+        ],
+      },
     ],
   },
 ];

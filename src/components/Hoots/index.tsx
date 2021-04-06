@@ -14,6 +14,8 @@ interface Props {
   ListEmptyComponent?: React.ReactElement;
   loadMoreHoots: () => void;
   hasReachedEnd: boolean;
+  refresh: () => void;
+  isRefreshing: boolean;
 }
 
 export const Hoots: React.FC<Props> = ({
@@ -25,11 +27,15 @@ export const Hoots: React.FC<Props> = ({
   retweetHoot,
   loadMoreHoots,
   hasReachedEnd,
+  isRefreshing,
+  refresh
 }) => (
   <FlatList
     data={hoots}
     ListHeaderComponent={ListHeaderComponent}
     ListEmptyComponent={ListEmptyComponent}
+    onRefresh={refresh}
+    refreshing={isRefreshing}
     ListFooterComponent={
      <>
      {!hasReachedEnd &&  <ActivityIndicator
@@ -55,7 +61,7 @@ export const Hoots: React.FC<Props> = ({
     updateCellsBatchingPeriod={50}
     extraData={hoots}
     initialNumToRender={10}
-    onEndReachedThreshold={0.5}
+    onEndReachedThreshold={0.1}
     onEndReached={loadMoreHoots}
     legacyImplementation={false}
     keyExtractor={(item: any, index) => item._id}

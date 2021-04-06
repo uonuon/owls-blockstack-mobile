@@ -35,7 +35,7 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
   const dataObjRef = useRef(dataObj);
   dataObjRef.current = dataObj;
   const { userData } = useContext(UserData);
-  const { setFailure, setLoading, setSuccess, loading } = useProgressState();
+  const { setFailure, setLoading, setSuccess, loading, success } = useProgressState();
   const { tweetsMapper } = useRealTime();
   const [page, setPage] = useState<number>(0);
   const [hasReachedEnd, setHasReachedEnd] = useState<boolean>(false);
@@ -59,23 +59,14 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
       });
     }
   }, [tweetsMapper, disableFetch]);
-
+  useEffect(() => {
+    setDataObj({});
+  }, [id]);
   useEffect(() => {
     if (!disableFetch) {
-      setLoading();
-      console.warn("GEET HNA");
-      query({
-        myQuery: hootsQueriesMap[queryType](id, data.length),
-        privateKey: authenticatorPrivateKey,
-      })
-        .then((res) => {
-          setDataObj({ ...dataObjRef.current, ...arrayToObj(res.data) });
-          setHasReachedEnd(res.data.length < 10);
-          setSuccess();
-        })
-        .catch(setFailure);
-    }
-  }, [disableFetch, queryType, id, page]);
+      refresh();
+  }}
+  , [disableFetch, queryType, id, page]);
 
   const loadMoreHoots = useCallback(() => {
     if (!loading && !hasReachedEnd) {
@@ -167,30 +158,47 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
     return undefined;
   }, []);
 
-  const loveHoot = useCallback(async (hootId: string) => {
-    const hootTxn = [
-      {
-        _id: hootId,
-        favorites: [userData?._id],
-      },
-    ];
-    setDataObj({
-      ...dataObjRef.current,
-      [hootId]: {
-        ...dataObjRef.current[hootId],
-        favorites: [
-          ...(dataObjRef.current[hootId].favorites || []),
-          userData?._id,
-        ],
-      },
-    });
-    await transact({
-      privateKey:
-        "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",
-      myTxn: hootTxn,
-      authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
-    });
-  }, []);
+  const loveHoot = useCallback(
+    async (hootId: string) => {
+      const hootTxn = [
+        {
+          _id: hootId,
+          favorites: [userData?._id],
+        },
+      ];
+      setDataObj({
+        ...dataObjRef.current,
+        [hootId]: {
+          ...dataObjRef.current[hootId],
+          favorites: [
+            ...(dataObjRef.current[hootId].favorites || []),
+            userData?._id,
+          ],
+        },
+      });
+      await transact({
+        privateKey:
+          "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",
+        myTxn: hootTxn,
+        authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
+      });
+    },
+    [userData, dataObj]
+  );
+
+  const refresh = async () => {
+    setLoading();
+    query({
+      myQuery: hootsQueriesMap[queryType](id, data.length),
+      privateKey: authenticatorPrivateKey,
+    })
+      .then((res) => {
+        setDataObj({ ...dataObjRef.current, ...arrayToObj(res.data) });
+        setHasReachedEnd(res.data.length < 10);
+        setSuccess();
+      })
+      .catch(setFailure);
+  }
 
   return {
     loading,
@@ -201,5 +209,7 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
     loveHoot,
     loadMoreHoots,
     hasReachedEnd,
+    success,
+    refresh,
   };
 };
