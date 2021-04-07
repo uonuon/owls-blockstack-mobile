@@ -8,7 +8,7 @@ const queryType = 'query';
 export const query = ({
   myQuery, privateKey,
 }) => {
-  const signedQuery = signQuery(privateKey, JSON.stringify(myQuery), queryType, null, 'test/one');
+  const signedQuery = signQuery(privateKey, JSON.stringify(myQuery), queryType, null, 'test/twoyarabyeshtaghl');
   return axios.post(Requests.query, signedQuery.body, {
     method: 'POST',
     headers: signedQuery.headers,

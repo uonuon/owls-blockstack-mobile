@@ -30,9 +30,7 @@ export const RetweetedHoot: React.FC<HootProps> = ({
         </Text>
       )}
       <Hoot
-        currentHoot={
-          currentHoot.parentTweet?._id ? currentHoot.parentTweet : currentHoot
-        }
+        currentHoot={currentHoot}
         loveHoot={loveHoot}
         retweetHoot={retweetHoot}
       />

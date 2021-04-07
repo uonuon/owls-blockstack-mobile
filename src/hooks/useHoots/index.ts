@@ -14,11 +14,6 @@ import { IHoot, IUser } from "shared";
 import { useProgressState } from "../useProgressState";
 import { UserData } from "contexts";
 import { hootsQueriesMap, HootsQueriesTypes, newsFeed } from "shared/Queries";
-
-const authenticatorPrivateKey =
-  "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a";
-const authenticatorAuthId = "TfJecBZR7DzqD9hvQLYLrVKuHiUgKDceR8d";
-
 interface HootsService {
   queryType?: HootsQueriesTypes;
   id?: number;
@@ -89,10 +84,9 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
         },
       ];
       await transact({
-        privateKey:
-          "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",
+        privateKey: userData?.appPrivateKey,
         myTxn: hootTxn,
-        authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
+        authId: userData?.authId,
       }).then(() => {
         setDataObj({
           [tempId]: {
@@ -139,9 +133,9 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
       });
       await transact({
         privateKey:
-          "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",
+        userData?.appPrivateKey,
         myTxn: hootTxn,
-        authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
+        authId: userData?.authId,
       });
     },
     []
@@ -177,10 +171,9 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
         },
       });
       await transact({
-        privateKey:
-          "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",
+        privateKey: userData?.appPrivateKey,
         myTxn: hootTxn,
-        authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
+        authId: userData?.authId,
       });
     },
     [userData, dataObj]
@@ -190,7 +183,7 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
     setLoading();
     query({
       myQuery: hootsQueriesMap[queryType](id, data.length),
-      privateKey: authenticatorPrivateKey,
+      privateKey: userData?.appPrivateKey,
     })
       .then((res) => {
         setDataObj({ ...dataObjRef.current, ...arrayToObj(res.data) });

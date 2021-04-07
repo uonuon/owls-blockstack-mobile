@@ -8,6 +8,10 @@ import { ScreenParams } from "navigation";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import { Dimensions } from "react-native";
+import { query } from "utils";
+import { queryPendingFollowers } from "shared/Queries";
+import { useContext } from "react";
+import { UserData } from "contexts";
 const initialLayout = { width: Dimensions.get("window").width };
 
 const {
@@ -18,6 +22,7 @@ export const Notifications: React.FC<
   BottomTabScreenProps<ScreenParams>
 > = () => {
   const [index, setIndex] = React.useState(0);
+  const { userData } = useContext(UserData);
 
   const [routes] = React.useState([
     { key: "notifications", title: "Notifications" },
@@ -27,6 +32,14 @@ export const Notifications: React.FC<
   const { theme } = useTheme();
   const navigation = useNavigationUtils();
 
+  useEffect(() => {
+    query({
+      myQuery: queryPendingFollowers(userData?._id),
+      privateKey: userData?.appPrivateKey,
+    }).then((res) => {
+      console.warn(res.data);
+    })
+  }, [userData])
   const FirstRoute = () => (
     <View>
       
@@ -34,7 +47,9 @@ export const Notifications: React.FC<
   );
 
   const SecondRoute = () => (
-    <View style={{ backgroundColor: "#673ab7", flex: 1 }} />
+    <View style={{ backgroundColor: "#673ab7", flex: 1 }} >
+
+    </View>
   );
   const renderScene = SceneMap({
     notifications: FirstRoute,

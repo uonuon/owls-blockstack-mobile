@@ -31,7 +31,7 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
   const navigation = useNavigationUtils();
   const [currentText, setText] = useState("");
   const [searchState, setSearchState] = useState(false);
-  const { getUsers, users, followUserById } = useUsers();
+  const { getUsers, users } = useUsers();
   useEffect(() => {
     navigation.setOptions({
       title: "Search",
@@ -48,7 +48,7 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
     // setText(text)
     getUsers(text.trim());
   }
-  const onChangeTextDelayed = _.debounce(onChangeText, 2000);
+  const onChangeTextDelayed = _.debounce(onChangeText, 500);
   return (
     <View style={styles.container}>
       <View style={styles.header}>

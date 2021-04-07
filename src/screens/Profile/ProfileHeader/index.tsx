@@ -5,9 +5,10 @@ import LinearGradient from "react-native-linear-gradient";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Assets } from "assets";
 import { UserData } from "contexts";
-import { defaultConfig, useGetUserImage, useNavigationUtils } from "hooks";
+import { ConnectionsStatuses, ConnectionsStatusesMapper, defaultConfig, useGetUserImage, useNavigationUtils } from "hooks";
 import { useRoute } from "@react-navigation/native";
 import { useGetUserName } from "utils";
+import { IUser } from "shared";
 const {
   common: { chevron },
   screens: {
@@ -18,24 +19,34 @@ const {
   },
 } = Assets.images;
 
+const useProfileButtonActions = (userProfile: IUser, followers: IUser[],connection) => {
+  const { userData } = useContext(UserData);
+  return useMemo(() => {
+    if(userProfile._id === userData?._id){
+      return "Edit Profile";
+    }
+    if(!connection?.status){
+      return ConnectionsStatusesMapper.rejected
+    }
+    return ConnectionsStatusesMapper[connection.status];
+  },[userData?._id, userProfile._id,followers,connection]);
+};
+
 export const ProfileHeader = ({
   followers,
   following,
   userProfile,
   fromProfile,
   followUserById,
+  connection,
 }) => {
   const { navigateTo, goBack } = useNavigationUtils();
   const userImage = useGetUserImage(userProfile, styles.image);
   const username = useGetUserName(userProfile);
   const { userData } = useContext(UserData);
-  let buttonState =
-    userProfile._id === userData?._id
-      ? "Edit Profile"
-      : following.filter((user: any) => user._id === userProfile._id).length > 0
-      ? "Following"
-      : "Follow";
-
+  const buttonState = useProfileButtonActions(userProfile, followers,connection);
+  const isFollowing = connection?.status === ConnectionsStatuses.success;
+  const isPending = connection?.status === ConnectionsStatuses.pending;
   return (
     <View>
       {fromProfile && (
@@ -122,8 +133,9 @@ export const ProfileHeader = ({
                 if (userProfile._id === userData?._id) {
                   navigateTo({name: 'FillUserData'})
                 } else {
-                  followUserById(userProfile._id, "success")
-                  .then(() => alert("Success"))
+                  followUserById(userProfile._id, 
+                    (isFollowing || isPending) ? ConnectionsStatuses.rejected : userProfile.isPrivate ? ConnectionsStatuses.pending :ConnectionsStatuses.success,
+                     connection?.connectionId)
                   .catch(() => alert("Something went wrong"));
                 }
                 

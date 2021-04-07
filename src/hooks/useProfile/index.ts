@@ -1,4 +1,5 @@
 import {
+  queryConnection,
   queryFollowers,
   queryFollowings,
   queryUserHoots,
@@ -11,12 +12,27 @@ import { useProgressState } from "../useProgressState";
 import { UserData } from "contexts";
 import { multiQuery } from "src/utils/Axios/multiQuery";
 
-const authenticatorPrivateKey =
-  "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a";
+const REJECTED = "rejected";
+const SUCCESS = "success";
+const BLOCKED = "blocked";
+const PENDING = "pending";
+export const ConnectionsStatusesMapper = {
+  [REJECTED] : "Follow",
+  [SUCCESS] : "Following",
+  [PENDING] : "Pending"
+}
+
+export const ConnectionsStatuses = {
+  [REJECTED]: REJECTED,
+  [SUCCESS]: SUCCESS,
+  [PENDING]: PENDING,
+  [BLOCKED]: BLOCKED,
+}
 
 export const useProfile = (currentProfile: IUser) => {
   const [currentFollowers, setCurrentFollowers] = useState<IUser[]>([]);
   const [currentFollowing, setCurrentFollowing] = useState<IUser[]>([]);
+  const [connection, setConnection] = useState();
   const { userData } = useContext(UserData);
   const {
     setFailure,
@@ -33,11 +49,13 @@ export const useProfile = (currentProfile: IUser) => {
         myQueries: {
           followers: queryFollowers(currentProfile?._id),
           following: queryFollowings(currentProfile?._id),
+          connection: queryConnection(userData?._id, currentProfile?._id)
         },
-        privateKey: authenticatorPrivateKey,
+        privateKey: userData?.appPrivateKey,
       })
-        .then(({ data: { followers, following } }) => {
-          setCurrentFollowers(followers);
+        .then(({ data: { followers, following, connection } }) => {
+          setConnection({...connection.from,connectionId: connection._id,status: connection.status})
+          setCurrentFollowers(followers.map((fol: any) => ({...fol.from,connectionId: fol._id,status: fol.status})));
           setCurrentFollowing(following);
           setSuccess();
         })
@@ -45,21 +63,35 @@ export const useProfile = (currentProfile: IUser) => {
     }
   }, [currentProfile]);
 
-  const followUserById = async (id: number, status: string) => {
+  const followUserById = async (id: number, status: string,prevConId?: number) => {
     if (id && status) {
       const userTxn = [
         {
-          _id: "connections",
+          _id: prevConId || "connections",
           from: userData?._id,
           to: id,
           status,
         },
       ];
       return await transact({
-        privateKey:
-          "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",
+        privateKey: userData?.appPrivateKey,
         myTxn: userTxn,
-        authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
+        authId: userData?.authId,
+      }).then(() => {
+          query({
+            myQuery: queryConnection(userData?._id, currentProfile?._id),
+            privateKey: userData?.appPrivateKey,
+          }).then(res => {
+            const connectionRes = {...res.data.from,connectionId: res.data._id,status: res.data.status};
+            const prevConnectionFollower = currentFollowers.filter(cf => cf.connectionId === connectionRes.connectionId)[0];
+            if(prevConnectionFollower && connectionRes.status !== ConnectionsStatuses[SUCCESS]){
+              setCurrentFollowers(currentFollowers.filter(cf => cf.connectionId !== connectionRes.connectionId));
+            }
+            if(!prevConnectionFollower && connectionRes.status === ConnectionsStatuses[SUCCESS]){
+              setCurrentFollowers([...currentFollowers,connectionRes]);
+            }
+            setConnection(connectionRes);
+          })
       })
     }
   };
@@ -70,5 +102,6 @@ export const useProfile = (currentProfile: IUser) => {
     success,
     failure,
     followUserById,
+    connection
   };
 };

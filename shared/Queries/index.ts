@@ -70,22 +70,68 @@ export const queryFollowings = (id: number) => {
   };
 };
 
+export const queryConnection = (from: number, to: number) => {
+  return {
+    selectOne: {
+      "?var": [
+        "status",
+        {
+          "from": [
+            "*",
+            {
+              "_compact": true
+            }
+          ]
+        }
+      ]
+    },
+    where: [
+      ["?var", "connections/from", from],
+      ["?var", "connections/to", to]
+    ]
+  };
+};
+
 export const queryFollowers = (id: number) => {
   return {
     select: {
-      "?followers": [
-        [
-          "*",
-          {
-            _compact: true,
-          },
-        ],
-      ],
+      "?var": [
+        "status",
+        {
+          "from": [
+            "*",
+            {
+              "_compact": true
+            }
+          ]
+        }
+      ]
     },
     where: [
       ["?var", "connections/to", id],
-      ["?var", "connections/status", "success"],
-      ["?var", "connections/from", "?followers"],
+      ["?var", "connections/status", "success"]
+    ],
+  };
+};
+
+export const queryPendingFollowers = (id: number) => {
+  return {
+    select: {
+      "?var": [
+        "status",
+        {
+          "from": [
+            "*",
+            {
+              "_compact": true
+            }
+          ]
+        }
+      ]
+    },
+    where: [
+      ["?var", "connections/to", id],
+      ["?var", "connections/status", "pending"]
     ],
   };
 };

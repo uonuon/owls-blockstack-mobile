@@ -51,10 +51,9 @@ export const useSetUserData = () => {
         },
       ];
       await transact({
-        privateKey:
-          "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",
+        privateKey: userData?.appPrivateKey,
         myTxn: updatedUserTxn,
-        authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
+        authId: userData?.authId,
       });
       setSuccess()
     } catch (error) {

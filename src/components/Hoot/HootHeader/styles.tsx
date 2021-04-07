@@ -10,7 +10,6 @@ import {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      marginBottom: 4,
     },
     name: {
       fontSize: 16,
@@ -23,7 +22,6 @@ import {
       color: theme.colors.common.white,
       opacity: 0.38,
       fontFamily: theme.fonts.regular,
-      marginBottom: 16,
     },
     date: {
         fontSize: 16,

@@ -28,14 +28,13 @@ export const FillUserData: React.FC = () => {
   } = Assets.images;
   const { goBack, replace } = useNavigationUtils();
   const { userData, setUserData } = useContext(UserData);
-  const [name, setName] = useState<string>(userData?.fullName);
-  const [desc, setDesc] = useState<string>(userData?.description);
-  console.warn(userData);
+  const [name, setName] = useState<string>(userData?.fullName || '');
+  const [desc, setDesc] = useState<string>(userData?.description || '');
   const userImage = useGetUserImage(userData, styles.avatar);
   const [currentImage, setImage] = useState<string>(userData?.avatar ?? "");
   const { setLoading, loading, setSuccess, setFailure } = useProgressState();
   const disabledText =
-    currentImage.length === 0 || name.length === 0 || desc.length === 0;
+    currentImage.length === 0 || name.trim().length === 0 || desc.trim().length === 0;
   const setData = useCallback(async () => {
     try {
       setLoading();
@@ -57,10 +56,9 @@ export const FillUserData: React.FC = () => {
         },
       ];
       await transact({
-        privateKey:
-          "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",
+        privateKey: userData?.appPrivateKey,
         myTxn: updatedUserTxn,
-        authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
+        authId: userData?.authId,
       }).then(() => {
         setUserData((oldUserData: IUser) => ({
           ...oldUserData,
@@ -111,11 +109,7 @@ export const FillUserData: React.FC = () => {
               )
             }
           >
-            {currentImage.length > 0 ? (
-              <>{userImage}</>
-            ) : (
-              <Image style={styles.avatar} source={avatar} />
-            )}
+            <Image style={styles.avatar} source={currentImage.length > 0 ? {uri: currentImage} : avatar} />
           </TouchableOpacity>
           <View style={styles.input}>
             <Text style={styles.text}>Name</Text>

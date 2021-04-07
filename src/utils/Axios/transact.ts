@@ -10,7 +10,7 @@ import {
 import 'shared/fluree';
 
 function signTransaction(auth, db, fuel, nonce, privateKey, tx) {
-  const dbLower = "test/one"
+  const dbLower = "test/twoyarabyeshtaghl"
   const cmd = {
     type: 'tx',
     db: dbLower,
@@ -33,7 +33,7 @@ export const transact = ({
   const fuel = 100000;
   const nonce = Math.floor(Math.random() * 1000);
   const tx = JSON.stringify(myTxn);
-  const command = signTransaction(authId, 'test/one', fuel, nonce, privateKey, tx);
+  const command = signTransaction(authId, 'test/twoyarabyeshtaghl', fuel, nonce, privateKey, tx);
   return axios.post(Requests.transact, JSON.stringify(command), {
     method: 'POST',
     headers: {

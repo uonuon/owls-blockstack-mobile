@@ -1,6 +1,7 @@
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { Assets } from "assets";
 import {
+  ConnectionsStatuses,
   defaultConfig,
   useHoots,
   useNavigationUtils,
@@ -36,6 +37,7 @@ import { HootsQueriesTypes } from "shared/Queries";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const HScrollView = HPageViewHoc(FlatList);
+const PScrollView = HPageViewHoc(ScrollView)
 
 const initialLayout = {
   width: Dimensions.get("window").width,
@@ -72,7 +74,7 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
   const [index, setIndex] = useState(0);
   const { userData } = useContext(UserData);
   const selectedUser = (params?.incomingUser as IUser) || (userData as IUser);
-  const { currentFollowers, currentFollowing, followUserById } = useProfile(
+  const { currentFollowers, currentFollowing, followUserById, connection } = useProfile(
     selectedUser
   );
   const {
@@ -87,7 +89,6 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
     queryType: HootsQueriesTypes.USER_HOOTS,
     id: selectedUser?._id || 0,
   });
-
   useEffect(() => {
     navigation.setOptions({
       title: "Profile",
@@ -100,117 +101,119 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
     });
   }, []);
 
-  const ProfileHoots = 
-    () => (
-      <HScrollView
-        style={styles.flatList}
-        index={0}
-        contentContainerStyle={styles.flatList}
-        data={data}
-        // ListHeaderComponent={ListHeaderComponent}
-        ListEmptyComponent={ <View
-          style={{
-            flexDirection: "column",
-            alignItems: "center",
-            padding: 8,
-            width: "100%",
-          }}
-        >
-          <Image
-            source={lock}
-            style={{ width: 56, height: 56, marginVertical: 32 }}
-          />
-          <Text
-            style={{
-              fontSize: 20,
-              lineHeight: 24,
-              color: theme.colors.common.white,
-            }}
-          >
-            This account is private
-          </Text>
-          <Text
-            style={{
-              fontSize: 12,
-              lineHeight: 16,
-              color: theme.colors.onSurfaceMediumEmphasis,
-              marginBottom: 20,
-            }}
-          >
-            Stacks ID provides user-controlled login and storage that enable
-            you to take back control of your identity and data.
-          </Text>
-          <Pressable
-            style={{
-              width: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: theme.colors.primaryLowerContrasted,
-              padding: 16,
-              borderRadius: 16,
-            }}
-            onPress={() => followUserById(selectedUser._id, 'pending')}
-          >
-            <Text style={{ color: "white" }}>SEND FOLLOW REQUEST</Text>
-          </Pressable>
-        </View>}
-        ListFooterComponent={
-          <>
-            {!hasReachedEnd && (
-              <ActivityIndicator
-                size={"large"}
-                style={{ marginTop: 10 }}
-                color={"white"}
-              />
-            )}
-          </>
-        }
-        // style={styles.flatList}
-        renderItem={({ item }) => {
-          const hoot: IHoot = item;
-          return (
-            <RetweetedHoot
-              currentHoot={hoot}
-              loveHoot={loveHoot}
-              retweetHoot={postData}
-            />
-          );
-        }}
-        removeClippedSubviews={false}
-        maxToRenderPerBatch={10}
-        updateCellsBatchingPeriod={50}
-        extraData={data}
-        initialNumToRender={10}
-        onEndReachedThreshold={0.1}
-        onEndReached={loadMoreHoots}
-        legacyImplementation={false}
-        keyExtractor={(item: any, index) => item._id}
+  const privateProfile =  () => (
+    <PScrollView
+     index={0}
+      contentContainerStyle={{
+        flexDirection: "column",
+        alignItems: "center",
+        padding: 8,
+        width: "100%",
+        backgroundColor: 'black'
+      }}
+    >
+      <Image
+        source={lock}
+        style={{ width: 56, height: 56, marginVertical: 32 }}
       />
-    )
+      <Text
+        style={{
+          fontSize: 20,
+          lineHeight: 24,
+          color: theme.colors.common.white,
+        }}
+      >
+        This account is private
+      </Text>
+      <Text
+        style={{
+          fontSize: 12,
+          lineHeight: 16,
+          color: theme.colors.onSurfaceMediumEmphasis,
+          marginBottom: 20,
+        }}
+      >
+        Stacks ID provides user-controlled login and storage that enable you to
+        take back control of your identity and data.
+      </Text>
+      <Pressable
+        style={{
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: theme.colors.primaryLowerContrasted,
+          padding: 16,
+          borderRadius: 16,
+        }}
+        onPress={() => followUserById(selectedUser._id, ConnectionsStatuses.pending, connection?.connectionId)}
+      >
+        <Text style={{ color: "white" }}>SEND FOLLOW REQUEST</Text>
+      </Pressable>
+    </PScrollView>
+  );
+  const ProfileHoots = () => (
+    <HScrollView
+      style={styles.flatList}
+      index={0}
+      contentContainerStyle={styles.flatList}
+      data={data}
+      // ListHeaderComponent={ListHeaderComponent}
+      ListFooterComponent={
+        <>
+          {!hasReachedEnd && (
+            <ActivityIndicator
+              size={"large"}
+              style={{ marginTop: 10 }}
+              color={"white"}
+            />
+          )}
+        </>
+      }
+      // style={styles.flatList}
+      renderItem={({ item }) => {
+        const hoot: IHoot = item;
+        return (
+          <RetweetedHoot
+            currentHoot={hoot}
+            loveHoot={loveHoot}
+            retweetHoot={postData}
+          />
+        );
+      }}
+      removeClippedSubviews={false}
+      maxToRenderPerBatch={10}
+      updateCellsBatchingPeriod={50}
+      extraData={data}
+      initialNumToRender={10}
+      onEndReachedThreshold={0.1}
+      onEndReached={loadMoreHoots}
+      legacyImplementation={false}
+      keyExtractor={(item: any, index) => item._id}
+    />
+  );
 
   const renderScene = SceneMap({
-      hoots: ProfileHoots,
-      media: ProfileHootsMedia,
-      likes: ProfileHootsLikes,
-    })
+    hoots: (selectedUser.isPrivate && connection?.status !== ConnectionsStatuses.success) ? privateProfile : ProfileHoots,
+    media: ProfileHootsMedia,
+    likes: ProfileHootsLikes,
+  });
 
-  const renderTabBar = 
-    (props: any) => (
-      <TabBar
-        {...props}
-        indicatorStyle={{ backgroundColor: colors.secondary }}
-        activeColor={colors.secondary}
-        tabStyle={{ height: 60, width: "auto" }}
-        labelStyle={{
-          fontSize: 16,
-          fontFamily: theme.fonts.regular,
-          fontWeight: "300",
-          textTransform: "capitalize",
-        }}
-        inactiveColor={colors.onSurfaceMediumEmphasis}
-        style={{ backgroundColor: colors.elevation01dp }}
-      />
-    )
+  const renderTabBar = (props: any) => (
+    <TabBar
+      {...props}
+      indicatorStyle={{ backgroundColor: colors.secondary }}
+      activeColor={colors.secondary}
+      tabStyle={{ height: 60, width: "auto" }}
+      labelStyle={{
+        fontSize: 16,
+        fontFamily: theme.fonts.regular,
+        fontWeight: "300",
+        textTransform: "capitalize",
+      }}
+      inactiveColor={colors.onSurfaceMediumEmphasis}
+      style={{ backgroundColor: colors.elevation01dp }}
+    />
+  );
   const renderScrollHeader = useCallback(
     () => (
       <ProfileHeader
@@ -219,9 +222,10 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
         following={currentFollowing}
         fromProfile={params?.incomingUser ? true : false}
         followUserById={followUserById}
+        connection={connection}
       />
     ),
-    [selectedUser, currentFollowers, currentFollowing, userData]
+    [selectedUser, currentFollowers, currentFollowing, userData, connection]
   );
 
   const makeHeaderHeight = useCallback(

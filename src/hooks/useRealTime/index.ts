@@ -80,7 +80,7 @@ export const useRealTime = createStore(() => {
 
   useEffect(() => {
     if (userData && appStateVisible === "active") {
-      const socket = io("http://192.168.1.68:3000");
+      const socket = io("http://172.20.10.2:3000");
       socket.on("fluree_event", ({ data, lastEventTime }: any) => {
         cb(data, lastEventTime);
       });

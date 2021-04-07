@@ -1,4 +1,3 @@
-import { deleteCollectionDataByName, run } from './../../fluree-scripts/deleteCollection';
 import { useCallback, useEffect, useState } from "react";
 // import {
 //   UserSession,
@@ -82,37 +81,42 @@ export const useAuthentication = () => {
             },
           ];
           await transact({
-            privateKey:
-              "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",
+            privateKey: appPrivateKey,
             myTxn: updatedUserTxn,
-            authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
+            authId,
           });
         } else {
           const authTxn = [
             {
               _id: "_auth",
               id: authId,
-              // roles: [['_role/id', 'adminRole']],
+              roles: [["_role/id", "userRole"]],
             },
           ];
           const userTxn = [
             {
-              _id: "_user",
+              _id: "_user$temp",
               username,
               profile,
               createdAt: "#(now)",
               auth: [["_auth/id", authId]],
             },
+            {
+              _id: "connections",
+              from: "_user$temp",
+              to: "_user$temp",
+              status: "success",
+            }
           ];
           await transact({
-            privateKey: "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",
+            privateKey: authenticatorPrivateKey,
             myTxn: authTxn,
-            authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
+            authId: authenticatorAuthId,
           });
           await transact({
-            privateKey: "d9735fc879e0611cc9ff413215751fa2146aa3974da87bf529efccb24e52875a",
+            privateKey: appPrivateKey,
             myTxn: userTxn,
-            authId: "TfBsAgyuBjA1ynqBX89ewaXii5hAJK4eN1P",
+            authId,
           });
         }
         setUserData({
@@ -136,13 +140,13 @@ export const useAuthentication = () => {
   const signIn = async () => {
     await RNBlockstackSdk.signIn();
     createSession();
-  }
+  };
 
   const signOut = async () => {
     setFailure();
     await RNBlockstackSdk.signUserOut();
     return Promise;
-  }
+  };
 
   return {
     signIn,
