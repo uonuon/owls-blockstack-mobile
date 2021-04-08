@@ -5,7 +5,7 @@ export enum HootsQueriesTypes {
   USER_LIKES_HOOTS = "userLikesHoots",
   HOOT_BY_ID = "currentHoot",
 }
-const hootSelector = [
+export const hootSelector = [
   {
     "*": {
       _compact: true,

@@ -14,6 +14,7 @@ export interface IUser {
   publicKey: string;
   appPrivateKey: string;
   connectionId?: number;
+  auth?: any;
 }
 
 export interface IHoot {

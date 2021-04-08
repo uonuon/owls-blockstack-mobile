@@ -1,3 +1,4 @@
+import { watermelonSync } from './../../db/sync/index';
 import { forVerticalIOS } from "@react-navigation/stack/lib/typescript/src/TransitionConfigs/CardStyleInterpolators";
 import { UserData } from "contexts";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
@@ -82,6 +83,7 @@ export const useRealTime = createStore(() => {
   useEffect(() => {
     if (userData && appStateVisible === "active") {
       const socket = io("http://192.168.8.105:3000");
+      watermelonSync(userData);
       socket.on("fluree_event", ({ data, lastEventTime }: any) => {
         cb(data, lastEventTime);
       });

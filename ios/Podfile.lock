@@ -284,6 +284,9 @@ PODS:
   - STRegex (2.1.1)
   - TcpSockets (3.3.2):
     - React
+  - WatermelonDB (0.21.0):
+    - React
+    - React-jsi
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -329,6 +332,7 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - TcpSockets (from `../node_modules/react-native-tcp`)
+  - "WatermelonDB (from `../node_modules/@nozbe/watermelondb`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -419,6 +423,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   TcpSockets:
     :path: "../node_modules/react-native-tcp"
+  WatermelonDB:
+    :path: "../node_modules/@nozbe/watermelondb"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -468,6 +474,7 @@ SPEC CHECKSUMS:
   RNScreens: 45c457af3d2ee9e08fc01e70da87e653d46b1198
   STRegex: d49e88d0fe58538d3175fdd989bc1243b9be2a07
   TcpSockets: 14306fb79f9750ea7d2ddd02d8bed182abb01797
+  WatermelonDB: ea3902f6e5f8bfc226440e23b628a2c5ed43538d
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
 
 PODFILE CHECKSUM: 9b0f21d7c803cd8101120e7ff25be0214cd5d399
