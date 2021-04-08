@@ -14,8 +14,9 @@ export const HootHeader: React.FC<HootHeaderProps> = ({ date, name, username }) 
   const rightDate = useMemo(() => formatDistanceToNowStrict(date), [date]);
   return (
     <View style={styles.hootHeader}>
-      <View style={styles.hootHeader}>
-        <Text style={styles.name}>{name}</Text>
+      <View style={{ flexDirection: 'row',
+      alignItems: 'center',}}>
+        <Text style={[styles.name]}>{name}</Text>
         <Text style={styles.username}>
           @{username.split('.')[0]} •{" "}
           <Text style={styles.date}>{rightDate}</Text>

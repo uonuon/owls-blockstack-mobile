@@ -39,6 +39,14 @@ const styles = StyleSheet.create({
     marginRight: 16,
     marginTop: 10,
   },
+  text: {
+    color: theme.colors.secondaryHighContrasted,
+    fontSize: 12,
+    fontWeight: "bold",
+    marginLeft: 80,
+    marginBottom: -15,
+    marginTop: 10
+  },
 });
 
 export default styles;

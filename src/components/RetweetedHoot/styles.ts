@@ -23,6 +23,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: theme.fonts.headers
   },
+  text: {
+    color: theme.colors.secondaryHighContrasted,
+    fontSize: 12,
+    fontWeight: "bold",
+    marginLeft: 80,
+    position: "absolute",
+    top: 10,
+  },
 });
 
 export default styles;

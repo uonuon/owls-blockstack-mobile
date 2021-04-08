@@ -10,6 +10,7 @@ import {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
+      width: '100%'
     },
     name: {
       fontSize: 16,
@@ -18,13 +19,13 @@ import {
       fontFamily: theme.fonts.regular,
     },
     username: {
-      fontSize: 16,
+      fontSize: 14,
       color: theme.colors.common.white,
       opacity: 0.38,
       fontFamily: theme.fonts.regular,
     },
     date: {
-        fontSize: 16,
+        fontSize: 12,
         color: theme.colors.common.white,
         opacity: 0.38,
         fontFamily: theme.fonts.regular,

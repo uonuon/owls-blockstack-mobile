@@ -9,11 +9,14 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     padding: 16,
     width: "100%",
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.elevation04dp, 
   },
   replyContainer: {
-    backgroundColor: theme.colors.elevation02dp,
-    borderRadius: 8,
-    padding: 8,
+    backgroundColor: theme.colors.elevation04dp,
+    borderRadius: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 10
   },
   image: {
     marginRight: 16,

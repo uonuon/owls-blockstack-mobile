@@ -49,6 +49,53 @@ const hootSelector = [
       },
     ],
   },
+  {
+    "tweet/_replies": [
+      "*",
+          {
+            "_as": "threadParent",
+            "_compact": true
+          },
+      {
+        auther: [
+          "*",
+          {
+            _compact: true,
+          },
+        ],
+      },
+      {
+        parentTweet: [
+          "*",
+          {
+            _compact: true,
+          },
+          {
+            auther: [
+              "*",
+              {
+                _compact: true,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        "tweet/_parentTweet": [
+          {
+            _as: "retweets",
+          },
+          {
+            auther: [
+              {
+                _compact: true,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 ];
 export const queryFollowings = (id: number) => {
   return {
@@ -145,6 +192,7 @@ export const queryUserHoots = (id: number, offset: number) => {
     opts: {
       limit: 20,
       offset,
+      orderBy: "tweet/createdAt",
     }
   };
 };
@@ -162,6 +210,7 @@ export const newsFeed = (id: number, offset: number) => ({
   opts: {
     limit: 20,
     offset,
+    orderBy: "tweet/createdAt",
   }
 });
 
@@ -171,6 +220,9 @@ export const getCurrentHootReplies = (id: number, offset: number) => {
       "?replies": hootSelector, 
     },
     where: [[id, "tweet/replies", "?replies"]],
+    opts: {
+      orderBy: "tweet/createdAt",
+    }
   };
 };
 

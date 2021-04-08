@@ -12,4 +12,6 @@ export const common = {
   lock: require('./lock.png'),
   notification: require('./notifications.png'),
   notificationActive: require('./notifications-active.png'),
+  check: require('./check.png'),
+  cancel: require('./cancel.png'),
 };

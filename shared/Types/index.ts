@@ -13,10 +13,12 @@ export interface IUser {
   isPrivate: boolean;
   publicKey: string;
   appPrivateKey: string;
+  connectionId?: number;
 }
 
 export interface IHoot {
   retweets: any;
+  threadParent?: IHoot | [undefined]
   createdAt: number;
   _id: number;
   avatar: string;

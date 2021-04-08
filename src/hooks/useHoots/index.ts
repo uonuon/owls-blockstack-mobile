@@ -13,7 +13,7 @@ import { query, getPublicKeyFromPrivate, transact, generateGUID } from "utils";
 import { IHoot, IUser } from "shared";
 import { useProgressState } from "../useProgressState";
 import { UserData } from "contexts";
-import { hootsQueriesMap, HootsQueriesTypes, newsFeed } from "shared/Queries";
+import { hootsQueriesMap, HootsQueriesTypes, newsFeed, queryFollowings } from "shared/Queries";
 interface HootsService {
   queryType?: HootsQueriesTypes;
   id?: number;
@@ -30,10 +30,18 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
   const dataObjRef = useRef(dataObj);
   dataObjRef.current = dataObj;
   const { userData } = useContext(UserData);
-  const { setFailure, setLoading, setSuccess, loading, success } = useProgressState();
-  const { tweetsMapper } = useRealTime();
+  const {
+    setFailure,
+    setLoading,
+    setSuccess,
+    loading,
+    success,
+  } = useProgressState();
+  const { hootsMapper } = useRealTime();
   const [page, setPage] = useState<number>(0);
   const [hasReachedEnd, setHasReachedEnd] = useState<boolean>(false);
+  const [currentFollowing, setCurrentFollowing] = useState<IUser[]>([]);
+
   const data = useMemo(
     () => Object.values(dataObj).sort((a, b) => b.createdAt - a.createdAt),
     [dataObj]
@@ -41,27 +49,31 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
 
   useEffect(() => {
     if (!disableFetch) {
-      Object.keys(tweetsMapper).forEach((tweetsKey) => {
+      Object.keys(hootsMapper).forEach((tweetsKey) => {
         if (dataObj[tweetsKey.toString()]) {
           setDataObj({
             ...dataObj,
             [tweetsKey.toString()]: {
               ...dataObj[tweetsKey.toString()],
-              _id: tweetsMapper[tweetsKey.toString()],
+              _id: hootsMapper[tweetsKey.toString()],
             },
           });
         }
       });
     }
-  }, [tweetsMapper, disableFetch]);
+  }, [hootsMapper, disableFetch]);
   useEffect(() => {
     setDataObj({});
   }, [id]);
   useEffect(() => {
     if (!disableFetch) {
       refresh();
-  }}
-  , [disableFetch, queryType, id, page]);
+      query({
+        myQuery: queryFollowings(userData?._id),
+        privateKey: userData?.appPrivateKey,
+      }).then((res) => setCurrentFollowing(res.data));
+    }
+  }, [disableFetch, queryType, id, page]);
 
   const loadMoreHoots = useCallback(() => {
     if (!loading && !hasReachedEnd) {
@@ -132,8 +144,7 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
         },
       });
       await transact({
-        privateKey:
-        userData?.appPrivateKey,
+        privateKey: userData?.appPrivateKey,
         myTxn: hootTxn,
         authId: userData?.authId,
       });
@@ -191,7 +202,7 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
         setSuccess();
       })
       .catch(setFailure);
-  }
+  };
 
   return {
     loading,

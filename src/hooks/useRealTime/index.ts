@@ -7,11 +7,11 @@ import { io } from "socket.io-client";
 
 export const useRealTime = createStore(() => {
   const { userData } = useContext(UserData);
-  const [tweetsMapper, setTweetsMapper] = useState<{ [x: string]: number }>({});
+  const [hootsMapper, setHootsMapper] = useState<{ [x: string]: number }>({});
 
   const settersMap = {
-    tweet: ({ tempId, transactionID }) => {
-      setTweetsMapper({...tweetsMapper, [tempId]: transactionID })
+    tweet: ({ tempId, transactionID, transactionFlake }) => {
+      setHootsMapper({...hootsMapper, [tempId]: transactionID, hoot: transactionFlake })
     },
   };
 
@@ -35,7 +35,7 @@ export const useRealTime = createStore(() => {
     let transactionFlake;
     for (flake of flakesArr) {
       if (flake[1] === 106) {
-        transactionFlake = JSON.parse(flake[2]).tx[0];
+        transactionFlake = JSON.parse(flake[2]).tx;
       }
       if (flake[1] === 109) {
         error = true;
@@ -50,6 +50,7 @@ export const useRealTime = createStore(() => {
           settersMap[setter]({
             transactionID,
             tempId,
+            transactionFlake,
           });
         }
       }
@@ -80,7 +81,7 @@ export const useRealTime = createStore(() => {
 
   useEffect(() => {
     if (userData && appStateVisible === "active") {
-      const socket = io("http://172.20.10.2:3000");
+      const socket = io("http://192.168.8.105:3000");
       socket.on("fluree_event", ({ data, lastEventTime }: any) => {
         cb(data, lastEventTime);
       });
@@ -93,7 +94,7 @@ export const useRealTime = createStore(() => {
   }, [userData, appStateVisible]);
 
   return {
-    tweetsMapper,
-    setTweetsMapper,
+    hootsMapper,
+    setHootsMapper,
   }
 });

@@ -1,5 +1,5 @@
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, View, Text } from "react-native";
 import { Assets } from "assets";
 import { useNavigationUtils, useTheme } from "hooks";
@@ -12,6 +12,8 @@ import { query } from "utils";
 import { queryPendingFollowers } from "shared/Queries";
 import { useContext } from "react";
 import { UserData } from "contexts";
+import { User } from "components";
+import { PendingFollower } from "src/components/PendingFollower";
 const initialLayout = { width: Dimensions.get("window").width };
 
 const {
@@ -23,6 +25,7 @@ export const Notifications: React.FC<
 > = () => {
   const [index, setIndex] = React.useState(0);
   const { userData } = useContext(UserData);
+  const [pendingRequests, setPendingRequests] = useState([]);
 
   const [routes] = React.useState([
     { key: "notifications", title: "Notifications" },
@@ -37,18 +40,38 @@ export const Notifications: React.FC<
       myQuery: queryPendingFollowers(userData?._id),
       privateKey: userData?.appPrivateKey,
     }).then((res) => {
-      console.warn(res.data);
-    })
-  }, [userData])
-  const FirstRoute = () => (
-    <View>
-      
-    </View>
-  );
+      setPendingRequests(
+        res.data.map((fol: any) => ({
+          ...fol.from,
+          connectionId: fol._id,
+          status: fol.status,
+        }))
+      );
+    });
+  }, [userData]);
+  const FirstRoute = () => <View></View>;
 
   const SecondRoute = () => (
-    <View style={{ backgroundColor: "#673ab7", flex: 1 }} >
-
+    <View style={{  flex: 1, height: '100%' }}>
+      <FlatList
+        data={pendingRequests}
+        style={{ flex: 1, width: "100%", height: '100%' }}
+        ListEmptyComponent={
+          <View
+            style={{
+              marginTop: "50%",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ color: "white" }}>Nothing found here</Text>
+          </View>
+        }
+        renderItem={({ item }) => {
+          return <PendingFollower user={item} />;
+        }}
+        keyExtractor={(item: any) => item._id}
+      />
     </View>
   );
   const renderScene = SceneMap({

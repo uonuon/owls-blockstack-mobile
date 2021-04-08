@@ -4,11 +4,15 @@ import React from "react";
 import { View, Text } from "react-native";
 import { Hoot } from "components";
 import { HootProps } from "../Hoot/types";
+import styles from "./styles";
 
 export const RetweetedHoot: React.FC<HootProps> = ({
   currentHoot,
   loveHoot,
+  nextHoot,
+  isThreadHoot,
   retweetHoot,
+  prevHoot,
 }) => {
   const {
     theme: { colors, fonts },
@@ -17,14 +21,7 @@ export const RetweetedHoot: React.FC<HootProps> = ({
     <View style={{ paddingTop: currentHoot.parentTweet ? 10 : 0 }}>
       {currentHoot.parentTweet && (
         <Text
-          style={{
-            color: colors.secondaryHighContrasted,
-            fontSize: 12,
-            fontWeight: "bold",
-            marginLeft: 80,
-            position: "absolute",
-            top: 10,
-          }}
+          style={styles.text}
         >
           {currentHoot.auther.fullName + " Retweeted"}
         </Text>
@@ -32,6 +29,8 @@ export const RetweetedHoot: React.FC<HootProps> = ({
       <Hoot
         currentHoot={currentHoot}
         loveHoot={loveHoot}
+        prevHoot={prevHoot}
+        nextHoot={nextHoot}
         retweetHoot={retweetHoot}
       />
     </View>

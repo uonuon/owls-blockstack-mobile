@@ -46,11 +46,13 @@ export const Hoots: React.FC<Props> = ({
      </>
 }
     style={[styles.flatList, customStyles]}
-    renderItem={({ item }) => {
+    renderItem={({ item, index }) => {
       const hoot: IHoot = item;
       return (
         <RetweetedHoot
           currentHoot={hoot}
+          nextHoot={(hoots.length - 1 > index + 1) && hoots[index + 1].threadParent && hoots[index].threadParent && hoots[index].threadParent[0] && hoots[index + 1].threadParent[0]  && (hoots[index].threadParent[0]._id === hoots[index + 1].threadParent[0]._id)}
+          prevHoot={index !== 0 && hoots[index].threadParent && hoots[index - 1].threadParent && hoots[index].threadParent[0] && hoots[index - 1].threadParent[0]  && (hoots[index].threadParent[0]._id === hoots[index - 1].threadParent[0]._id)}
           loveHoot={loveHoot}
           retweetHoot={retweetHoot}
         />
