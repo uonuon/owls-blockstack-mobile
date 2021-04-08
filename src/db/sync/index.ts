@@ -1,20 +1,13 @@
-import { hootSelector } from "./../../../shared/Queries/index";
-/* eslint-disable @typescript-eslint/naming-convention */
-import { Q } from "@nozbe/watermelondb";
 import {
   synchronize,
   SyncPullArgs,
   SyncPushArgs,
 } from "@nozbe/watermelondb/sync";
-import { id } from "date-fns/locale";
-import { data } from "ios/Pods/Blockstack/Javascript/profileProofs";
 import throttle from "lodash/throttle";
-import { hootsQueriesMap, HootsQueriesTypes } from "shared/Queries";
 import { IHoot, IUser } from "../../../shared";
 import { query } from "../../utils/Axios/query";
 import { database } from "../index";
 import { User } from "../models/UserModel";
-import { Hoot } from "../models/HootsModel";
 
 export const watermelonSync = throttle(
   async (userData: IUser, lastUpdateTime?: number) => {
@@ -38,6 +31,34 @@ export const watermelonSync = throttle(
                 },
               },
               {
+                "parentTweet": [
+                  {
+                    "*": {
+                      _compact: true,
+                    },
+                  },
+                  {
+                    "tweet/_parentTweet": [
+                      {
+                        _as: "retweets",
+                      },
+                    ],
+                  },
+                  {
+                    "tweet/_replies": [
+                      {
+                        "*": {
+                          _compact: true,
+                        },
+                      },
+                      {
+                        _as: "threadParent",
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
                 "tweet/_parentTweet": [
                   {
                     _as: "retweets",
@@ -46,6 +67,11 @@ export const watermelonSync = throttle(
               },
               {
                 "tweet/_replies": [
+                  {
+                    "*": {
+                      _compact: true,
+                    },
+                  },
                   {
                     _as: "threadParent",
                   },
@@ -66,7 +92,16 @@ export const watermelonSync = throttle(
           myQuery: hootQuery,
           privateKey,
         });
-        const newsFeeds: IHoot[] = newsFeedsRes.data;
+        const newsFeeds: IHoot[] = newsFeedsRes.data.reduce((acc, hoot) => {
+          const flattedHoots = [hoot];
+          if(hoot.parentTweet){
+            flattedHoots.push(hoot.parentTweet);
+          }
+          if(hoot.threadParent){
+            flattedHoots.push(hoot.threadParent[0]);
+          }
+          return [...acc,...flattedHoots];
+        },[]);
         let userIds = Array.from(
           new Set([
             ...newsFeeds.map((hoot) => +hoot.auther._id),
