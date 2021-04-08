@@ -27,8 +27,9 @@ export const RetweetedHoot: React.FC<HootProps> = ({
         </Text>
       )}
       <Hoot
-        currentHoot={currentHoot}
+        currentHoot={currentHoot.parentTweet ? currentHoot.parentTweet : currentHoot}
         loveHoot={loveHoot}
+        isParent={currentHoot.parentTweet ? true : false}
         prevHoot={prevHoot}
         nextHoot={nextHoot}
         retweetHoot={retweetHoot}

@@ -20,7 +20,8 @@ const {
     photo,
     gif,
     stats,
-    mic
+    mic,
+    noContent,
   },
   screens: {
     home: { home, homeDisabled, plus },
@@ -33,6 +34,7 @@ export const NewsFeed: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
   const { userData } = useContext(UserData);
   const { hasReachedEnd, data, loading,refresh, loveHoot, postData, loadMoreHoots } = useHoots({queryType: HootsQueriesTypes.NEWS_FEED_HOOTS, id: userData?._id || 0});
   const userImage = useGetUserImage(userData, styles.avatar);
+  const { theme } = useTheme();
 
   useEffect(() => {
     navigation.setOptions({
@@ -87,7 +89,17 @@ export const NewsFeed: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
               alignItems: "center",
             }}
           >
-            <Text style={{ color: "white" }}>Seems you got no friends</Text>
+            <Image source={noContent} style={{
+              width: 200,
+              height: 200,
+              resizeMode: 'contain',
+            }}/>
+            <Text style={{    color: "white",
+                opacity: 0.6,
+                marginTop: 25,
+                fontWeight: "300",
+                fontFamily: theme.fonts.headers,
+                fontSize: 20, }}>Can’t find any content now!</Text>
           </View>
         }
       />

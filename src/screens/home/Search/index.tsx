@@ -18,7 +18,7 @@ import { FlatList, ScrollView } from "react-native-gesture-handler";
 import _ from "lodash";
 
 const {
-  common: { logo, searchIcon, chevron },
+  common: { logo, searchIcon, chevron, noSearch },
   components: {
     hoot: { defaultAvatar },
   },
@@ -47,7 +47,7 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
   const onChangeText = (text: string) => {
     // setText(text)
     getUsers(text.trim());
-  }
+  };
   const onChangeTextDelayed = _.debounce(onChangeText, 500);
   return (
     <View style={styles.container}>
@@ -84,7 +84,7 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
           style={{ width: 20, resizeMode: "contain" }}
         />
       </View>
-      <Text
+      {/* <Text
         style={{
           fontSize: 20,
           color: "#fff",
@@ -96,19 +96,38 @@ export const Search: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
         }}
       >
         Users
-      </Text>
+      </Text> */}
       <FlatList
-        data={users.filter((data: any) => data.username.includes(currentText))}
+        data={users}
         style={{ flex: 1, width: "100%" }}
         ListEmptyComponent={
           <View
             style={{
-              marginTop: "50%",
+              marginTop: "40%",
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            <Text style={{ color: "white" }}>User not found</Text>
+            <Image
+              source={noSearch}
+              style={{
+                width: 200,
+                height: 200,
+                resizeMode: "contain",
+              }}
+            />
+            <Text
+              style={{
+                color: "white",
+                opacity: 0.6,
+                marginTop: 25,
+                fontWeight: "300",
+                fontFamily: theme.fonts.headers,
+                fontSize: 20,
+              }}
+            >
+              Looking for someone?
+            </Text>
           </View>
         }
         renderItem={({ item }) => {

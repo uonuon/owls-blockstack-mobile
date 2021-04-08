@@ -7,5 +7,5 @@ export interface HootProps {
   retweetHoot: (hoot: PostHoot) => void
   isThreadHoot?: boolean
   prevHoot?: boolean
-  currentHeight?: number | 0
+  isParent?: boolean
 }

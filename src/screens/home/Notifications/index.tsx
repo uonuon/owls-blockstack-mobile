@@ -17,7 +17,7 @@ import { PendingFollower } from "src/components/PendingFollower";
 const initialLayout = { width: Dimensions.get("window").width };
 
 const {
-  common: { logo, notification, notificationActive },
+  common: { logo, notification, notificationActive, noNotifications, noRequests },
 } = Assets.images;
 
 export const Notifications: React.FC<
@@ -49,7 +49,36 @@ export const Notifications: React.FC<
       );
     });
   }, [userData]);
-  const FirstRoute = () => <View></View>;
+  const FirstRoute = () => <View>
+    <View
+            style={{
+              marginTop: "40%",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Image
+              source={noNotifications}
+              style={{
+                width: 200,
+                height: 200,
+                resizeMode: "contain",
+              }}
+            />
+            <Text
+              style={{
+                color: "white",
+                opacity: 0.6,
+                marginTop: 25,
+                fontWeight: "300",
+                fontFamily: theme.fonts.headers,
+                fontSize: 20,
+              }}
+            >
+              You don’t have any notifications!
+            </Text>
+          </View>
+  </View>;
 
   const SecondRoute = () => (
     <View style={{  flex: 1, height: '100%' }}>
@@ -58,14 +87,33 @@ export const Notifications: React.FC<
         style={{ flex: 1, width: "100%", height: '100%' }}
         ListEmptyComponent={
           <View
+          style={{
+            marginTop: "40%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Image
+            source={noRequests}
             style={{
-              marginTop: "50%",
-              justifyContent: "center",
-              alignItems: "center",
+              width: 200,
+              height: 200,
+              resizeMode: "contain",
+            }}
+          />
+          <Text
+            style={{
+              color: "white",
+              opacity: 0.6,
+              marginTop: 25,
+              fontWeight: "300",
+              fontFamily: theme.fonts.headers,
+              fontSize: 20,
             }}
           >
-            <Text style={{ color: "white" }}>Nothing found here</Text>
-          </View>
+            You don’t have any following requests?
+          </Text>
+        </View>
         }
         renderItem={({ item }) => {
           return <PendingFollower user={item} />;

@@ -14,4 +14,8 @@ export const common = {
   notificationActive: require('./notifications-active.png'),
   check: require('./check.png'),
   cancel: require('./cancel.png'),
+  noContent: require('./no-content.png'),
+  noNotifications: require('./no-notifications.png'),
+  noRequests: require('./no-requests.png'),
+  noSearch: require('./no-search.png'),
 };

@@ -18,11 +18,12 @@ export const HootHeader: React.FC<HootHeaderProps> = ({ date, name, username }) 
       alignItems: 'center',}}>
         <Text style={[styles.name]}>{name}</Text>
         <Text style={styles.username}>
-          @{username.split('.')[0]} •{" "}
-          <Text style={styles.date}>{rightDate}</Text>
+          @{username.split('.')[0]}
         </Text>
       </View>
-      <Image resizeMode="cover" source={more} style={styles.more} />
+      <Text style={styles.date}>{rightDate}</Text>
+
+      {/* <Image resizeMode="cover" source={more} style={styles.more} /> */}
     </View>
   );
 };

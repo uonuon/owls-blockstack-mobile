@@ -60,7 +60,7 @@ export const useGetHootImage = (hoot: IHoot, overrideStyles?: ViewStyle) => {
   ) : null;
 };
 
-export const Hoot: React.FC<HootProps> = ({ currentHoot, loveHoot, retweetHoot, isThreadHoot, nextHoot, prevHoot }) => {
+export const Hoot: React.FC<HootProps> = ({ currentHoot, loveHoot, retweetHoot, isThreadHoot, nextHoot, prevHoot, isParent }) => {
   const { navigateTo } = useNavigationUtils();
   const userImage = useGetUserImage(currentHoot.auther, styles.image);
   const hootImage = useGetHootImage(currentHoot, styles.hootImage);
@@ -73,7 +73,7 @@ export const Hoot: React.FC<HootProps> = ({ currentHoot, loveHoot, retweetHoot, 
   const isThread = (!prevHoot && (currentHoot.threadParent && currentHoot.threadParent[0]));
   return (
     <>
-    {isThread && <Text style={styles.text}>{currentHoot.auther.fullName} Replied.</Text>}
+    {isThread && !isParent && <Text style={styles.text}>{currentHoot.auther.fullName} Replied.</Text>}
     {isThread && <Hoot nextHoot={nextHoot} currentHoot={currentHoot.threadParent[0]} isThreadHoot={true} loveHoot={loveHoot} retweetHoot={retweetHoot} />}
     <View style={[styles.container, {borderBottomWidth: nextHoot || isThreadHoot ? 0 : 1}]}>
       <View style={{alignItems: 'center',}}>
