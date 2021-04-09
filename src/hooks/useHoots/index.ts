@@ -177,7 +177,7 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
           ...dataObjRef.current[hootId],
           favorites: [
             ...(dataObjRef.current[hootId].favorites || []),
-            userData?._id,
+            {_id: userData?._id},
           ],
         },
       });

@@ -8,7 +8,7 @@ interface Config {
 }
 
 // Change your domain URL
-const domainUrl = 'https://app.pravica.io';
+const domainUrl = 'https://owlsapp.net';
 export const defaultConfig = {
   appDomain: domainUrl,
   manifestURI: `${domainUrl}/manifest.json`,

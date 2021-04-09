@@ -68,8 +68,8 @@ export const Hoot: React.FC<HootProps> = ({ currentHoot, loveHoot, retweetHoot, 
     navigateTo({ name: "Replies", params: {hoot: currentHoot, loveHoot, retweetHoot} })
   }
   const { userData } = useContext(UserData); 
-  let loveIcon = currentHoot.favorites?.filter((user: any) => user._id === userData?._id).length ? loveActive : love;
-  let retweetIcon = currentHoot.retweets?.filter((user: any) => user.auther._id === userData?._id).length ? retweetActive : retweet;
+  let loveIcon = currentHoot.favorites?.filter((user: any) => user._id === userData?._id).length > 0 ? loveActive : love;
+  let retweetIcon = currentHoot.retweets?.filter((user: any) => user.auther._id === userData?._id).length > 0 ? retweetActive : retweet;
   const isThread = (!prevHoot && (currentHoot.threadParent && currentHoot.threadParent[0]));
   return (
     <>

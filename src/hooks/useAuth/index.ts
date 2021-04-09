@@ -73,19 +73,7 @@ export const useAuthentication = () => {
         const publicKey = getPublicKeyFromPrivate(appPrivateKey);
         // @ts-ignore
         const authId = window.fluree.crypto.account_id_from_public(publicKey);
-        if (user) {
-          const updatedUserTxn = [
-            {
-              _id: user._id,
-              profile,
-            },
-          ];
-          await transact({
-            privateKey: appPrivateKey,
-            myTxn: updatedUserTxn,
-            authId,
-          });
-        } else {
+        if (!user) {
           const authTxn = [
             {
               _id: "_auth",

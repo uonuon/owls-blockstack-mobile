@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { View, Image, Text, TouchableOpacity } from "react-native";
+import {View, Image, Text, TouchableOpacity, ActivityIndicator} from "react-native";
 import { Assets } from "assets";
 import { useLocalization, useNavigationUtils, useTheme } from "hooks";
 import { UserData } from "contexts";
@@ -67,10 +67,13 @@ export const LoginScreen: React.FC = () => {
               flexDirection: "row",
               justifyContent: "center",
               alignItems: "center",
+              flex: 1,
             }}
+            disabled={(!success && !failure)}
           >
             <Image source={logoMark} style={styles.image} />
             <Text style={styles.buttonText}>Sign in with Blockstack</Text>
+            {(!success && !failure) && <ActivityIndicator color={theme.colors.common.white} />}
           </TouchableOpacity>
         </LinearGradient>
         <View style={styles.containerFooter}>

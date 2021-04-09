@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
     borderRadius: 32,
     height: 56,
     marginVertical: 20,
-    paddingHorizontal: 80
     // width: '100%'
   },
   buttonText: {
@@ -52,9 +51,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '700',
     color: 'white',
+    marginHorizontal: 16,
   },
   image: {
-    marginRight: 16,
     width: 24,
     height: 24,
     resizeMode: 'contain'
