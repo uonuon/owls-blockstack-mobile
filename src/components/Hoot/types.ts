@@ -1,5 +1,5 @@
 import { PostHoot } from 'hooks';
-import { IHoot } from 'shared';
+import { IHoot, IUser } from 'shared';
 export interface HootProps {
   currentHoot: IHoot
   loveHoot: (id: string) => void

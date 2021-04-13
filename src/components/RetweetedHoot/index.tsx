@@ -1,10 +1,12 @@
 import { Assets } from "assets";
-import { useTheme } from "hooks";
-import React from "react";
+import { usePromisedMemo, useTheme } from "hooks";
+import React, { useEffect } from "react";
 import { View, Text } from "react-native";
 import { Hoot } from "components";
 import { HootProps } from "../Hoot/types";
 import styles from "./styles";
+import { User } from "src/db/models/UserModel";
+import { database } from "src/db";
 
 export const RetweetedHoot: React.FC<HootProps> = ({
   currentHoot,
@@ -23,7 +25,7 @@ export const RetweetedHoot: React.FC<HootProps> = ({
         <Text
           style={styles.text}
         >
-          {currentHoot.auther.fullName + " Rehooted"}
+          {currentHoot.user.fullName + " Retweeted"}
         </Text>
       )}
       <Hoot

@@ -17,17 +17,19 @@ export interface IUser {
   auth?: any;
 }
 
-export interface IHoot {
-  retweets: any;
-  threadParent?: IHoot | [undefined]
-  createdAt: number;
-  _id: number;
-  avatar: string;
-  image?: string;
-  text: string;
-  replies: any[];
-  favorites: number[];
-  auther: IUser;
-  parentTweet?: IHoot 
-}
+// export interface IHoot {
+//   retweetsNumber: any;
+//   threadParent?: IHoot | [undefined]
+//   createdAt: number;
+//   id: string;
+//   _id: number;
+//   avatar: string;
+//   image?: string;
+//   text: string;
+//   favorites: any[];
+//   repliesNumber: number;
+//   favoritesNumber: number;
+//   user: IUser;
+//   parentTweet?: IHoot 
+// }
 

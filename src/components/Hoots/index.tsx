@@ -50,9 +50,10 @@ export const Hoots: React.FC<Props> = ({
       const hoot: IHoot = item;
       return (
         <RetweetedHoot
+          key={item.id}
           currentHoot={hoot}
-          nextHoot={(hoots.length - 1 > index + 1) && hoots[index + 1].threadParent && hoots[index].threadParent && hoots[index].threadParent[0] && hoots[index + 1].threadParent[0]  && (hoots[index].threadParent[0]._id === hoots[index + 1].threadParent[0]._id)}
-          prevHoot={index !== 0 && hoots[index].threadParent && hoots[index - 1].threadParent && hoots[index].threadParent[0] && hoots[index - 1].threadParent[0]  && (hoots[index].threadParent[0]._id === hoots[index - 1].threadParent[0]._id)}
+          nextHoot={(hoots.length - 1 > index + 1) && hoots[index + 1].threadParent && hoots[index].threadParent && (hoots[index].threadParent.id === hoots[index + 1].threadParent.id)}
+          prevHoot={index !== 0 && hoots[index].threadParent && hoots[index - 1].threadParent && (hoots[index].threadParent.id === hoots[index - 1].threadParent.id)}
           loveHoot={loveHoot}
           retweetHoot={retweetHoot}
         />
@@ -63,9 +64,9 @@ export const Hoots: React.FC<Props> = ({
     updateCellsBatchingPeriod={50}
     extraData={hoots}
     initialNumToRender={10}
-    onEndReachedThreshold={0.1}
-    onEndReached={loadMoreHoots}
+    // onEndReachedThreshold={0.1}
+    // onEndReached={loadMoreHoots}
     legacyImplementation={false}
-    keyExtractor={(item: any, index) => item._id}
+    keyExtractor={(item: any, index) => item.id}
   />
 );

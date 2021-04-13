@@ -1,66 +1,61 @@
-import { IHoot } from 'shared';
-import {
-  associations,
-  Model,
-  Relation,
-} from '@nozbe/watermelondb';
+import { associations, Model, Relation } from "@nozbe/watermelondb";
 import {
   date,
   field,
   relation,
   json,
   readonly,
-} from '@nozbe/watermelondb/decorators';
-import {
-  User,
-} from './UserModel';
+  action,
+} from "@nozbe/watermelondb/decorators";
+import { User } from "./UserModel";
 
 export class Hoot extends Model {
-  static table = 'hoots';
+  static table = "hoots";
 
-  @field('retweetsNumber')
-  retweetsNumber!: number;
-
-  @field('repliesNumber')
-  repliesNumber!: number;
-
-  @field('favoritesNumber')
-  favoritesNumber!: number;
-
-  @field('isFavorite')
-  isFavorite!: boolean;
-
-  @field('isRetweeted')
-  isRetweeted!: boolean;
-
-  @field('avatar')
-  avatar!: string;
-
-  @field('image')
-  image!: string;
-
-  @field('text')
-  text!: string;
-
-  @readonly @date('createdAt')
+  @readonly
+  @date("created_at")
   createdAt!: Date;
 
-  @readonly @date('updatedAt')
+  @readonly
+  @date("updated_at")
   updatedAt!: Date;
 
-  @relation('users', 'user', {
+  @field("retweetsNumber")
+  retweetsNumber!: number;
+
+  @field("repliesNumber")
+  repliesNumber!: number;
+
+  @field("favoritesNumber")
+  favoritesNumber!: number;
+
+  @field("isFavorite")
+  isFavorite!: boolean;
+
+  @field("isRetweeted")
+  isRetweeted!: boolean;
+
+  @field("avatar")
+  avatar!: string;
+
+  @field("image")
+  image!: string;
+
+  @field("text")
+  text!: string;
+
+  @relation("users", "user", {
     isImmutable: true,
   })
   user!: Relation<User>;
 
-  @relation('hoots', 'threadParent', {
+  @relation("hoots", "threadParent", {
     isImmutable: true,
   })
-  threadParent!: Relation<Hoot>
-  
-  @relation('hoots', 'parentTweet', {
-    isImmutable: true,
-  })
-  parentTweet!: Relation<Hoot>
+  threadParent!: Relation<Hoot>;
 
+  @relation("hoots", "parentTweet", {
+    isImmutable: true,
+  })
+  parentTweet!: Relation<Hoot>;
 }
