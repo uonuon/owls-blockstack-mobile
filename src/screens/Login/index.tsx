@@ -42,7 +42,7 @@ export const LoginScreen: React.FC = () => {
       {/* <Image source={loginAvatar} style={styles.logoAvatar} /> */}
       <View style={styles.textContainer}>
         <Text style={[styles.heading]}>
-          One click sign in to Tikis if you have universal login by Stacks.
+          One click sign in to Owls if you have universal login by Stacks.
         </Text>
         {/* <Text style={styles.desc}
           >

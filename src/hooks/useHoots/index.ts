@@ -177,7 +177,7 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
           ...dataObjRef.current[hootId],
           favorites: [
             ...(dataObjRef.current[hootId].favorites || []),
-            {_id: userData?._id},
+            userData?._id,
           ],
         },
       });
@@ -197,6 +197,7 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
       privateKey: userData?.appPrivateKey,
     })
       .then((res) => {
+        console.warn(res.data)
         setDataObj({ ...dataObjRef.current, ...arrayToObj(res.data) });
         setHasReachedEnd(res.data.length < 10);
         setSuccess();

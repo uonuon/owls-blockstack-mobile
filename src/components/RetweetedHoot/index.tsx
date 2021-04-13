@@ -23,7 +23,7 @@ export const RetweetedHoot: React.FC<HootProps> = ({
         <Text
           style={styles.text}
         >
-          {currentHoot.auther.fullName + " Retweeted"}
+          {currentHoot.auther.fullName + " Rehooted"}
         </Text>
       )}
       <Hoot

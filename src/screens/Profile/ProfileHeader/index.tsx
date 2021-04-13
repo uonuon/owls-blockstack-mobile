@@ -95,7 +95,7 @@ export const ProfileHeader = ({
                   style={{ width: 16, height: 16, resizeMode: "contain" }}
                   source={calendar}
                 />
-                <Text style={styles.date}> Joined September 2018</Text>
+                <Text style={styles.date}> Joined September 2021</Text>
               </View>
               <Text style={styles.date}>{userProfile?.description}</Text>
               <View style={{ flexDirection: "row", marginTop: 16 }}>
@@ -103,26 +103,26 @@ export const ProfileHeader = ({
                   onPress={() =>
                     navigateTo({
                       name: "Followers",
-                      params: { users: followers },
+                      params: { users: followers.filter((user) => user._id !== userData._id) },
                     })
                   }
                   style={styles.button}
                 >
                   <Text style={styles.followersText}>
-                    {followers.length} Followers
+                    {followers.length -1} Followers
                   </Text>
                 </Pressable>
                 <Pressable
                   onPress={() =>
                     navigateTo({
                       name: "Following",
-                      params: { users: following },
+                      params: { users: following.filter((user) => user._id !== userData._id) },
                     })
                   }
                   style={styles.button}
                 >
                   <Text style={styles.followingText}>
-                    {following.length} Following
+                    {following.length -1} Following
                   </Text>
                 </Pressable>
               </View>
