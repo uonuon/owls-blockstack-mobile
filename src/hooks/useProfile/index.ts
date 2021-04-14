@@ -73,7 +73,7 @@ export const useProfile = (currentProfile: IUser, callBackFollowingUser?: any) =
         },
       ];
       if (callBackFollowingUser) {
-        callBackFollowingUser(id.toString(), status !== SUCCESS);
+        callBackFollowingUser(currentProfile, status !== SUCCESS);
       }
       return await transact({
         privateKey: userData?.appPrivateKey,

@@ -4,35 +4,57 @@ import { AppState, AppStateStatus } from "react-native";
 import { createStore } from "reusable";
 import { io } from "socket.io-client";
 import {useProfile} from "hooks";
-import {IUser} from "shared";
+import {IHoot, IUser} from "shared";
+import {queryFollowings} from "../../../shared/Queries";
+import {arrayToObj, query} from "utils";
+import {useRoute} from "@react-navigation/native";
 
 export const useRealTime = createStore(() => {
   const { userData } = useContext(UserData);
   const [hootsMapper, setHootsMapper] = useState<{ [x: string]: number }>({});
   const [registeredHootsIds, registerHootsIds] = useState<string[]>([]);
-  const [registeredFollowingIds, registerFollowingIds] = useState<string[]>([]);
+  const [registeredFollowingIds, registerFollowingIds] = useState<{[x: string]: IUser}>({});
   const [newHootsFlag, toggleNewHootsFlag] = useState<boolean>(false);
+  const [selectedHoot, registerSelectedHoot] = useState<string|undefined>();
   const registeredHootsIdsRef = useRef(registeredHootsIds);
   registeredHootsIdsRef.current = registeredHootsIds;
-  const {currentFollowing} = useProfile(userData as IUser);
+  const registeredFollowingIdsRef = useRef(registeredFollowingIds);
+  registeredFollowingIdsRef.current = registeredFollowingIds;
 
   useEffect(() => {
-    registerFollowingIds(currentFollowing.map(cf => cf._id.toString()));
-  },[currentFollowing]);
+    if(userData){
+      query({
+        myQuery: queryFollowings(userData?._id),
+        privateKey: userData.appPrivateKey,
+      }).then(({data}) => {
+        registerFollowingIds(arrayToObj(data));
+      });
+    }
+  },[userData]);
 
-  const callBackFollowingUser = (userId: string,isRemove = false) => {
+  const callBackFollowingUser = (newUser: IUser,isRemove = false) => {
     if(isRemove){
-      registerFollowingIds(registeredFollowingIds.filter(UId => UId !== userId));
+      const newFollowingsIds = {...registeredFollowingIds};
+      delete newFollowingsIds[newUser._id];
+      registerFollowingIds(newFollowingsIds);
     }else{
-      registerFollowingIds([...registeredFollowingIds,userId]);
+      registerFollowingIds({...registeredFollowingIds,[newUser._id]: newUser});
     }
   };
   const settersMap = {
     tweet: ({ tempId, transactionID, transactionFlake }) => {
-      if(registeredHootsIdsRef.current.includes(tempId.toString()) || registeredHootsIdsRef.current.includes(transactionID.toString())) {
-        setHootsMapper({...hootsMapper, [tempId || transactionID]: {transactionID, transactionFlake}});
+      if(registeredHootsIdsRef.current.includes((tempId || "").toString()) || registeredHootsIdsRef.current.includes(transactionID.toString())) {
+        setHootsMapper({...hootsMapper, [tempId || transactionID]: {transactionID, transactionFlake: transactionFlake[0]}});
       }else{
-        if(registeredFollowingIds.includes(transactionFlake[0]?.auther?._id?.toString())){
+        if(Object.keys(registeredFollowingIdsRef.current).includes(transactionFlake[0]?.auther?._id?.toString())){
+          if(selectedHoot === transactionFlake[1]?._id){
+            setHootsMapper({...hootsMapper, [transactionID]: {
+                  newHoot: {...transactionFlake[0],
+                    auther: registeredFollowingIdsRef.current[transactionFlake[0]?.auther?._id?.toString()],
+                    replies: [],
+                    favorites: []}
+              }})
+          }
           toggleNewHootsFlag(true);
         }
       }
@@ -74,7 +96,7 @@ export const useRealTime = createStore(() => {
           settersMap[setter]({
             transactionID,
             tempId,
-            transactionFlake: transactionFlake[0],
+            transactionFlake,
           });
         }
       }
@@ -82,9 +104,9 @@ export const useRealTime = createStore(() => {
     if (!error && !called) {
       if (Object.keys(transactionFlake[0]).includes("favorites")){
         settersMap.tweet({
-          transactionID: transactionFlake[0]._id,
-          tempId: "",
-          transactionFlake: transactionFlake[0],
+          transactionID: transactionFlake[0]._id.toString(),
+          tempId: undefined,
+          transactionFlake: transactionFlake,
         });
       }
     }
@@ -111,7 +133,7 @@ export const useRealTime = createStore(() => {
 
   useEffect(() => {
     if (userData && appStateVisible === "active") {
-      const socket = io("http://192.168.8.105:3000");
+      const socket = io("http://192.168.8.106:3000");
       socket.on("fluree_event", ({ data, lastEventTime }: any) => {
         cb(data, lastEventTime);
       });
@@ -130,5 +152,6 @@ export const useRealTime = createStore(() => {
     newHootsFlag,
     toggleNewHootsFlag,
     callBackFollowingUser,
+    registerSelectedHoot,
   }
 });

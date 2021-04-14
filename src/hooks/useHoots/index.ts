@@ -42,7 +42,7 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
     loading,
     success,
   } = useProgressState();
-  const { hootsMapper, registerHootsIds,newHootsFlag,toggleNewHootsFlag } = useRealTime();
+  const { hootsMapper, registerHootsIds,newHootsFlag,toggleNewHootsFlag,registerSelectedHoot } = useRealTime();
   const [page, setPage] = useState<number>(0);
   const [hasReachedEnd, setHasReachedEnd] = useState<boolean>(false);
 
@@ -72,6 +72,12 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
             hootsUpdates[parentId] = {...dataObj[parentId],retweets: [...dataObj[parentId].retweets, hootsMapper[tweetsKey.toString()].transactionID]}
           }
           setDataObj(hootsUpdates);
+        }else{
+          const newObj = {
+            ...dataObj,
+            [tweetsKey.toString()]: hootsMapper[tweetsKey.toString()].newHoot
+          }
+          setDataObj(newObj);
         }
       });
     }
@@ -233,6 +239,12 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
   useEffect(() => {
     registerHootsIds(Object.keys(dataObj));
   },[dataObj]);
+  useEffect(() => {
+    if(id){
+      registerSelectedHoot(id.toString());
+    }
+    () => registerSelectedHoot(undefined);
+  },[id]);
   return {
     loading,
     data,
