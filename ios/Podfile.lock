@@ -26,9 +26,9 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - PromisesObjC (1.2.11)
-  - PromisesSwift (1.2.11):
-    - PromisesObjC (= 1.2.11)
+  - PromisesObjC (1.2.12)
+  - PromisesSwift (1.2.12):
+    - PromisesObjC (= 1.2.12)
   - RCTRequired (0.63.3)
   - RCTTypeSafety (0.63.3):
     - FBLazyVector (= 0.63.3)
@@ -199,11 +199,13 @@ PODS:
     - react-native-config/App (= 1.4.1)
   - react-native-config/App (1.4.1):
     - React-Core
-  - react-native-image-picker (3.1.4):
+  - react-native-image-picker (3.3.2):
     - React-Core
   - react-native-randombytes (3.6.0):
     - React-Core
   - react-native-safe-area-context (3.1.9):
+    - React-Core
+  - react-native-segmented-control (2.2.2):
     - React-Core
   - react-native-splash-screen (3.2.0):
     - React
@@ -273,12 +275,41 @@ PODS:
     - React-Core
   - RNCMaskedView (0.1.10):
     - React
-  - RNGestureHandler (1.10.1):
+  - RNFS (2.17.0):
+    - React
+  - RNGestureHandler (1.10.3):
     - React-Core
   - RNOS (1.2.6):
     - React
-  - RNReanimated (1.13.2):
+  - RNReanimated (2.1.0):
+    - DoubleConversion
+    - FBLazyVector
+    - FBReactNativeSpec
+    - Folly
+    - glog
+    - RCTRequired
+    - RCTTypeSafety
+    - React
+    - React-callinvoker
     - React-Core
+    - React-Core/DevSupport
+    - React-Core/RCTWebSocket
+    - React-CoreModules
+    - React-cxxreact
+    - React-jsi
+    - React-jsiexecutor
+    - React-jsinspector
+    - React-RCTActionSheet
+    - React-RCTAnimation
+    - React-RCTBlob
+    - React-RCTImage
+    - React-RCTLinking
+    - React-RCTNetwork
+    - React-RCTSettings
+    - React-RCTText
+    - React-RCTVibration
+    - ReactCommon/turbomodule/core
+    - Yoga
   - RNScreens (2.16.1):
     - React-Core
   - STRegex (2.1.1)
@@ -313,6 +344,7 @@ DEPENDENCIES:
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - "react-native-segmented-control (from `../node_modules/@react-native-community/segmented-control`)"
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-udp (from `../node_modules/react-native-udp`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -327,6 +359,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
+  - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNOS (from `../node_modules/react-native-os`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -385,6 +418,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-randombytes"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-segmented-control:
+    :path: "../node_modules/@react-native-community/segmented-control"
   react-native-splash-screen:
     :path: "../node_modules/react-native-splash-screen"
   react-native-udp:
@@ -413,6 +448,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/async-storage"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
+  RNFS:
+    :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNOS:
@@ -438,8 +475,8 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 7da9338acfb98d4ef9e5536805a0704572d33c2f
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
-  PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
-  PromisesSwift: fed4eb6f7a29846a22624d1b86b77e1dedb88724
+  PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
+  PromisesSwift: 64085cf6e5fc1b5001f90cf31e87a1f1621fefee
   RCTRequired: 48884c74035a0b5b76dbb7a998bd93bcfc5f2047
   RCTTypeSafety: edf4b618033c2f1c5b7bc3d90d8e085ed95ba2ab
   React: f36e90f3ceb976546e97df3403e37d226f79d0e3
@@ -451,9 +488,10 @@ SPEC CHECKSUMS:
   React-jsiexecutor: b56c03e61c0dd5f5801255f2160a815f4a53d451
   React-jsinspector: 8e68ffbfe23880d3ee9bafa8be2777f60b25cbe2
   react-native-config: d8b45133fd13d4f23bd2064b72f6e2c08b2763ed
-  react-native-image-picker: 28d8d1f5a643119876b8b2c7d4d1dcfb2b232dd4
+  react-native-image-picker: b42940647478bf106ad3c491d6f5d9d40916d865
   react-native-randombytes: b6677f7d495c27e9ee0dbd77ebc97b3c59173729
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
+  react-native-segmented-control: 65df6cd0619b780b3843d574a72d4c7cec396097
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-udp: ff9d13e523f2b58e6bc5d4d32321ac60671b5dc9
   React-RCTActionSheet: 53ea72699698b0b47a6421cb1c8b4ab215a774aa
@@ -468,9 +506,10 @@ SPEC CHECKSUMS:
   ReactCommon: 4167844018c9ed375cc01a843e9ee564399e53c3
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
-  RNGestureHandler: 5e58135436aacc1c5d29b75547d3d2b9430d052c
+  RNFS: 93d5b5535eb39d98e6b19009faa8fe717f7ea45d
+  RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNOS: 6f2f9a70895bbbfbdad7196abd952e7b01d45027
-  RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
+  RNReanimated: 70f662b5232dd5d19ccff581e919a54ea73df51c
   RNScreens: 45c457af3d2ee9e08fc01e70da87e653d46b1198
   STRegex: d49e88d0fe58538d3175fdd989bc1243b9be2a07
   TcpSockets: 14306fb79f9750ea7d2ddd02d8bed182abb01797

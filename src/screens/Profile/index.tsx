@@ -1,4 +1,3 @@
-import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { Assets } from "assets";
 import {
   ConnectionsStatuses,
@@ -21,10 +20,6 @@ import {
   Pressable,
   ActivityIndicator,
 } from "react-native";
-import { SceneMap, TabBar, TabView } from "react-native-tab-view";
-import { CollapsibleHeaderTabView } from "react-native-tab-view-collapsible-header";
-import { ProfileHootsMedia } from "./ProfileHootsMedia";
-import { ProfileHootsLikes } from "./ProfileHootsLikes";
 import { ProfileHeader } from "./ProfileHeader";
 import { UserData } from "contexts";
 import { IHoot, IUser } from "shared";
@@ -34,35 +29,16 @@ import styles from "./styles";
 import { useRoute } from "@react-navigation/native";
 import { Hoots } from "src/components/Hoots";
 import { HootsQueriesTypes } from "shared/Queries";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Tabs, MaterialTabBar } from "react-native-collapsible-tab-view";
+import { ProfileHoots } from "./ProfileHoots";
+import { useRealTime } from "src/hooks/useRealTime";
 
-const HScrollView = HPageViewHoc(FlatList);
-const PScrollView = HPageViewHoc(ScrollView)
-
-const initialLayout = {
-  width: Dimensions.get("window").width,
-};
 const {
   screens: {
     profile: { profile, profileDisabled },
   },
   common: { lock },
 } = Assets.images;
-
-const navigationRoutes = [
-  {
-    key: "hoots",
-    title: "Hoots",
-  },
-  {
-    key: "media",
-    title: "Media",
-  },
-  {
-    key: "likes",
-    title: "Likes",
-  },
-];
 
 export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
   const navigation = useNavigationUtils();
@@ -74,9 +50,13 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
   const [index, setIndex] = useState(0);
   const { userData } = useContext(UserData);
   const selectedUser = (params?.incomingUser as IUser) || (userData as IUser);
-  const { currentFollowers, currentFollowing, followUserById, connection } = useProfile(
-    selectedUser
-  );
+  const {callBackFollowingUser} = useRealTime();
+  const {
+    currentFollowers,
+    currentFollowing,
+    followUserById,
+    connection,
+  } = useProfile(selectedUser, callBackFollowingUser);
   const {
     data,
     loading,
@@ -85,6 +65,7 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
     hasReachedEnd,
     loadMoreHoots,
     success,
+    refresh,
   } = useHoots({
     queryType: HootsQueriesTypes.USER_HOOTS,
     id: selectedUser?._id || 0,
@@ -101,15 +82,14 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
     });
   }, []);
 
-  const privateProfile =  () => (
-    <PScrollView
-     index={0}
-      contentContainerStyle={{
+  const privateProfile = () => (
+    <View
+      style={{
         flexDirection: "column",
         alignItems: "center",
         padding: 8,
         width: "100%",
-        backgroundColor: 'black'
+        backgroundColor: "black",
       }}
     >
       <Image
@@ -145,75 +125,19 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
           padding: 16,
           borderRadius: 16,
         }}
-        onPress={() => followUserById(selectedUser._id, ConnectionsStatuses.pending, connection?.connectionId)}
+        onPress={() =>
+          followUserById(
+            selectedUser._id,
+            ConnectionsStatuses.pending,
+            connection?.connectionId
+          )
+        }
       >
         <Text style={{ color: "white" }}>SEND FOLLOW REQUEST</Text>
       </Pressable>
-    </PScrollView>
-  );
-  const ProfileHoots = () => (
-    <HScrollView
-      style={styles.flatList}
-      index={0}
-      contentContainerStyle={styles.flatList}
-      data={data}
-      // ListHeaderComponent={ListHeaderComponent}
-      ListFooterComponent={
-        <>
-          {!hasReachedEnd && (
-            <ActivityIndicator
-              size={"large"}
-              style={{ marginTop: 10 }}
-              color={"white"}
-            />
-          )}
-        </>
-      }
-      // style={styles.flatList}
-      renderItem={({ item }) => {
-        const hoot: IHoot = item;
-        return (
-          <RetweetedHoot
-            currentHoot={hoot}
-            loveHoot={loveHoot}
-            retweetHoot={postData}
-          />
-        );
-      }}
-      removeClippedSubviews={false}
-      maxToRenderPerBatch={10}
-      updateCellsBatchingPeriod={50}
-      extraData={data}
-      initialNumToRender={10}
-      onEndReachedThreshold={0.1}
-      onEndReached={loadMoreHoots}
-      legacyImplementation={false}
-      keyExtractor={(item: any, index) => item._id}
-    />
+    </View>
   );
 
-  const renderScene = SceneMap({
-    hoots: (selectedUser.isPrivate && connection?.status !== ConnectionsStatuses.success) ? privateProfile : ProfileHoots,
-    media: ProfileHootsMedia,
-    likes: ProfileHootsLikes,
-  });
-
-  const renderTabBar = (props: any) => (
-    <TabBar
-      {...props}
-      indicatorStyle={{ backgroundColor: colors.secondary }}
-      activeColor={colors.secondary}
-      tabStyle={{ height: 60, width: "auto" }}
-      labelStyle={{
-        fontSize: 16,
-        fontFamily: theme.fonts.regular,
-        fontWeight: "300",
-        textTransform: "capitalize",
-      }}
-      inactiveColor={colors.onSurfaceMediumEmphasis}
-      style={{ backgroundColor: colors.elevation01dp }}
-    />
-  );
   const renderScrollHeader = useCallback(
     () => (
       <ProfileHeader
@@ -228,22 +152,52 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
     [selectedUser, currentFollowers, currentFollowing, userData, connection]
   );
 
-  const makeHeaderHeight = useCallback(
-    () => (params?.incomingUser ? 256 : 200),
-    []
-  );
-
   return (
-    <CollapsibleHeaderTabView
-      makeHeaderHeight={makeHeaderHeight}
-      headerRespond={true}
-      tabbarHeight={45}
-      renderTabBar={renderTabBar}
-      renderScrollHeader={renderScrollHeader}
-      navigationState={{ index, routes: navigationRoutes }}
-      renderScene={renderScene}
-      onIndexChange={setIndex}
-      initialLayout={initialLayout}
-    />
+    <Tabs.Container
+      HeaderComponent={renderScrollHeader}
+      headerHeight={params?.incomingUser ? 256 : 200} // optional
+      TabBarComponent={(props) => (
+        <MaterialTabBar
+          {...props}
+          tabStyle={{ backgroundColor: theme.colors.elevation01dp }}
+          activeColor={theme.colors.primary}
+          inactiveColor={theme.colors.onSurfaceMediumEmphasis}
+        />
+      )}
+    >
+      <Tabs.Tab name="Hoots">
+        <ProfileHoots
+          hoots={data}
+          loveHoot={loveHoot}
+          loadMoreHoots={loadMoreHoots}
+          hasReachedEnd={hasReachedEnd}
+          refresh={refresh}
+          isRefreshing={loading}
+          retweetHoot={postData}
+        />
+      </Tabs.Tab>
+      <Tabs.Tab name="Media">
+        <ProfileHoots
+          hoots={data}
+          loveHoot={loveHoot}
+          loadMoreHoots={loadMoreHoots}
+          hasReachedEnd={hasReachedEnd}
+          refresh={refresh}
+          isRefreshing={loading}
+          retweetHoot={postData}
+        />
+      </Tabs.Tab>
+      <Tabs.Tab name="Likes">
+        <ProfileHoots
+          hoots={data}
+          loveHoot={loveHoot}
+          loadMoreHoots={loadMoreHoots}
+          hasReachedEnd={hasReachedEnd}
+          refresh={refresh}
+          isRefreshing={loading}
+          retweetHoot={postData}
+        />
+      </Tabs.Tab>
+    </Tabs.Container>
   );
 };

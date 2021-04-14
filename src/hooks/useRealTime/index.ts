@@ -32,7 +32,7 @@ export const useRealTime = createStore(() => {
       if(registeredHootsIdsRef.current.includes(tempId.toString()) || registeredHootsIdsRef.current.includes(transactionID.toString())) {
         setHootsMapper({...hootsMapper, [tempId || transactionID]: {transactionID, transactionFlake}});
       }else{
-        if(registeredFollowingIds.includes(transactionFlake[0].auther._id.toString())){
+        if(registeredFollowingIds.includes(transactionFlake[0]?.auther?._id?.toString())){
           toggleNewHootsFlag(true);
         }
       }
@@ -111,7 +111,7 @@ export const useRealTime = createStore(() => {
 
   useEffect(() => {
     if (userData && appStateVisible === "active") {
-      const socket = io("http://192.168.8.106:3000");
+      const socket = io("http://192.168.8.105:3000");
       socket.on("fluree_event", ({ data, lastEventTime }: any) => {
         cb(data, lastEventTime);
       });

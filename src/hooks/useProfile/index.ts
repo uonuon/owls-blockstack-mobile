@@ -5,13 +5,11 @@ import {
   queryUserHoots,
 } from "./../../../shared/Queries/index";
 import { useContext, useEffect, useState } from "react";
-import RNBlockstackSdk from "react-native-blockstack";
 import { query, getPublicKeyFromPrivate, transact, generateGUID } from "utils";
 import { IHoot, IUser } from "shared";
 import { useProgressState } from "../useProgressState";
 import { UserData } from "contexts";
 import { multiQuery } from "src/utils/Axios/multiQuery";
-import {useRealTime} from "../useRealTime";
 
 const REJECTED = "rejected";
 const SUCCESS = "success";
@@ -30,12 +28,11 @@ export const ConnectionsStatuses = {
   [BLOCKED]: BLOCKED,
 }
 
-export const useProfile = (currentProfile: IUser) => {
+export const useProfile = (currentProfile: IUser, callBackFollowingUser?: any) => {
   const [currentFollowers, setCurrentFollowers] = useState<IUser[]>([]);
   const [currentFollowing, setCurrentFollowing] = useState<IUser[]>([]);
   const [connection, setConnection] = useState();
   const { userData } = useContext(UserData);
-  const {callBackFollowingUser} = useRealTime();
   const {
     setFailure,
     setLoading,
@@ -75,7 +72,9 @@ export const useProfile = (currentProfile: IUser) => {
           status,
         },
       ];
-      callBackFollowingUser(id.toString(), status !== SUCCESS);
+      if (callBackFollowingUser) {
+        callBackFollowingUser(id.toString(), status !== SUCCESS);
+      }
       return await transact({
         privateKey: userData?.appPrivateKey,
         myTxn: userTxn,

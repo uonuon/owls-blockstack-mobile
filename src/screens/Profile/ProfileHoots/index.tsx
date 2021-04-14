@@ -1,29 +1,58 @@
-import { Hoot } from "components";
 import React from "react";
-import {
-  ScrollView,
-  FlatList,
-} from "react-native";
-import { HPageViewHoc } from "react-native-head-tab-view";
-import { DATA } from "../../home";
-import styles from "./styles"
+import styles from "./styles";
+import { Tabs } from "react-native-collapsible-tab-view";
+import { RetweetedHoot } from "components";
+import { index } from "ios/Pods/Blockstack/Javascript/profileProofs";
+import { ActivityIndicator } from "react-native";
+import { IHoot } from "shared";
+import { PostHoot } from "hooks";
+interface Props {
+  hoots: IHoot[];
+  ListHeaderComponent?: React.ReactElement;
+  loveHoot: (id: string) => void;
+  retweetHoot: (hoot: PostHoot) => void;
+  ListEmptyComponent?: React.ReactElement;
+  loadMoreHoots: () => void;
+  hasReachedEnd: boolean;
+  refresh: () => void;
+  isRefreshing: boolean;
+}
 
-const HScrollView = HPageViewHoc(ScrollView);
-
-export const ProfileHoots = () => (
-  <HScrollView index={0}>
-     <FlatList
-        data={DATA}
-        style={styles.flatList}
-        renderItem={({ item }) => {
-          const hoot = item;
-          return (
-            <Hoot
-              currentHoot={hoot}
-            />
-          );
-        }}
-        keyExtractor={(item) => item.id}
+export const ProfileHoots: React.FC<Props> = ({hoots, hasReachedEnd, loveHoot, loadMoreHoots, refresh, isRefreshing, retweetHoot}) => (
+  <Tabs.FlatList
+  data={hoots}
+  onRefresh={refresh}
+  refreshing={isRefreshing}
+  ListFooterComponent={
+   <>
+   {!hasReachedEnd &&  <ActivityIndicator
+      size={"large"}
+      style={{ marginTop: 10 }}
+      color={"white"}
+    />}
+   </>
+}
+  style={[styles.flatList]}
+  renderItem={({ item, index }) => {
+    const hoot: IHoot = item as IHoot;
+    return (
+      <RetweetedHoot
+        currentHoot={hoot}
+        nextHoot={(hoots.length - 1 > index + 1) && hoots[index + 1].threadParent && hoots[index].threadParent && hoots[index].threadParent[0] && hoots[index + 1].threadParent[0]  && (hoots[index].threadParent[0]._id === hoots[index + 1].threadParent[0]._id)}
+        prevHoot={index !== 0 && hoots[index].threadParent && hoots[index - 1].threadParent && hoots[index].threadParent[0] && hoots[index - 1].threadParent[0]  && (hoots[index].threadParent[0]._id === hoots[index - 1].threadParent[0]._id)}
+        loveHoot={loveHoot}
+        retweetHoot={retweetHoot}
       />
-  </HScrollView>
+    );
+  }}
+  removeClippedSubviews={false}
+  maxToRenderPerBatch={20}
+  updateCellsBatchingPeriod={50}
+  extraData={hoots}
+  initialNumToRender={20}
+  onEndReachedThreshold={0.1}
+  onEndReached={loadMoreHoots}
+  legacyImplementation={false}
+  keyExtractor={(item: any, index) => item._id}
+  />
 );
