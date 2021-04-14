@@ -4,16 +4,14 @@ import {
   useGetUserImage,
   useNavigationUtils,
 } from "hooks";
-import React, { useContext, useEffect, useMemo, useState } from "react";
-import { View, Image, Text, Pressable, ViewStyle } from "react-native";
+import React, { useContext, useMemo, useState } from "react";
+import { View, Image, Text, ViewStyle } from "react-native";
 import { HootProps } from "./types";
 import styles from "./styles";
 import { HootAction } from "components";
 import { HootHeader } from "./HootHeader";
-import { date, number } from "yup/lib/locale";
 import { HootContent } from "./HootContent";
 import { UserData } from "contexts";
-import { hi } from "date-fns/locale";
 import { IHoot } from "shared";
 import { TouchableOpacity } from "react-native-gesture-handler";
 

@@ -48,7 +48,7 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
   const [currentFollowing, setCurrentFollowing] = useState<IUser[]>([]);
 
   const data = useMemo(() => {
-    return Object.values(dataObj);
+    return Object.values(dataObj).sort((a, b) => b.createdAt - a.createdAt);
   }, [dataObj, dataObjRef.current]);
 
   useEffect(() => {
@@ -119,8 +119,7 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
       ];
       setDataObj({
         [tempId]: {
-          ...hootTxn,
-          text,
+          ...hootTxn[0],
           createdAt: new Date().getTime(),
           auther: userData,
           parentTweet: hootId ? dataObjRef.current[hootId] : undefined,
