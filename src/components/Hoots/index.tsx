@@ -59,10 +59,10 @@ export const Hoots: React.FC<Props> = ({
       );
     }}
     removeClippedSubviews={false}
-    maxToRenderPerBatch={10}
+    maxToRenderPerBatch={20}
     updateCellsBatchingPeriod={50}
     extraData={hoots}
-    initialNumToRender={10}
+    initialNumToRender={20}
     onEndReachedThreshold={0.1}
     onEndReached={loadMoreHoots}
     legacyImplementation={false}

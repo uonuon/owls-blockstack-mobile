@@ -192,7 +192,7 @@ export const queryUserHoots = (id: number, offset: number) => {
     opts: {
       limit: 20,
       offset,
-      orderBy: "tweet/createdAt",
+      _orderBy: "tweet/createdAt",
     }
   };
 };
@@ -210,7 +210,7 @@ export const newsFeed = (id: number, offset: number) => ({
   opts: {
     limit: 20,
     offset,
-    orderBy: "tweet/createdAt",
+    _orderBy: ["tweet/createdAt", 'DESC'],
   }
 });
 
@@ -221,7 +221,7 @@ export const getCurrentHootReplies = (id: number, offset: number) => {
     },
     where: [[id, "tweet/replies", "?replies"]],
     opts: {
-      orderBy: "tweet/createdAt",
+      _orderBy: "tweet/createdAt",
     }
   };
 };

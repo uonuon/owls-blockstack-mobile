@@ -13,7 +13,12 @@ import { query, getPublicKeyFromPrivate, transact, generateGUID } from "utils";
 import { IHoot, IUser } from "shared";
 import { useProgressState } from "../useProgressState";
 import { UserData } from "contexts";
-import { hootsQueriesMap, HootsQueriesTypes, newsFeed, queryFollowings } from "shared/Queries";
+import {
+  hootsQueriesMap,
+  HootsQueriesTypes,
+  newsFeed,
+  queryFollowings,
+} from "shared/Queries";
 interface HootsService {
   queryType?: HootsQueriesTypes;
   id?: number;
@@ -42,19 +47,22 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
   const [hasReachedEnd, setHasReachedEnd] = useState<boolean>(false);
   const [currentFollowing, setCurrentFollowing] = useState<IUser[]>([]);
 
-  const data = useMemo(
-    () => Object.values(dataObj).sort((a, b) => b.createdAt - a.createdAt),
-    [dataObj]
-  );
+  const data = useMemo(() => {
+    return Object.values(dataObj);
+  }, [dataObj, dataObjRef.current]);
 
   useEffect(() => {
     if (!disableFetch) {
       Object.keys(hootsMapper).forEach((tweetsKey) => {
         if (dataObj[tweetsKey.toString()]) {
+          console.warn('UPDATED');
           setDataObj({
             ...dataObj,
-            [tweetsKey.toString()]: {
+            [tweetsKey]: {
               ...dataObj[tweetsKey.toString()],
+              favorites: [],
+              retweets: [],
+              replies: [],
               _id: hootsMapper[tweetsKey.toString()],
             },
           });
@@ -62,9 +70,11 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
       });
     }
   }, [hootsMapper, disableFetch]);
+
   useEffect(() => {
     setDataObj({});
   }, [id]);
+  
   useEffect(() => {
     if (!disableFetch) {
       refresh();
@@ -85,6 +95,18 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
     async ({ hootId, image, text }: PostHoot) => {
       const fullImagePath = await uploadImage(image);
       const tempId = generateGUID();
+      if (hootId) {
+        setDataObj({
+          ...dataObjRef.current,
+          [hootId]: {
+            ...dataObjRef.current[hootId],
+            retweets: [
+              ...(dataObjRef.current[hootId].retweets || []),
+              { auther: userData },
+            ],
+          },
+        });
+      }
       const hootTxn = [
         {
           _id: `tweet$${tempId}`,
@@ -95,22 +117,23 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
           text,
         },
       ];
+      setDataObj({
+        [tempId]: {
+          ...hootTxn,
+          text,
+          createdAt: new Date().getTime(),
+          auther: userData,
+          parentTweet: hootId ? dataObjRef.current[hootId] : undefined,
+          favorites: [],
+          retweets: [],
+        },
+        ...dataObjRef.current,
+      });
       await transact({
         privateKey: userData?.appPrivateKey,
         myTxn: hootTxn,
         authId: userData?.authId,
-      }).then(() => {
-        setDataObj({
-          [tempId]: {
-            ...hootTxn,
-            text,
-            createdAt: new Date().getTime(),
-            auther: userData,
-            parentTweet: hootId ? dataObjRef.current[hootId] : undefined,
-          },
-          ...dataObjRef.current,
-        });
-      });
+      })
     },
     [dataObj]
   );
@@ -171,13 +194,14 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
           favorites: [userData?._id],
         },
       ];
+      console.warn(dataObj, hootId)
       setDataObj({
         ...dataObjRef.current,
         [hootId]: {
           ...dataObjRef.current[hootId],
           favorites: [
             ...(dataObjRef.current[hootId].favorites || []),
-            userData?._id,
+            { _id: userData?._id },
           ],
         },
       });
@@ -187,7 +211,7 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
         authId: userData?.authId,
       });
     },
-    [userData, dataObj]
+    [userData, dataObjRef.current]
   );
 
   const refresh = async () => {
@@ -197,9 +221,8 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
       privateKey: userData?.appPrivateKey,
     })
       .then((res) => {
-        console.warn(res.data)
         setDataObj({ ...dataObjRef.current, ...arrayToObj(res.data) });
-        setHasReachedEnd(res.data.length < 10);
+        setHasReachedEnd(res.data.length < 20);
         setSuccess();
       })
       .catch(setFailure);
