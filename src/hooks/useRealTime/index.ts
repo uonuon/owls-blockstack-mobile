@@ -7,10 +7,17 @@ import { io } from "socket.io-client";
 export const useRealTime = createStore(() => {
   const { userData } = useContext(UserData);
   const [hootsMapper, setHootsMapper] = useState<{ [x: string]: number }>({});
-
+  const [registeredHootsIds, registerHootsIds] = useState<string[]>([]);
+  const [newHootsFlag, toggleNewHootsFlag] = useState<boolean>(false);
+  const registeredHootsIdsRef = useRef(registeredHootsIds);
+  registeredHootsIdsRef.current = registeredHootsIds;
   const settersMap = {
     tweet: ({ tempId, transactionID, transactionFlake }) => {
-      setHootsMapper({...hootsMapper, [tempId]: transactionID, hoot: transactionFlake })
+      if(registeredHootsIdsRef.current.includes(tempId.toString()) || registeredHootsIdsRef.current.includes(transactionID.toString())) {
+        setHootsMapper({...hootsMapper, [tempId || transactionID]: {transactionID, transactionFlake}});
+      }else{
+        toggleNewHootsFlag(true);
+      }
     },
   };
 
@@ -49,13 +56,19 @@ export const useRealTime = createStore(() => {
           settersMap[setter]({
             transactionID,
             tempId,
-            transactionFlake,
+            transactionFlake: transactionFlake[0],
           });
         }
       }
     }
     if (!error && !called) {
-      // edit transactions
+      if (Object.keys(transactionFlake[0]).includes("favorites")){
+        settersMap.tweet({
+          transactionID: transactionFlake[0]._id,
+          tempId: "",
+          transactionFlake: transactionFlake[0],
+        });
+      }
     }
   };
   const appState = useRef(AppState.currentState);
@@ -80,7 +93,7 @@ export const useRealTime = createStore(() => {
 
   useEffect(() => {
     if (userData && appStateVisible === "active") {
-      const socket = io("http://192.168.8.105:3000");
+      const socket = io("http://192.168.8.106:3000");
       socket.on("fluree_event", ({ data, lastEventTime }: any) => {
         cb(data, lastEventTime);
       });
@@ -95,5 +108,8 @@ export const useRealTime = createStore(() => {
   return {
     hootsMapper,
     setHootsMapper,
+    registerHootsIds,
+    newHootsFlag,
+    toggleNewHootsFlag,
   }
 });

@@ -42,10 +42,9 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
     loading,
     success,
   } = useProgressState();
-  const { hootsMapper } = useRealTime();
+  const { hootsMapper, registerHootsIds,newHootsFlag,toggleNewHootsFlag } = useRealTime();
   const [page, setPage] = useState<number>(0);
   const [hasReachedEnd, setHasReachedEnd] = useState<boolean>(false);
-  const [currentFollowing, setCurrentFollowing] = useState<IUser[]>([]);
 
   const data = useMemo(() => {
     return Object.values(dataObj).sort((a, b) => b.createdAt - a.createdAt);
@@ -54,18 +53,29 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
   useEffect(() => {
     if (!disableFetch) {
       Object.keys(hootsMapper).forEach((tweetsKey) => {
+        console.warn("tweetsKey",tweetsKey.toString())
         if (dataObj[tweetsKey.toString()]) {
-          console.warn('UPDATED');
-          setDataObj({
-            ...dataObj,
-            [tweetsKey]: {
+          const newObj = {...dataObj};
+          delete newObj[tweetsKey.toString()];
+          console.log("sdads",tweetsKey,hootsMapper[tweetsKey.toString()].transactionID,dataObj[tweetsKey.toString()],
+              (hootsMapper[tweetsKey.toString()].transactionFlake?.favorites || []).map(userId => ({_id: userId}))
+              );
+          const hootsUpdates = {
+            ...newObj,
+            [hootsMapper[tweetsKey.toString()].transactionID]: {
               ...dataObj[tweetsKey.toString()],
-              favorites: [],
-              retweets: [],
-              replies: [],
-              _id: hootsMapper[tweetsKey.toString()],
+              favorites: [...(dataObj[tweetsKey.toString()]?.favorites || []),
+                ...(hootsMapper[tweetsKey.toString()].transactionFlake?.favorites || []).map(userId => ({_id: userId}))],
+              replies: [...(dataObj[tweetsKey.toString()]?.replies || []),
+                ...(hootsMapper[tweetsKey.toString()].transactionFlake?.replies || [])],
+              _id: hootsMapper[tweetsKey.toString()].transactionID,
             },
-          });
+          };
+          const parentId = hootsMapper[tweetsKey.toString()].transactionFlake?.parentTweet;
+          if(!!parentId && dataObj[parentId]){
+            hootsUpdates[parentId] = {...dataObj[parentId],retweets: [...dataObj[parentId].retweets, hootsMapper[tweetsKey.toString()].transactionID]}
+          }
+          setDataObj(hootsUpdates);
         }
       });
     }
@@ -78,10 +88,6 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
   useEffect(() => {
     if (!disableFetch) {
       refresh();
-      query({
-        myQuery: queryFollowings(userData?._id),
-        privateKey: userData?.appPrivateKey,
-      }).then((res) => setCurrentFollowing(res.data));
     }
   }, [disableFetch, queryType, id, page]);
 
@@ -120,6 +126,7 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
       setDataObj({
         [tempId]: {
           ...hootTxn[0],
+          _id: tempId,
           createdAt: new Date().getTime(),
           auther: userData,
           parentTweet: hootId ? dataObjRef.current[hootId] : undefined,
@@ -193,17 +200,17 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
           favorites: [userData?._id],
         },
       ];
-      console.warn(dataObj, hootId)
-      setDataObj({
-        ...dataObjRef.current,
-        [hootId]: {
-          ...dataObjRef.current[hootId],
-          favorites: [
-            ...(dataObjRef.current[hootId].favorites || []),
-            { _id: userData?._id },
-          ],
-        },
-      });
+      // console.warn(dataObj, hootId)
+      // setDataObj({
+      //   ...dataObjRef.current,
+      //   [hootId]: {
+      //     ...dataObjRef.current[hootId],
+      //     favorites: [
+      //       ...(dataObjRef.current[hootId].favorites || []),
+      //       { _id: userData?._id },
+      //     ],
+      //   },
+      // });
       await transact({
         privateKey: userData?.appPrivateKey,
         myTxn: hootTxn,
@@ -215,6 +222,7 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
 
   const refresh = async () => {
     setLoading();
+    toggleNewHootsFlag(false);
     query({
       myQuery: hootsQueriesMap[queryType](id, data.length),
       privateKey: userData?.appPrivateKey,
@@ -226,7 +234,9 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
       })
       .catch(setFailure);
   };
-
+  useEffect(() => {
+    registerHootsIds(Object.keys(dataObj));
+  },[dataObj]);
   return {
     loading,
     data,
@@ -237,6 +247,7 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
     loadMoreHoots,
     hasReachedEnd,
     success,
+    newHootsFlag,
     refresh,
   };
 };
