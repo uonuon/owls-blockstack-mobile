@@ -188,11 +188,12 @@ export const queryUserHoots = (id: number, offset: number) => {
     select: {
       "?tweet": hootSelector,
     },
-    where: [["?tweet", "tweet/auther", id]],
+    where: [["?tweet", "tweet/auther", id],
+    ["?tweets", "tweet/createdAt", "?createdAt"],],
     opts: {
       limit: 20,
       offset,
-      _orderBy: "tweet/createdAt",
+      orderBy: ['DESC', "?createdAt"],
     }
   };
 };
@@ -206,11 +207,12 @@ export const newsFeed = (id: number, offset: number) => ({
     ["?var", "connections/from", id],
     ["?var", "connections/status", "success"],
     ["?tweets", "tweet/auther", "?to"],
+    ["?tweets", "tweet/createdAt", "?createdAt"],
   ],
   opts: {
     limit: 20,
     offset,
-    _orderBy: ["tweet/createdAt", 'DESC'],
+    orderBy: ['DESC', "?createdAt"],
   }
 });
 
@@ -219,9 +221,10 @@ export const getCurrentHootReplies = (id: number, offset: number) => {
     select: {
       "?replies": hootSelector, 
     },
-    where: [[id, "tweet/replies", "?replies"]],
+    where: [[id, "tweet/replies", "?replies"],
+    ["?tweets", "tweet/createdAt", "?createdAt"],],
     opts: {
-      _orderBy: "tweet/createdAt",
+      orderBy: ['DESC', "?createdAt"],
     }
   };
 };
