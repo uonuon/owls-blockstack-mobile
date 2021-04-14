@@ -53,13 +53,9 @@ export const useHoots = ({ id, queryType, disableFetch }: HootsService) => {
   useEffect(() => {
     if (!disableFetch) {
       Object.keys(hootsMapper).forEach((tweetsKey) => {
-        console.warn("tweetsKey",tweetsKey.toString())
         if (dataObj[tweetsKey.toString()]) {
           const newObj = {...dataObj};
           delete newObj[tweetsKey.toString()];
-          console.log("sdads",tweetsKey,hootsMapper[tweetsKey.toString()].transactionID,dataObj[tweetsKey.toString()],
-              (hootsMapper[tweetsKey.toString()].transactionFlake?.favorites || []).map(userId => ({_id: userId}))
-              );
           const hootsUpdates = {
             ...newObj,
             [hootsMapper[tweetsKey.toString()].transactionID]: {

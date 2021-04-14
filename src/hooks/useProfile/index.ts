@@ -11,6 +11,7 @@ import { IHoot, IUser } from "shared";
 import { useProgressState } from "../useProgressState";
 import { UserData } from "contexts";
 import { multiQuery } from "src/utils/Axios/multiQuery";
+import {useRealTime} from "../useRealTime";
 
 const REJECTED = "rejected";
 const SUCCESS = "success";
@@ -34,6 +35,7 @@ export const useProfile = (currentProfile: IUser) => {
   const [currentFollowing, setCurrentFollowing] = useState<IUser[]>([]);
   const [connection, setConnection] = useState();
   const { userData } = useContext(UserData);
+  const {callBackFollowingUser} = useRealTime();
   const {
     setFailure,
     setLoading,
@@ -73,6 +75,7 @@ export const useProfile = (currentProfile: IUser) => {
           status,
         },
       ];
+      callBackFollowingUser(id.toString(), status !== SUCCESS);
       return await transact({
         privateKey: userData?.appPrivateKey,
         myTxn: userTxn,

@@ -3,20 +3,38 @@ import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { AppState, AppStateStatus } from "react-native";
 import { createStore } from "reusable";
 import { io } from "socket.io-client";
+import {useProfile} from "hooks";
+import {IUser} from "shared";
 
 export const useRealTime = createStore(() => {
   const { userData } = useContext(UserData);
   const [hootsMapper, setHootsMapper] = useState<{ [x: string]: number }>({});
   const [registeredHootsIds, registerHootsIds] = useState<string[]>([]);
+  const [registeredFollowingIds, registerFollowingIds] = useState<string[]>([]);
   const [newHootsFlag, toggleNewHootsFlag] = useState<boolean>(false);
   const registeredHootsIdsRef = useRef(registeredHootsIds);
   registeredHootsIdsRef.current = registeredHootsIds;
+  const {currentFollowing} = useProfile(userData as IUser);
+
+  useEffect(() => {
+    registerFollowingIds(currentFollowing.map(cf => cf._id.toString()));
+  },[currentFollowing]);
+
+  const callBackFollowingUser = (userId: string,isRemove = false) => {
+    if(isRemove){
+      registerFollowingIds(registeredFollowingIds.filter(UId => UId !== userId));
+    }else{
+      registerFollowingIds([...registeredFollowingIds,userId]);
+    }
+  };
   const settersMap = {
     tweet: ({ tempId, transactionID, transactionFlake }) => {
       if(registeredHootsIdsRef.current.includes(tempId.toString()) || registeredHootsIdsRef.current.includes(transactionID.toString())) {
         setHootsMapper({...hootsMapper, [tempId || transactionID]: {transactionID, transactionFlake}});
       }else{
-        toggleNewHootsFlag(true);
+        if(registeredFollowingIds.includes(transactionFlake[0].auther._id.toString())){
+          toggleNewHootsFlag(true);
+        }
       }
     },
   };
@@ -111,5 +129,6 @@ export const useRealTime = createStore(() => {
     registerHootsIds,
     newHootsFlag,
     toggleNewHootsFlag,
+    callBackFollowingUser,
   }
 });
