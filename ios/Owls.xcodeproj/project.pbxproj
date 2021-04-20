@@ -66,6 +66,7 @@
 		A648BCB125AF746900D77826 /* RNBlockstackSdk-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RNBlockstackSdk-Bridging-Header.h"; sourceTree = "<group>"; };
 		A6B20EE2AC3A418F8D1D9447 /* Whyte-Inktrap-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whyte-Inktrap-Regular.otf"; path = "../src/assets/fonts/Whyte-Inktrap-Regular.otf"; sourceTree = "<group>"; };
 		A6BD9A6225E32E7B008228CC /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		A6D73319262F0EE8005E99E0 /* Owls.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Owls.entitlements; path = Owls/Owls.entitlements; sourceTree = "<group>"; };
 		D31CBCEA28BBD2023B71EB53 /* Pods-Owls.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Owls.release.xcconfig"; path = "Target Support Files/Pods-Owls/Pods-Owls.release.xcconfig"; sourceTree = "<group>"; };
 		D8DCBEA1A8250BFEFE55B956 /* Pods-Owls.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Owls.debug.xcconfig"; path = "Target Support Files/Pods-Owls/Pods-Owls.debug.xcconfig"; sourceTree = "<group>"; };
 		E6040FC8DEC2201BBF4C70F9 /* libPods-Owls.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Owls.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,6 +127,7 @@
 		13B07FAE1A68108700A75B9A /* Owls */ = {
 			isa = PBXGroup;
 			children = (
+				A6D73319262F0EE8005E99E0 /* Owls.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -592,6 +594,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Owls/Owls.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 7M7Y7Z5ZT5;
@@ -620,6 +623,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Owls/Owls.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 7M7Y7Z5ZT5;

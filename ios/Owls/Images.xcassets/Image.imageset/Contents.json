@@ -1,19 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "background-splash.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "background-splash-1.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "background-splash-2.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "OWLS Stacks.png",
+      "idiom" : "universal"
     }
   ],
   "info" : {
