@@ -1,5 +1,10 @@
 import React from "react";
-import { ActivityIndicator, FlatList, ViewStyle } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  RefreshControl,
+  ViewStyle,
+} from "react-native";
 import { IHoot } from "shared";
 import { Hoot, RetweetedHoot } from "components";
 import styles from "./styles";
@@ -28,31 +33,52 @@ export const Hoots: React.FC<Props> = ({
   loadMoreHoots,
   hasReachedEnd,
   isRefreshing,
-  refresh
+  refresh,
 }) => (
   <FlatList
     data={hoots}
     ListHeaderComponent={ListHeaderComponent}
     ListEmptyComponent={ListEmptyComponent}
     onRefresh={refresh}
+    refreshControl={
+      <RefreshControl size={20} tintColor={'white'} refreshing={isRefreshing && hoots.length > 0} onRefresh={refresh} />
+    }
     refreshing={isRefreshing}
     ListFooterComponent={
-     <>
-     {!hasReachedEnd &&  <ActivityIndicator
-        size={"large"}
-        style={{ marginTop: 10 }}
-        color={"white"}
-      />}
-     </>
-}
+      <>
+        {!hasReachedEnd && (
+          <ActivityIndicator
+            size={"large"}
+            style={{ marginTop: 10 }}
+            color={"white"}
+          />
+        )}
+      </>
+    }
     style={[styles.flatList, customStyles]}
     renderItem={({ item, index }) => {
       const hoot: IHoot = item;
       return (
         <RetweetedHoot
           currentHoot={hoot}
-          nextHoot={(hoots.length - 1 > index + 1) && hoots[index + 1].threadParent && hoots[index].threadParent && hoots[index].threadParent[0] && hoots[index + 1].threadParent[0]  && (hoots[index].threadParent[0]._id === hoots[index + 1].threadParent[0]._id)}
-          prevHoot={index !== 0 && hoots[index].threadParent && hoots[index - 1].threadParent && hoots[index].threadParent[0] && hoots[index - 1].threadParent[0]  && (hoots[index].threadParent[0]._id === hoots[index - 1].threadParent[0]._id)}
+          nextHoot={
+            hoots.length - 1 > index + 1 &&
+            hoots[index + 1].threadParent &&
+            hoots[index].threadParent &&
+            hoots[index].threadParent[0] &&
+            hoots[index + 1].threadParent[0] &&
+            hoots[index].threadParent[0]._id ===
+              hoots[index + 1].threadParent[0]._id
+          }
+          prevHoot={
+            index !== 0 &&
+            hoots[index].threadParent &&
+            hoots[index - 1].threadParent &&
+            hoots[index].threadParent[0] &&
+            hoots[index - 1].threadParent[0] &&
+            hoots[index].threadParent[0]._id ===
+              hoots[index - 1].threadParent[0]._id
+          }
           loveHoot={loveHoot}
           retweetHoot={retweetHoot}
         />
@@ -66,6 +92,6 @@ export const Hoots: React.FC<Props> = ({
     onEndReachedThreshold={0.1}
     onEndReached={loadMoreHoots}
     legacyImplementation={false}
-    keyExtractor={(item: any, index) => item._id}
+    keyExtractor={(item: any, index) => `${item.createdAt}${index}`}
   />
 );

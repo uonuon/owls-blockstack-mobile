@@ -11,14 +11,10 @@ import {
 import { ScreenParams } from "navigation";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
-  Dimensions,
   Text,
   View,
-  FlatList,
-  ScrollView,
   Image,
   Pressable,
-  ActivityIndicator,
 } from "react-native";
 import { ProfileHeader } from "./ProfileHeader";
 import { UserData } from "contexts";
@@ -32,6 +28,7 @@ import { HootsQueriesTypes } from "shared/Queries";
 import { Tabs, MaterialTabBar } from "react-native-collapsible-tab-view";
 import { ProfileHoots } from "./ProfileHoots";
 import { useRealTime } from "src/hooks/useRealTime";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 
 const {
   screens: {
@@ -57,19 +54,19 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
     followUserById,
     connection,
   } = useProfile(selectedUser, callBackFollowingUser);
-  const {
-    data,
-    loading,
-    loveHoot,
-    postData,
-    hasReachedEnd,
-    loadMoreHoots,
-    success,
-    refresh,
-  } = useHoots({
-    queryType: HootsQueriesTypes.USER_HOOTS,
-    id: selectedUser?._id || 0,
-  });
+  // const {
+  //   data,
+  //   loading,
+  //   loveHoot,
+  //   postData,
+  //   hasReachedEnd,
+  //   loadMoreHoots,
+  //   success,
+  //   refresh,
+  // } = useHoots({
+  //   queryType: HootsQueriesTypes.USER_HOOTS,
+  //   id: selectedUser?._id || 0,
+  // });
   useEffect(() => {
     navigation.setOptions({
       title: "Profile",
@@ -165,7 +162,7 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
         />
       )}
     >
-      <Tabs.Tab name="Hoots">
+      {/* <Tabs.Tab name="Hoots">
         <ProfileHoots
           hoots={data}
           loveHoot={loveHoot}
@@ -177,27 +174,11 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
         />
       </Tabs.Tab>
       <Tabs.Tab name="Media">
-        <ProfileHoots
-          hoots={data}
-          loveHoot={loveHoot}
-          loadMoreHoots={loadMoreHoots}
-          hasReachedEnd={hasReachedEnd}
-          refresh={refresh}
-          isRefreshing={loading}
-          retweetHoot={postData}
-        />
+        
       </Tabs.Tab>
       <Tabs.Tab name="Likes">
-        <ProfileHoots
-          hoots={data}
-          loveHoot={loveHoot}
-          loadMoreHoots={loadMoreHoots}
-          hasReachedEnd={hasReachedEnd}
-          refresh={refresh}
-          isRefreshing={loading}
-          retweetHoot={postData}
-        />
-      </Tabs.Tab>
+        
+      </Tabs.Tab> */}
     </Tabs.Container>
   );
 };

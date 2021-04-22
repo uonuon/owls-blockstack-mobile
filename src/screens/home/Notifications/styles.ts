@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   subtitle: {
-    fontSize: 12,
+    fontSize: 14,
     textAlign: 'center',
     color: 'white',
     marginVertical: 20,
@@ -34,17 +34,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 20,
-    width: '100%',
+    width: '90%',
     backgroundColor: theme.colors.elevation01dp,
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.elevation02dp,
   },
   title: {
-    fontSize: 16,
+    fontSize: 20,
     color: theme.colors.common.white,
     opacity: 0.6,
     textAlign: 'center',
-    fontFamily: theme.fonts.regular,
     width: '80%'
   },
   backgroundLogo: {

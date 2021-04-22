@@ -14,7 +14,7 @@ import styles from "./styles";
 import { Hoot, User } from "components";
 import { ScreenParams } from "navigation";
 import TabBarIcon from "../TabBarIcon";
-import { FlatList, ScrollView } from "react-native-gesture-handler";
+import { FlatList } from "react-native-gesture-handler";
 import _ from "lodash";
 
 const {
