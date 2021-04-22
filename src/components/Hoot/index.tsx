@@ -58,29 +58,29 @@ export const useGetHootImage = (hoot: IHoot, overrideStyles?: ViewStyle) => {
   ) : null;
 };
 
-export const Hoot: React.FC<HootProps> = ({ parentTweet, parentUser, currentHoot, loveHoot, retweetHoot, isThreadHoot, nextHoot, prevHoot, isParent, user }) => {
+export const Hoot: React.FC<HootProps> = ({threadParent,threadParentUser, parentTweet, parentUser, currentHoot, isThreadHoot, nextHoot, prevHoot, isParent, user }) => {
   const { navigateTo } = useNavigationUtils();
   const userImage = useGetUserImage(parentUser || user, styles.image);
   const hootImage = useGetHootImage(parentTweet || currentHoot, styles.hootImage);
   const {userData} = useContext(UserData);
   const goToReplies = () => {
-    navigateTo({ name: "Replies", params: {hoot: currentHoot, loveHoot, retweetHoot} })
+    navigateTo({ name: "Replies", params: {hoot: currentHoot} })
   }
   let loveIcon = currentHoot.isFavorite ? loveActive : love;
   let retweetIcon = currentHoot.isRetweeted ? retweetActive : retweet;
-  const isThread = (!prevHoot && (currentHoot.threadParent));
+  const isThread = (!prevHoot && (threadParent));
   return (
     <>
-    {/* {isThread && !isParent && <Text style={styles.text}>{user.fullName} Replied.</Text>}
-    {isThread && <Hoot nextHoot={nextHoot} currentHoot={currentHoot.threadParent} isThreadHoot={true} loveHoot={loveHoot} retweetHoot={retweetHoot} />} */}
+    {isThread && !isParent && <Text style={styles.text}>{user.fullName} Replied.</Text>}
+    {isThread && <Hoot user={threadParentUser} nextHoot={nextHoot} currentHoot={threadParent || currentHoot} isThreadHoot={true} />} 
     <View style={[styles.container, {borderBottomWidth: nextHoot || isThreadHoot ? 0 : 1}]}>
       <View style={{alignItems: 'center',}}>
-      {(nextHoot || isThreadHoot) && <View style={{height: '100%', width: 2, backgroundColor: 'gray', borderRadius: 2, position: 'absolute', top: 48, right: 38}}></View>}
+      {(nextHoot || isThread) && <View style={{height: '100%', width: 2, backgroundColor: 'gray', borderRadius: 2, position: 'absolute', top: 48, right: 38}}></View>}
       {userImage}
       </View>
       <View style={styles.hootContent}>
         <HootHeader
-          date={1}
+          date={currentHoot.createdAt}
           username={user.username}
           name={user.fullName}
         />

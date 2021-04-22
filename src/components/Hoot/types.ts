@@ -4,12 +4,11 @@ import { Hoot } from 'src/db/models/HootsModel';
 import { User } from 'src/db/models/UserModel';
 export interface HootProps {
   currentHoot: Hoot
-  loveHoot: (id: string) => void
   nextHoot: boolean
-  retweetHoot: (hoot: PostHoot) => void
   isThreadHoot?: boolean
   prevHoot?: boolean
   isParent?: boolean
+  threadParentUser?: User
   threadParent?: Hoot
   parentTweet?: Hoot
   user: User

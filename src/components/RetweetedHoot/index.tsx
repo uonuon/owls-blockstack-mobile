@@ -12,18 +12,14 @@ import { of as of$ } from 'rxjs';
 
 const RetweetedHoot: React.FC<HootProps> = ({
   currentHoot,
-  loveHoot,
   nextHoot,
-  isThreadHoot,
   user,
   parentUser,
-  retweetHoot,
   parentTweet,
+  threadParentUser,
+  threadParent,
   prevHoot,
 }) => {
-  const {
-    theme: { colors, fonts },
-  } = useTheme();
   return (
     <View style={{ paddingTop: parentTweet ? 10 : 0 }}>
       {parentTweet && (
@@ -36,32 +32,46 @@ const RetweetedHoot: React.FC<HootProps> = ({
       <Hoot
         currentHoot={currentHoot}
         parentTweet={parentTweet}
-        loveHoot={loveHoot}
         prevHoot={prevHoot}
         user={user}
+        threadParent={threadParent}
+        threadParentUser={threadParentUser}
         parentUser={parentUser}
         nextHoot={nextHoot}
-        retweetHoot={retweetHoot}
       />
     </View>
   );
 };
 
-const enhance =  withObservables(['hoot'], (props) => {
+const enhance =  withObservables(['currentHoot'], ({currentHoot}) => {
   return {
-    currentHoot: props.hoot.observe(),
-    user: props.hoot.user,
+    currentHoot: currentHoot.observe(),
+    user: currentHoot.user,
   }
 })
 
-const enhanceParentTweet = withObservables(['hoot'], ({currentHoot}) => {
+const enhanceParentTweet = withObservables(['currentHoot'], ({currentHoot}) => {
   return {
     parentTweet: currentHoot.parentTweet.id ? currentHoot.parentTweet.observe() : of$(null),
+    threadParent: currentHoot.threadParent.id ? currentHoot.threadParent.observe() : of$(null),
   }
 });
-const enhanceParentTweetUser = withObservables(['user'], ({parentTweet}) => {
+const enhanceParentTweetUser = withObservables(['user'], ({parentTweet, threadParent}) => {
   return {
-    parentUser: parentTweet ? parentTweet.user : of$(null)
+    parentUser: parentTweet ? parentTweet.user : of$(null),
+    threadParentUser: threadParent ? threadParent.user : of$(null),
   }
 });
-export const EnhancedRetweetedHoot = enhance(enhanceParentTweet(enhanceParentTweetUser(RetweetedHoot)))
+
+// const enhanceThreadParent = withObservables(['hoot'], ({currentHoot}) => {
+//   return {
+//     threadParent: currentHoot.threadParent.id ? currentHoot.threadParent.observe() : of$(null),
+//   }
+// });
+// const enhancethreadParentUser = withObservables(['user'], ({threadParent}) => {
+//   return {
+//     parentUser: threadParent ? threadParent.user : of$(null)
+//   }
+// });
+
+export const EnhancedRetweetedHoot = enhance(enhanceParentTweet(enhanceParentTweetUser(RetweetedHoot)));

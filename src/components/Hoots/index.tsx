@@ -29,8 +29,6 @@ const Hoots: React.FC<Props> = ({
   customStyles,
   ListHeaderComponent,
   ListEmptyComponent,
-  loveHoot,
-  retweetHoot,
   loadMoreHoots,
   hasReachedEnd,
   isRefreshing,
@@ -63,11 +61,8 @@ const Hoots: React.FC<Props> = ({
         <EnhancedRetweetedHoot
           key={item.id}
           currentHoot={hoot}
-          hoot={hoot}
-          nextHoot={(hoots.length - 1 > index + 1) && hoots[index + 1].threadParent && hoots[index].threadParent && (hoots[index].threadParent.id === hoots[index + 1].threadParent.id)}
-          prevHoot={index !== 0 && hoots[index].threadParent && hoots[index - 1].threadParent && (hoots[index].threadParent.id === hoots[index - 1].threadParent.id)}
-          loveHoot={loveHoot}
-          retweetHoot={retweetHoot}
+          nextHoot={(hoots.length - 1 > index + 1) && hoots[index + 1].threadParent.id && hoots[index].threadParent.id && (hoots[index].threadParent.id === hoots[index + 1].threadParent.id)}
+          prevHoot={index !== 0 && hoots[index].threadParent.id && hoots[index - 1].threadParent.id && (hoots[index].threadParent.id === hoots[index - 1].threadParent.id)}
         />
       );
     }}

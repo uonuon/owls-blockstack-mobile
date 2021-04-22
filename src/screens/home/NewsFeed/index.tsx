@@ -74,12 +74,10 @@ export const NewsFeed: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
       </View>
       <EnhancedHoots
         hoots={data}
-        loveHoot={loveHoot}
         loadMoreHoots={loadMoreHoots}
         hasReachedEnd={hasReachedEnd}
         refresh={refresh}
         isRefreshing={loading}
-        retweetHoot={postData}
         ListHeaderComponent={hootsHeader}
         ListEmptyComponent={
           <View
