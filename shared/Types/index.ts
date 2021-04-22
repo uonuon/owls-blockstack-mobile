@@ -16,18 +16,3 @@ export interface IUser {
   connectionId?: number;
   auth?: any;
 }
-
-export interface IHoot {
-  retweets: any;
-  threadParent?: IHoot | [undefined]
-  createdAt: number;
-  _id: number;
-  avatar: string;
-  image?: string;
-  text: string;
-  replies: any[];
-  favorites: number[];
-  auther: IUser;
-  parentTweet?: IHoot 
-}
-

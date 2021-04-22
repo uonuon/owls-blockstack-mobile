@@ -16,12 +16,12 @@ export const hootsSchema = tableSchema({
       type: 'string',
     },
     {
-      name: 'createdAt',
+      name: 'created_at',
       type: 'number',
       isIndexed: true,
     },
     {
-      name: 'updatedAt',
+      name: 'updated_at',
       type: 'number',
       isIndexed: true,
     },
@@ -37,23 +37,19 @@ export const hootsSchema = tableSchema({
     {
       name: 'parentTweet',
       type: 'string',
-      isIndexed: true,
       isOptional: true,
     },
     {
       name: 'favoritesNumber',
       type: 'number',
-      isIndexed: true,
     },
     {
       name: 'repliesNumber',
       type: 'number',
-      isIndexed: true,
     },
     {
       name: 'retweetsNumber',
       type: 'number',
-      isIndexed: true,
     },
     {
       name: 'isFavorite',

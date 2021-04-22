@@ -11,7 +11,7 @@ import {
 import { UserData } from "contexts";
 import styles from "./styles";
 import { ScreenParams } from "navigation";
-import { Hoots } from "src/components/Hoots";
+import { EnhancedHoots } from "src/components/Hoots";
 import { HootsQueriesTypes } from "shared/Queries";
 
 const {
@@ -72,7 +72,7 @@ export const NewsFeed: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
       <View style={styles.header}>
         <Image source={logo} style={styles.backgroundLogo} />
       </View>
-      <Hoots
+      <EnhancedHoots
         hoots={data}
         loveHoot={loveHoot}
         loadMoreHoots={loadMoreHoots}

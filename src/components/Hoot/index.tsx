@@ -12,8 +12,8 @@ import { HootAction } from "components";
 import { HootHeader } from "./HootHeader";
 import { HootContent } from "./HootContent";
 import { UserData } from "contexts";
-import { IHoot } from "shared";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { IUser } from "shared";
 
 const {
   components: {
@@ -25,8 +25,8 @@ export const useGetHootImage = (hoot: IHoot, overrideStyles?: ViewStyle) => {
   const [data, setData] = useState<string>();
   useMemo(async () => {
     const gaiaURL =
-      hoot.auther?.profile &&
-      JSON.parse(hoot.auther.profile).apps[defaultConfig.appDomain];
+      hoot.user?.profile &&
+      JSON.parse(hoot.user.profile).apps[defaultConfig.appDomain];
     const image = hoot.image
       ? await fetch(gaiaURL + hoot.image, {
           method: "GET",
@@ -58,22 +58,21 @@ export const useGetHootImage = (hoot: IHoot, overrideStyles?: ViewStyle) => {
   ) : null;
 };
 
-export const Hoot: React.FC<HootProps> = ({ currentHoot, loveHoot, retweetHoot, isThreadHoot, nextHoot, prevHoot, isParent }) => {
+export const Hoot: React.FC<HootProps> = ({ parentTweet, parentUser, currentHoot, loveHoot, retweetHoot, isThreadHoot, nextHoot, prevHoot, isParent, user }) => {
   const { navigateTo } = useNavigationUtils();
-  const userImage = useGetUserImage(currentHoot.auther, styles.image);
-  const hootImage = useGetHootImage(currentHoot, styles.hootImage);
+  const userImage = useGetUserImage(parentUser || user, styles.image);
+  const hootImage = useGetHootImage(parentTweet || currentHoot, styles.hootImage);
+  const {userData} = useContext(UserData);
   const goToReplies = () => {
     navigateTo({ name: "Replies", params: {hoot: currentHoot, loveHoot, retweetHoot} })
   }
-  const { userData } = useContext(UserData); 
-  
-  let loveIcon = currentHoot.favorites?.filter((user: any) => user._id === userData?._id).length > 0 ? loveActive : love;
-  let retweetIcon = currentHoot.retweets?.filter((user: any) => user.auther._id === userData?._id).length > 0 ? retweetActive : retweet;
-  const isThread = (!prevHoot && (currentHoot.threadParent && currentHoot.threadParent[0]));
+  let loveIcon = currentHoot.isFavorite ? loveActive : love;
+  let retweetIcon = currentHoot.isRetweeted ? retweetActive : retweet;
+  const isThread = (!prevHoot && (currentHoot.threadParent));
   return (
     <>
-    {isThread && !isParent && <Text style={styles.text}>{currentHoot.auther.fullName} Replied.</Text>}
-    {isThread && <Hoot nextHoot={nextHoot} currentHoot={currentHoot.threadParent[0]} isThreadHoot={true} loveHoot={loveHoot} retweetHoot={retweetHoot} />}
+    {/* {isThread && !isParent && <Text style={styles.text}>{user.fullName} Replied.</Text>}
+    {isThread && <Hoot nextHoot={nextHoot} currentHoot={currentHoot.threadParent} isThreadHoot={true} loveHoot={loveHoot} retweetHoot={retweetHoot} />} */}
     <View style={[styles.container, {borderBottomWidth: nextHoot || isThreadHoot ? 0 : 1}]}>
       <View style={{alignItems: 'center',}}>
       {(nextHoot || isThreadHoot) && <View style={{height: '100%', width: 2, backgroundColor: 'gray', borderRadius: 2, position: 'absolute', top: 48, right: 38}}></View>}
@@ -81,28 +80,28 @@ export const Hoot: React.FC<HootProps> = ({ currentHoot, loveHoot, retweetHoot, 
       </View>
       <View style={styles.hootContent}>
         <HootHeader
-          date={currentHoot.createdAt}
-          username={currentHoot.auther.username}
-          name={currentHoot.auther.fullName}
+          date={1}
+          username={user.username}
+          name={user.fullName}
         />
-        <HootContent text={currentHoot.text} />
+        <HootContent text={(parentTweet?.text || currentHoot.text)} />
         {hootImage}
         <View style={styles.hootFooter}>
           <HootAction
             icon={reply}
-            counter={currentHoot.replies?.length || 0}
+            counter={currentHoot.repliesNumber}
             action={goToReplies}
           />
           <HootAction
             icon={retweetIcon}
-            counter={currentHoot.retweets?.length || 0}
-            action={() => retweetHoot({hootId: currentHoot._id})}
+            counter={currentHoot.retweetsNumber}
+            action={() => currentHoot.retweetHoot(userData as IUser)}
           />
           <HootAction
             icon={loveIcon}
-            counter={currentHoot.favorites?.length || 0}
+            counter={currentHoot.favoritesNumber}
             action={() => {
-              loveHoot(currentHoot._id)
+              currentHoot.favoriteHoot(userData as IUser);
             }}
           />
           {/* <HootAction

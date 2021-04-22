@@ -47,13 +47,12 @@ export const Profile: React.FC<BottomTabScreenProps<ScreenParams>> = () => {
   const [index, setIndex] = useState(0);
   const { userData } = useContext(UserData);
   const selectedUser = (params?.incomingUser as IUser) || (userData as IUser);
-  const {callBackFollowingUser} = useRealTime();
   const {
     currentFollowers,
     currentFollowing,
     followUserById,
     connection,
-  } = useProfile(selectedUser, callBackFollowingUser);
+  } = useProfile(selectedUser);
   // const {
   //   data,
   //   loading,

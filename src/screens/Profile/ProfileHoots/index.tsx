@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./styles";
 import { Tabs } from "react-native-collapsible-tab-view";
-import { RetweetedHoot } from "components";
+import { EnhancedRetweetedHoot } from "components";
 import { index } from "ios/Pods/Blockstack/Javascript/profileProofs";
 import { ActivityIndicator, RefreshControl } from "react-native";
 import { IHoot } from "shared";
@@ -54,7 +54,7 @@ export const ProfileHoots: React.FC<Props> = ({
     renderItem={({ item, index }) => {
       const hoot: IHoot = item as IHoot;
       return (
-        <RetweetedHoot
+        <EnhancedRetweetedHoot
           currentHoot={hoot}
           nextHoot={
             hoots.length - 1 > index + 1 &&

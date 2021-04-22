@@ -15,6 +15,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { Assets } from "assets";
 import RNBlockstackSdk from "react-native-blockstack";
 import LinearGradient from "react-native-linear-gradient";
+import { watermelonSync } from "src/db/sync";
 
 const {
   screens: {
@@ -50,6 +51,7 @@ export const SplashScreen: React.FC = () => {
           name: "FillUserData",
         });
       } else {
+        watermelonSync(userData, 0)
         replace({
           name: "home",
         });

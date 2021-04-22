@@ -20,7 +20,7 @@ const {
 
 export const Reply: React.FC<ReplyProps> = ({ currentHoot, loveHoot, retweetHoot }) => {
   const { navigateTo } = useNavigationUtils();
-  const userImage = useGetUserImage(currentHoot.auther, styles.image);
+  const userImage = useGetUserImage(currentHoot.user, styles.image);
   const replyImage = useGetHootImage(currentHoot, styles.replyImage);
 
   const goToReplies = () => {
@@ -36,8 +36,8 @@ export const Reply: React.FC<ReplyProps> = ({ currentHoot, loveHoot, retweetHoot
             <View style={styles.replyHeader}>
               <HootHeader
                 date={currentHoot.createdAt}
-                name={currentHoot.auther.fullName}
-                username={currentHoot.auther.username}
+                name={currentHoot.user.fullName}
+                username={currentHoot.user.username}
               />
             </View>
           </View>

@@ -1,12 +1,14 @@
+import { newsFeed } from './../../../shared/Queries/index';
 import {
   synchronize,
   SyncPullArgs,
   SyncPushArgs,
 } from "@nozbe/watermelondb/sync";
 import throttle from "lodash/throttle";
-import { IHoot, IUser } from "../../../shared";
+import { IUser } from "../../../shared";
 import { query } from "../../utils/Axios/query";
 import { database } from "../index";
+import { Hoot } from "../models/HootsModel";
 import { User } from "../models/UserModel";
 
 export const watermelonSync = throttle(
@@ -31,25 +33,24 @@ export const watermelonSync = throttle(
                 },
               },
               {
-                "parentTweet": [
+                parentTweet: [
+                  "*",
                   {
-                    "*": {
-                      _compact: true,
-                    },
+                    _compact: true,
                   },
                   {
                     "tweet/_parentTweet": [
                       {
                         _as: "retweets",
                       },
+                      "auther",
                     ],
                   },
                   {
                     "tweet/_replies": [
+                      "*",
                       {
-                        "*": {
-                          _compact: true,
-                        },
+                        _compact: true,
                       },
                       {
                         _as: "threadParent",
@@ -63,14 +64,14 @@ export const watermelonSync = throttle(
                   {
                     _as: "retweets",
                   },
+                  "auther",
                 ],
               },
               {
                 "tweet/_replies": [
+                  "*",
                   {
-                    "*": {
-                      _compact: true,
-                    },
+                    _compact: true,
                   },
                   {
                     _as: "threadParent",
@@ -92,19 +93,24 @@ export const watermelonSync = throttle(
           myQuery: hootQuery,
           privateKey,
         });
-        const newsFeeds: IHoot[] = newsFeedsRes.data.reduce((acc, hoot) => {
-          const flattedHoots = [hoot];
-          if(hoot.parentTweet){
-            flattedHoots.push(hoot.parentTweet);
-          }
-          if(hoot.threadParent){
-            flattedHoots.push(hoot.threadParent[0]);
-          }
-          return [...acc,...flattedHoots];
-        },[]);
+        const newsFeedsObj: any[] = newsFeedsRes.data.reduce((acc, hoot) => {
+          const flattedHoots = {
+            [hoot._id]: hoot,
+          };
+            if (hoot.parentTweet) {
+              flattedHoots[hoot.parentTweet._id] = hoot.parentTweet;
+            }
+            if (hoot && hoot.threadParent && hoot.threadParent[0]) {
+              flattedHoots[hoot.threadParent[0]._id] = hoot.threadParent[0];
+            }
+          return {...acc, ...flattedHoots};
+        }, {});
+        const newsFeeds = Object.values(newsFeedsObj);
         let userIds = Array.from(
           new Set([
-            ...newsFeeds.map((hoot) => +hoot.auther._id),
+            ...newsFeeds.map((hoot) => {
+              return +hoot.auther._id;
+            }),
             ...localUsers.map((user) => +user.id),
           ])
         );
@@ -156,11 +162,15 @@ export const watermelonSync = throttle(
                     ).length > 0,
                   favoritesNumber: (hoot.favorites || []).length || 0,
                   user: hoot.auther._id.toString(),
-                  threadParent: hoot?.threadParent[0]?._id.toString(),
+                  threadParent:
+                    hoot?.threadParent &&
+                    hoot?.threadParent[0] &&
+                    hoot?.threadParent[0]?._id.toString(),
                   parentTweet: hoot?.parentTweet?._id.toString(),
                   text: hoot.text,
                   image: hoot.image,
-                  avatar: hoot.avatar,
+                  created_at: hoot.createdAt,
+                  updated_at: hoot.updatedAt,
                 };
               }),
               created: [],

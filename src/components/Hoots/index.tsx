@@ -6,9 +6,10 @@ import {
   ViewStyle,
 } from "react-native";
 import { IHoot } from "shared";
-import { Hoot, RetweetedHoot } from "components";
+import { Hoot, EnhancedRetweetedHoot } from "components";
 import styles from "./styles";
 import { PostHoot } from "hooks";
+import withObservables from "@nozbe/with-observables";
 
 interface Props {
   hoots: IHoot[];
@@ -23,7 +24,7 @@ interface Props {
   isRefreshing: boolean;
 }
 
-export const Hoots: React.FC<Props> = ({
+const Hoots: React.FC<Props> = ({
   hoots,
   customStyles,
   ListHeaderComponent,
@@ -59,26 +60,12 @@ export const Hoots: React.FC<Props> = ({
     renderItem={({ item, index }) => {
       const hoot: IHoot = item;
       return (
-        <RetweetedHoot
+        <EnhancedRetweetedHoot
+          key={item.id}
           currentHoot={hoot}
-          nextHoot={
-            hoots.length - 1 > index + 1 &&
-            hoots[index + 1].threadParent &&
-            hoots[index].threadParent &&
-            hoots[index].threadParent[0] &&
-            hoots[index + 1].threadParent[0] &&
-            hoots[index].threadParent[0]._id ===
-              hoots[index + 1].threadParent[0]._id
-          }
-          prevHoot={
-            index !== 0 &&
-            hoots[index].threadParent &&
-            hoots[index - 1].threadParent &&
-            hoots[index].threadParent[0] &&
-            hoots[index - 1].threadParent[0] &&
-            hoots[index].threadParent[0]._id ===
-              hoots[index - 1].threadParent[0]._id
-          }
+          hoot={hoot}
+          nextHoot={(hoots.length - 1 > index + 1) && hoots[index + 1].threadParent && hoots[index].threadParent && (hoots[index].threadParent.id === hoots[index + 1].threadParent.id)}
+          prevHoot={index !== 0 && hoots[index].threadParent && hoots[index - 1].threadParent && (hoots[index].threadParent.id === hoots[index - 1].threadParent.id)}
           loveHoot={loveHoot}
           retweetHoot={retweetHoot}
         />
@@ -88,10 +75,18 @@ export const Hoots: React.FC<Props> = ({
     maxToRenderPerBatch={20}
     updateCellsBatchingPeriod={50}
     extraData={hoots}
-    initialNumToRender={20}
+    initialNumToRender={10}
     onEndReachedThreshold={0.1}
     onEndReached={loadMoreHoots}
     legacyImplementation={false}
-    keyExtractor={(item: any, index) => `${item.createdAt}${index}`}
+    keyExtractor={(item: any, index) => item.id}
   />
 );
+
+const enhance =  withObservables(['hoots'], ({hoots}) => {
+  return {
+    hoots: hoots.observe(),
+  }
+})
+
+export const EnhancedHoots = enhance(Hoots)
